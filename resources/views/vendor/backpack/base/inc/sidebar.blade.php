@@ -2,14 +2,6 @@
     <!-- Left side column. contains the sidebar -->
     <div class="{{ config('backpack.base.sidebar_class') }}">
       
-    <div class="user-panel mt-2">
-      <center><h4 style="color:white; font-weight:bold; font-size:17px;" title="{{ backpack_user()->clientEntity->name_lc }}">{{ backpack_user()->clientEntity->name_lc }}</h4></center>
-      <center><h5 style="color: white; font-size:12px; font-weight:bold">{{ backpack_user()->isClientUser() ? backpack_user()->clientEntity->fedLocalLevelEntity->districtEntity->name_lc.' , '.backpack_user()->clientEntity->fedLocalLevelEntity->districtEntity->provinceEntity->name_lc : ''}}</h5></center>
-    </div>
-    <hr class="hr-line" style="padding:0; margin:0; color:darkgray"/>
-
-
-
       <!-- sidebar: style can be found in sidebar.less -->
       <nav class="sidebar-nav overflow-hidden">
         <!-- sidebar menu: : style can be found in sidebar.less -->

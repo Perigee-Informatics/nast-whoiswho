@@ -32,7 +32,7 @@ Route::group(
 
 Route::group(
 [
-    'namespace'  => 'App\Http\Controllers',
+    'namespace'  => 'App\Http\Controllers\Auth',
     'middleware' => 'web',
     'prefix'     => config('backpack.base.route_prefix'),
 ],

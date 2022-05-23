@@ -28,12 +28,11 @@ class DashboardCrudController extends BaseCrudController
     public function index()
     {
         $this->user = backpack_user();
-        $this->setFiscalYear();
 
         if($this->user->isClientUser()){
-            $this->getDashboardDataForClient();
+            // $this->getDashboardDataForClient();
         }
-        return view('admin.dashboard',$this->data);
+    return view('admin.dashboard',$this->data);
     }
 
    
@@ -881,35 +880,6 @@ class DashboardCrudController extends BaseCrudController
         $data['category_projects']['total_project_cost'] = $total_project_cost;     
 
         return $data;
-    }
-
-
-    //set fiscal year
-    public function setFiscalYear()
-    {
-        $fiscal_year = MstFiscalYear::all();
-        $this->user = backpack_user();
-        $fiscal_year_status = true;
-        
-        parse_str(parse_url(URL::full(), PHP_URL_QUERY), $params);
-        
-        if(isset($params) && count($params) > 0){
-            $fiscal_year_id = $params['fiscal_year_id'];
-
-            if($fiscal_year_id === 'all'){
-                $fiscal_year_status = false;
-            }
-        }else{
-            $fiscal_year_id = AppSetting::where('client_id',$this->user->client_id)->pluck('fiscal_year_id')->first();
-        }
-        if($fiscal_year_status){
-            Session::put('fiscal_year_id', $fiscal_year_id);
-            $this->data['fiscal_year_id'] = $fiscal_year_id;
-        }else{
-            Session::put('fiscal_year_id', null);
-        }
-        $this->data['fiscal_year'] = $fiscal_year;
-        return $fiscal_year_id;
     }
 
 }

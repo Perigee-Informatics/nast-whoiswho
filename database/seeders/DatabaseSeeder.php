@@ -13,8 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(RolesSeeder::class);
-        // $this->call(DataCoreSeederFromTmpp::class);
+        $this->call(DateSettingSeeder::class);
+        $this->call(PrimaryMasterTableSeeder::class);
+        $this->call(UserTableSeeder::class);
 
     }
 }

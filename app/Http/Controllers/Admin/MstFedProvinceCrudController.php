@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Base\Traits\PullData;
 use App\Models\MstFedProvince;
 use App\Base\BaseCrudController;
 use App\Http\Requests\MstFedProvinceRequest;
@@ -21,7 +20,6 @@ class MstFedProvinceCrudController extends BaseCrudController
      * 
      * @return void
      */
-    use PullData;
     public function setup()
     {
         CRUD::setModel(MstFedProvince::class);

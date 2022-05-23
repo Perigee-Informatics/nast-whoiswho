@@ -24,7 +24,7 @@ return [
     // ----
 
     // Project name. Shown in the window title.
-    'project_name' => 'WPPMS',
+    'project_name' => 'NAST-WHOisWHO',
 
     // When clicking on the admin panel's top-left logo/name,
     // where should the user be redirected?
@@ -72,7 +72,7 @@ return [
     // ------
 
     // Menu logo. You can replace this with an <img> tag if you have a logo.
-    'project_logo'   => '<img src="/css/images/govt-logo.png" height="52px;" width="58px;">&nbsp<b>WPPMS</b>' ,
+    'project_logo'   => '<img src="/css/images/govt-logo.png" height="52px;" width="58px;">&nbsp<b>NAST</b>' ,
 
 
     // Show / hide breadcrumbs on admin panel pages.
