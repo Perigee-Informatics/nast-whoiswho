@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\DistrictLocalLevelController;
 // Route::get('/admin/login', function(){
 //     return view('errors.503');
 // });
+Route::get('/', [AdminController::class,'redirect']);
 Route::get('/home', [AdminController::class,'redirect']);
 
 

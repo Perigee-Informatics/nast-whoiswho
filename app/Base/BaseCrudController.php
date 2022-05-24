@@ -148,7 +148,7 @@ class BaseCrudController extends CrudController
             'name' => 'province_id',
             'type' => 'select2',
             'entity'=>'provinceEntity',
-            'attribute' => 'name_lc',
+            'attribute' => 'name_en',
             'model'=>MstFedProvince::class,
             'label' => trans('common.fed_province'),
             'options'   => (function ($query) {
@@ -168,7 +168,7 @@ class BaseCrudController extends CrudController
             'name' => 'district_id',
             'type' => 'select2',
             'entity'=>'districtEntity',
-            'attribute' => 'name_lc',
+            'attribute' => 'name_en',
             'model'=>MstFedDistrict::class,
             'label' => trans('common.fed_district'),
             'options'   => (function ($query) {
@@ -186,7 +186,7 @@ class BaseCrudController extends CrudController
             'name' => 'local_level_id',
             'type' => 'select2',
             'entity'=>'localLevelEntity',
-            'attribute' => 'name_lc',
+            'attribute' => 'name_en',
             'model'=>MstFedLocalLevel::class,
             'label' => trans('common.fed_local_level'),
             'options'   => (function ($query) {
@@ -334,7 +334,7 @@ class BaseCrudController extends CrudController
             'name' => 'province_id',
             'type' => 'select',
             'entity'=>'provinceEntity',
-            'attribute' => 'name_lc',
+            'attribute' => 'name_en',
             'model'=>MstFedProvince::class,
             'label' => trans('common.fed_province'),
         ];
@@ -345,7 +345,7 @@ class BaseCrudController extends CrudController
             'name' => 'district_id',
             'type' => 'select',
             'entity'=>'districtEntity',
-            'attribute' => 'name_lc',
+            'attribute' => 'name_en',
             'model'=>MstFedDistrict::class,
             'label' => trans('common.fed_district'),
         ];
@@ -357,7 +357,7 @@ class BaseCrudController extends CrudController
             'name' => 'local_level_id',
             'type' => 'select',
             'entity'=>'localLevelEntity',
-            'attribute' => 'name_lc',
+            'attribute' => 'name_en',
             'model'=>MstFedLocalLevel::class,
             'label' => trans('common.fed_local_level'),
         ];

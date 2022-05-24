@@ -22,8 +22,8 @@ class UserCrudController extends BaseCrudController
     public function setup()
     {
         $this->client_user = backpack_user();
-        $this->crud->setModel(config('backpack.permissionmanager.models.user'));
-        $this->crud->setEntityNameStrings(trans('backpack::permissionmanager.user'), trans('backpack::permissionmanager.users'));
+        $this->crud->setModel(User::class);
+        $this->crud->setEntityNameStrings('Users','Users');
         $this->crud->setRoute(backpack_url('user'));
         $this->setFilters();
 
@@ -31,19 +31,6 @@ class UserCrudController extends BaseCrudController
 
     public function setFilters()
     {
-        $this->crud->addFilter(
-            [ // Name(en) filter`
-                'label' => trans('Client'),
-                'type' => 'select2',
-                'name' => 'client_id', // the db column for the foreign key
-            ],
-            function () {
-                return (new AppClient())->getClientFilterComboOptions();
-            },
-            function ($value) { 
-                $this->crud->addClause('where', 'client_id', $value);
-            }
-        );
         $this->crud->addFilter(
             [ // Name(en) filter`
                 'label' => trans('Role'),
@@ -67,28 +54,22 @@ class UserCrudController extends BaseCrudController
         $cols = [
             $this->addRowNumberColumn(),
             [
-                'name'=>'client_name',
-                'type'=>'model_function',
-                'label' => 'स्थानीय तह',
-                'function_name' => 'clientName'
-            ],
-            [
                 'name'  => 'name',
-                'label' => trans('backpack::permissionmanager.name'),
+                'label' => trans('Name'),
                 'type'  => 'text',
             ],
             [
                 'name'  => 'email',
-                'label' => trans('backpack::permissionmanager.email'),
+                'label' => trans('E-mail'),
                 'type'  => 'email',
             ],
             [ // n-n relationship (with pivot table)
-                'label'     => trans('backpack::permissionmanager.roles'), // Table column heading
+                'label'     => trans('Roles'), // Table column heading
                 'type'      => 'select_multiple',
                 'name'      => 'roles', // the method that defines the relationship in your Model
                 'entity'    => 'roles', // the method that defines the relationship in your Model
                 'attribute' => 'field_name', // foreign key attribute that is shown to user
-                'model'     => config('permission.models.role'), // foreign key model
+                'model'     => Role::class, // foreign key model
             ],
         ];
 
@@ -100,10 +81,9 @@ class UserCrudController extends BaseCrudController
     public function addFields()
     {
       $arr = [
-          $this->addClientIdField(),
             [
                 'name'  => 'name',
-                'label' => trans('backpack::permissionmanager.name'),
+                'label' => trans('Name'),
                 'type'  => 'text',
                 'wrapperAttributes' => [
                     'class' => 'form-group col-md-4',
@@ -111,7 +91,7 @@ class UserCrudController extends BaseCrudController
             ],
             [
                 'name'  => 'email',
-                'label' => trans('backpack::permissionmanager.email'),
+                'label' => trans('E-mail'),
                 'type'  => 'email',
                 'wrapperAttributes' => [
                     'class' => 'form-group col-md-4',
@@ -119,7 +99,7 @@ class UserCrudController extends BaseCrudController
             ],
             [
                 'name'  => 'password',
-                'label' => trans('backpack::permissionmanager.password'),
+                'label' => trans('Password'),
                 'type'  => 'password',
                 'wrapperAttributes' => [
                     'class' => 'form-group col-md-4',
@@ -127,7 +107,7 @@ class UserCrudController extends BaseCrudController
             ],
             [
                 'name'  => 'password_confirmation',
-                'label' => trans('backpack::permissionmanager.password_confirmation'),
+                'label' => trans('Password Confirmation'),
                 'type'  => 'password',
                 'wrapperAttributes' => [
                     'class' => 'form-group col-md-4',
@@ -140,13 +120,13 @@ class UserCrudController extends BaseCrudController
             ],
             [
                 // two interconnected entities
-                'label'             => trans('backpack::permissionmanager.user_role_permission'),
+                'label'             => trans('User Role & Permission'),
                 'field_unique_name' => 'user_role_permission',
                 'type'              => 'checklist_dependency',
                 'name'              => ['roles', 'permissions'],
                 'subfields'         => [
                     'primary' => [
-                        'label'            => trans('backpack::permissionmanager.roles'),
+                        'label'            => trans('Roles'),
                         'name'             => 'roles', // the method that defines the relationship in your Model
                         'entity'           => 'roles', // the method that defines the relationship in your Model
                         'entity_secondary' => 'permissions', // the method that defines the relationship in your Model
@@ -157,7 +137,7 @@ class UserCrudController extends BaseCrudController
                         'option' => $this->getPrivateRoles(),
                     ],
                     'secondary' => [
-                        'label'          => ucfirst(trans('backpack::permissionmanager.permission_singular')),
+                        'label'          => ucfirst(trans('Permission')),
                         'name'           => 'permissions', // the method that defines the relationship in your Model
                         'entity'         => 'permissions', // the method that defines the relationship in your Model
                         'entity_primary' => 'roles', // the method that defines the relationship in your Model

@@ -93,7 +93,7 @@ class MstFedLocalLevelCrudController extends BaseCrudController
                 'type' => 'select2',
                 'name' => 'level_type_id', // the db column for the foreign key
                 'entity' => 'localLevelTypeEntity', // the method that defines the relationship in your Model
-                'attribute' => 'name_lc', // foreign key attribute that is shown to user
+                'attribute' => 'name_en', // foreign key attribute that is shown to user
                 'model' => MstFedLocalLevelType::class,
                 'wrapper' => [
                     'class' => 'form-group col-md-4'

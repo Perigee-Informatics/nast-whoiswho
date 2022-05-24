@@ -12,12 +12,12 @@ trait ComboField
 
     public function getComboFieldAttribute()
     {
-        return $this->code. ' - '.$this->name_lc;
+        return $this->code. ' - '.$this->name_en;
     }
     
     public function getFilterComboOptions()
     {
-        $a = self::selectRaw("code|| ' - ' || name_lc as name_lc , id");
+        $a = self::selectRaw("code|| ' - ' || name_en as name_en , id");
 
         return $a->orderBy('id', 'ASC')
             ->get()
@@ -39,7 +39,7 @@ trait ComboField
 
     public function getFieldComboOptions($query)
     {
-        $query->selectRaw("code|| ' - ' || name_lc as name_lc, id");
+        $query->selectRaw("code|| ' - ' || name_en as name_en, id");
 
         return $query->orderBy('id', 'ASC')
             ->get();
@@ -53,34 +53,23 @@ trait ComboField
             ->get();
     }
 
-    public function getClientFilterComboOptions()
-    {
-        $a = self::selectRaw("lmbiscode|| ' - ' || name_lc as name_lc , id")->where('is_tmpp_applicable', true);
-
-        return $a->orderBy('id', 'ASC')
-            ->get()
-            ->keyBy('id')
-            ->pluck('name_lc', 'id')
-            ->toArray();
-    }
 
     public function getProvinceFilterComboOptions()
     {
-        $a = self::selectRaw("code|| ' - ' || name_lc as name_lc , id")
+        $a = self::selectRaw("code|| ' - ' || name_en as name_en , id")
                     ->whereIn('id', function($query) 
                     {
                         $query->select(DB::raw('distinct province_id'))
                         ->from('mst_fed_district')
                         ->whereIn('id', function($query) {
                         $query->select(DB::raw('distinct district_id'))
-                            ->from('mst_fed_local_level')
-                            ->where('is_tmpp_applicable', true);
+                            ->from('mst_fed_local_level');
                         });
                     });
         return $a->orderBy('id', 'ASC')
         ->get()
         ->keyBy('id')
-        ->pluck('name_lc', 'id')
+        ->pluck('name_en', 'id')
         ->toArray();
 
     }

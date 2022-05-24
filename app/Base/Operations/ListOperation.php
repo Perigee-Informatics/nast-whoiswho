@@ -43,6 +43,7 @@ trait ListOperation
 
         $this->crud->operation('list', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
+            $this->crud->orderBy('id');
         });
     }
 
