@@ -34,5 +34,8 @@ Route::group([
     
     Route::crud('notification', 'NotificationCrudController');
 
+    
 
+
+    Route::crud('member', 'MemberCrudController');
 }); // this should be the absolute last line of this file

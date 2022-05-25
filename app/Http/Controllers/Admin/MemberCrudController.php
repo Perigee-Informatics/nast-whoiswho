@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Base\BaseCrudController;
-use App\Models\MstProjectStatus;
-use App\Http\Requests\MstProjectStatusRequest;
+use App\Http\Requests\MemberRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class MstProjectStatusCrudController
+ * Class MemberCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class MstProjectStatusCrudController extends BaseCrudController
+class MemberCrudController extends BaseCrudController
 {
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -21,9 +21,9 @@ class MstProjectStatusCrudController extends BaseCrudController
      */
     public function setup()
     {
-        CRUD::setModel(MstProjectStatus::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/mstprojectstatus');
-        CRUD::setEntityNameStrings(trans('menu.projectstatus'), trans('menu.projectstatus'));
+        CRUD::setModel(\App\Models\Member::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/member');
+        CRUD::setEntityNameStrings('member', 'members');
     }
 
     /**
@@ -34,16 +34,13 @@ class MstProjectStatusCrudController extends BaseCrudController
      */
     protected function setupListOperation()
     {
-        $col = [
-            $this->addRowNumberColumn(),
-            $this->addCodeColumn(),
-            $this->addNameEnColumn(),
-            $this->addNameLcColumn(),
-            $this->addDisplayOrderColumn(),
-         
-        ];
-            $this->crud->addColumns($col);
-            $this->crud->orderBy('display_order'); 
+        CRUD::setFromDb(); // columns
+
+        /**
+         * Columns can be defined using the fluent syntax or array syntax:
+         * - CRUD::column('price')->type('number');
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         */
     }
 
     /**
@@ -54,17 +51,15 @@ class MstProjectStatusCrudController extends BaseCrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(MstProjectStatusRequest::class);
+        CRUD::setValidation(MemberRequest::class);
 
-        $arr = [
-            $this->addReadOnlyCodeField(),
-            $this->addPlainHtml(),
-            $this->addNameEnField(),
-            $this->addNameLcField(),
-            $this->addDisplayOrderField(),
-        ];
-        $arr = array_filter($arr);
-        $this->crud->addFields($arr);
+        CRUD::setFromDb(); // fields
+
+        /**
+         * Fields can be defined using the fluent syntax or array syntax:
+         * - CRUD::field('price')->type('number');
+         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         */
     }
 
     /**

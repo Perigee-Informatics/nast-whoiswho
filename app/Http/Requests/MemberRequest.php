@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PtProjectProgressRequest extends FormRequest
+class MemberRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +25,8 @@ class PtProjectProgressRequest extends FormRequest
      */
     public function rules()
     {
-        $id_check = $this->request->get('id') ? ",".$this->request->get('id') : ",NULL";
         return [
-            'selected_project_id'=>'required',
-            'client_id'=>'required',
-            'reporting_interval_id'=>'required',
-            'executing_entity_type_id'=>'required',
-            'project_status_id'=>'required',
-
+            // 'name' => 'required|min:5|max:255'
         ];
     }
 
@@ -56,8 +50,7 @@ class PtProjectProgressRequest extends FormRequest
     public function messages()
     {
         return [
-
-            'selected_project_id.required' => 'The Project Field is Required',
+            //
         ];
     }
 }

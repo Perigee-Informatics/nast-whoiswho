@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Base\BaseModel;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Model;
 
-class MstProjectStatus extends BaseModel
+class Member extends Model
 {
     use CrudTrait;
 
@@ -15,11 +15,11 @@ class MstProjectStatus extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'mst_project_status';
+    protected $table = 'members';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['code', 'name_en', 'name_lc', 'remarks','display_order'];
+    // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
 
