@@ -22,10 +22,10 @@ class CreateMembersTable extends Migration
             $table->string('dob_bs',10);
             $table->string('nrn_number')->nullable();
             $table->string('first_name',200);
-            $table->string('middle_name',200);
+            $table->string('middle_name',200)->nullable();
             $table->string('last_name',200);
-            $table->boolean('is_other_country')->nullable();
-            $table->unsignedSmallInteger('country_id');
+            $table->boolean('is_other_country')->default(false);
+            $table->unsignedSmallInteger('country_id')->nullable();
             $table->unsignedSmallInteger('province_id')->nullable();
             $table->unsignedSmallInteger('district_id')->nullable();
 
@@ -38,8 +38,9 @@ class CreateMembersTable extends Migration
             $table->json('expertise');
             $table->json('affiliation');
             $table->string('mailing_address',500);
-            $table->json('phone');
-            $table->json('email');
+            $table->string('phone',200)->nullable();
+            $table->string('email',500)->nullable();
+            $table->string('link_to_google_scholar',1000)->nullable();
 
             $table->foreign('gender_id','fk_members_gender_id')->references('id')->on('mst_gender');
             $table->foreign('country_id','fk_members_country_id')->references('id')->on('mst_country');

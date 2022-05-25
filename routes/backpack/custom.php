@@ -27,6 +27,7 @@ Route::group([
     Route::crud('mstfedlocalleveltype', 'MstFedLocalLevelTypeCrudController');
     Route::crud('mstfiscalyear', 'MstFiscalYearCrudController');
     Route::crud('mstnepalimonth', 'MstNepaliMonthCrudController');
+    Route::crud('mstgender', 'MstGenderCrudController');
 
 
     // Route::crud('dashboard', 'DashboardCrudController');

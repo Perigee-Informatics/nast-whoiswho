@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Member;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Excel;
 use App\Imports\MembersImport;
 use App\Base\BaseCrudController;
 use App\Http\Requests\MemberRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
@@ -24,7 +25,7 @@ class MemberCrudController extends BaseCrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Member::class);
+        CRUD::setModel(Member::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/member');
         CRUD::setEntityNameStrings('member', 'members');
     }

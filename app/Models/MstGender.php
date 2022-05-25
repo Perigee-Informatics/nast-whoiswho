@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Base\BaseModel;
+use App\Base\DataAccessPermission;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Model;
 
-class Member extends BaseModel
+class MstGender extends BaseModel
 {
     use CrudTrait;
 
@@ -14,12 +16,13 @@ class Member extends BaseModel
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
+    public $dataAccessPermission = DataAccessPermission::SystemOnly;
 
-    protected $table = 'members';
+    protected $table = 'mst_gender';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    // protected $fillable = [];
+    protected $fillable = ['name_en','name_lc','remarks','display_order','created_by','updated_by'];
     // protected $hidden = [];
     // protected $dates = [];
 

@@ -10,6 +10,7 @@
 		<li class='nav-item'><a class='nav-link' href='/admin/mstfedlocalleveltype'><i class='nav-icon la la-compass'></i> {{trans('menu.fedlocalleveltype')}}</a></li>
 		<li class='nav-item'><a class='nav-link' href='/admin/mstfiscalyear'><i class='nav-icon la la-compass'></i> {{trans('menu.fiscalyear')}}</a></li>
 		<li class='nav-item'><a class='nav-link' href='/admin/mstnepalimonth'><i class='nav-icon la la-compass'></i> {{trans('menu.nepalimonth')}}</a></li>
+		<li class='nav-item'><a class='nav-link' href='/admin/mstgender'><i class='nav-icon la la-compass'></i> {{trans('menu.gender')}}</a></li>
 	</ul>
 </li>
 <li class='nav-item'><a class='nav-link' href='/admin/user'><i class='nav-icon la la-users'></i> Users</a></li>

@@ -46,7 +46,6 @@
         let url = $('#importViaExcelForm').attr('action');
         let formdata = new FormData(this);
 
-debugger;
         axios.post(url, formdata).then((response) => {
             if (response.data === 1) {
                 document.location = 'member';
