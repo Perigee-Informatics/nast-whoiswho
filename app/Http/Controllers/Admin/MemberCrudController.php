@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
+use App\Imports\MembersImport;
 use App\Base\BaseCrudController;
 use App\Http\Requests\MemberRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -34,6 +37,8 @@ class MemberCrudController extends BaseCrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->addButtonFromView('top', 'excelImport', 'excelImport', 'end');
+
         CRUD::setFromDb(); // columns
 
         /**
@@ -72,4 +77,21 @@ class MemberCrudController extends BaseCrudController
     {
         $this->setupCreateOperation();
     }
+
+
+    public function importMembers(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+            'excelMemberFile' => 'required',
+        ]);
+
+        try {
+            $itemImport = new MembersImport;
+            Excel::import($itemImport, request()->file('excelMemberFile'));
+            return 1;
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $excel_errors = $e->failures();
+            return view('partial_excel_barcode_errors', compact('excel_errors'));
+        }
+	}
 }
