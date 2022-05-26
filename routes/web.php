@@ -32,7 +32,7 @@ Route::get('/', [AdminController::class,'redirect']);
 Route::get('/home', [AdminController::class,'redirect']);
 
 
-Route::get('api/get_district/{add_province_id}', [ProvinceDistrictController::class,'index']);
+Route::post('api/district/{province_id}', [ProvinceDistrictController::class,'index']);
 Route::get('api/get_locallevel/{add_district_id}', [DistrictLocalLevelController::class,'index']);
 
 Route::get('/district/{id}', [DependentDropdownController::class, 'getdistrict']);

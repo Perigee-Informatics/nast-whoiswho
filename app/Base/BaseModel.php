@@ -1,6 +1,7 @@
 <?php
 namespace App\Base;
 
+use App\Models\Country;
 use App\Models\AppClient;
 use App\Models\MstFedDistrict;
 use App\Models\MstFedProvince;
@@ -74,8 +75,9 @@ class BaseModel extends  Model
     }
 
     // Relations
-    public function clientEntity(){
-        return $this->belongsTo(AppClient::class,'client_id','id');
+ 
+    public function countryEntity(){
+        return $this->belongsTo(Country::class,'country_id','id');
     }
 
     public function provinceEntity(){

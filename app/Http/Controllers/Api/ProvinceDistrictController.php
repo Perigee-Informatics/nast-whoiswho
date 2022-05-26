@@ -14,6 +14,7 @@ class ProvinceDistrictController extends Controller
         $form = collect($request->input('form'))->pluck('value', 'name');
 
         $options = MstFedDistrict::query();
+
         // if no district has been selected, show no options in localevel
         if (!data_get($form, $value)) {
             return [];
@@ -21,11 +22,11 @@ class ProvinceDistrictController extends Controller
 
         // if a district has been selected, only show localevel from that district
         if (data_get($form, $value)) {
-            $options = $options->where('province_id', $form[$value])->whereRaw("id in (SELECT distinct district_id from mst_fed_local_level where is_tmpp_applicable = true)");
+            $options = $options->where('province_id', $form[$value]);
         }
 
         if ($search_term) {
-            $results = $options->where('name_lc', 'LIKE', '%' . $search_term . '%')->paginate(10);
+            $results = $options->where('name_en', 'LIKE', '%' . $search_term . '%')->paginate(10);
         } else {
             $results = $options->paginate(10);
         }

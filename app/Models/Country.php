@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use App\Base\BaseModel;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class Member extends BaseModel
+use App\Base\BaseModel;
+use App\Base\DataAccessPermission;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Model;
+
+class Country extends BaseModel
 {
     use CrudTrait;
 
@@ -14,12 +17,11 @@ class Member extends BaseModel
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
-
-    protected $table = 'members';
+    protected $table = 'mst_country';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    // protected $fillable = [];
+    // protected $fillable = ['country_code','name_en','name_lc','created_by','updated_by'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -28,11 +30,6 @@ class Member extends BaseModel
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
-    public function genderEntity()
-    {
-        return $this->belongsTo(MstGender::class,'gender_id','id');
-    }
 
     /*
     |--------------------------------------------------------------------------
