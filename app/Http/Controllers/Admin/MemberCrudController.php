@@ -6,6 +6,7 @@ use App\Models\Member;
 use App\Models\Country;
 use App\Models\MstGender;
 use Illuminate\Http\Request;
+use App\Base\Helpers\PdfPrint;
 use App\Imports\MembersImport;
 use App\Models\MstFedDistrict;
 use App\Models\MstFedProvince;
@@ -43,14 +44,9 @@ class MemberCrudController extends BaseCrudController
     protected function setupListOperation()
     {
         $this->crud->addButtonFromView('top', 'excelImport', 'excelImport', 'end');
-
+        
         CRUD::setFromDb(); // columns
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        $this->crud->addButtonFromView('line', 'print_profile', 'print_profile', 'beginning');
     }
 
     /**
@@ -436,7 +432,7 @@ class MemberCrudController extends BaseCrudController
                 'fields' => [
                     [
                         'name'    => 'award_name',
-                        'type'    => 'text',
+                        'type'    => 'text', 
                         'label'   => trans('Award Name'),
                         'wrapper' => ['class' => 'form-group col-md-4'],
                         'required' => true
@@ -467,7 +463,7 @@ class MemberCrudController extends BaseCrudController
                 ],
                 'fields' => [
                     [
-                        'name'    => 'Name',
+                        'name'    => 'name',
                         'type'    => 'text',
                         'label'   => trans('Expertise Title'),
                         'wrapper' => ['class' => 'form-group col-md-12'],
@@ -485,7 +481,7 @@ class MemberCrudController extends BaseCrudController
                 ],
                 'fields' => [
                     [
-                        'name'    => 'Name',
+                        'name'    => 'name',
                         'type'    => 'text',
                         'label'   => trans('Affiliation Title'),
                         'wrapper' => ['class' => 'form-group col-md-12'],
@@ -572,4 +568,24 @@ class MemberCrudController extends BaseCrudController
             return view('partial_excel_barcode_errors', compact('excel_errors'));
         }
 	}
+
+
+    public function printProfile($id){
+        $member = Member::find($id);
+
+        $json_data = [
+            'current_organization' => json_decode($member->current_organization),
+            'past_organization' => json_decode($member->past_organization),
+            'doctorate_degree' => json_decode($member->doctorate_degree),
+            'masters_degree' => json_decode($member->masters_degree),
+            'bachelors_degree' => json_decode($member->bachelors_degree),
+            'awards' => json_decode($member->awards),
+            'expertise' => json_decode($member->expertise),
+            'affiliation' => json_decode($member->affiliation),
+            'awards' => json_decode($member->awards),
+        ];
+
+        $html = view('profile.individual_profile', compact('member','json_data'))->render();
+        PdfPrint::printPortrait($html, "Anusuchi_4.pdf"); 
+    }
 }

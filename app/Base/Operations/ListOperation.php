@@ -3,6 +3,7 @@
 namespace App\Base\Operations;
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 
 trait ListOperation
 {

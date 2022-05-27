@@ -40,4 +40,5 @@ Route::group([
 
     Route::crud('member', 'MemberCrudController');
     Route::post('import-member', 'MemberCrudController@importMembers')->name('importMemberExcel');
+    Route::get('member/{member_id}/print-profile', 'MemberCrudController@printProfile');
 }); // this should be the absolute last line of this file

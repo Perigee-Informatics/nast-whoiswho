@@ -15,8 +15,8 @@ class Member extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'members';
-    // protected $primaryKey = 'id';
+    protected $table = 'members'; 
+    protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
     // protected $fillable = [];
