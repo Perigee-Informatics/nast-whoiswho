@@ -1,1 +1,1 @@
-	<a href="{{ url($crud->route.'/'.$entry->id.'/print-profile') }}" class="btn btn-primary print-btn" data-style="zoom-in"><span class="ladda-label"><i class="la la-print"></i></span></a>
+	<a target="_blank" href="{{ url($crud->route.'/'.$entry->id.'/print-profile') }}" class="btn btn-primary print-btn" data-style="zoom-in"><span class="ladda-label"><i class="la la-print"></i></span></a>
