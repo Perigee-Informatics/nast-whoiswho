@@ -64,7 +64,7 @@
         @endif
     </div>
     <div class="btn-group">
-        <div class="btn btn-light btn-sm btn-file">
+        <div class="btn btn-primary btn-sm btn-file">
             {{ trans('backpack::crud.choose_file') }} <input type="file" accept="image/*" data-handle="uploadImage"  @include('crud::fields.inc.attributes')>
             <input type="hidden" data-handle="hiddenImage" name="{{ $field['name'] }}" value="{{ $value }}">
         </div>
@@ -75,7 +75,7 @@
         <button class="btn btn-light btn-sm" data-handle="zoomOut" type="button" style="display: none;"><i class="la la-search-minus"></i></button>
         <button class="btn btn-light btn-sm" data-handle="reset" type="button" style="display: none;"><i class="la la-times"></i></button>
         @endif
-        <button class="btn btn-light btn-sm" data-handle="remove" type="button"><i class="la la-trash"></i></button>
+        <button class="btn btn-danger btn-sm" data-handle="remove" type="button"><i class="la la-trash"></i></button>
     </div>
 
     {{-- HINT --}}

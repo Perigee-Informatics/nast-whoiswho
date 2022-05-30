@@ -8,7 +8,7 @@
         size: A4 portrait;
         margin-top: 10px;
         margin-left: 30px;
-        margin-right: 20px;
+        margin-right: 30px;
       }
 
       .header{
@@ -28,10 +28,51 @@
       .row-title{
           padding:7px 0;
           font-weight:600;
+          vertical-align:0%;
+      }
+      .inner-data{
+          padding-bottom: 10px;
+      }
+      
+      .inner-data li{
+          padding-top: 5px;
       }
       .fa{
           font-size: 16px;
           color:black;
+      }
+      img{
+          position: relative;
+      }
+      span.bracket-text{
+          font-size: 14px !important;
+          font-style: italic;
+      }
+      .subject{
+          padding-top: 5px;
+          margin-left: 30px;
+      }
+      .subject-title{
+          font-weight: 600;
+          font-size: 15px;
+          padding-top: 5px;
+          text-decoration: underline;
+      }
+      .subject-head{
+          font-weight: 600;
+          font-size: 15px;
+          padding-top: 5px;
+      }
+      .subject-data{
+        font-size: 15px;
+        padding-top: 5px;
+      }
+
+      .education li {
+          padding-bottom: 10px;
+      }
+      .contact div{
+          padding-top: 10px;
       }
   
   </style>
@@ -55,40 +96,103 @@
         <div class="table-data">
             <table width="100%">
                 <colgroup>
-                    <col style="width: 30%;" />
-                    <col style="width: 80%;" />
+                    <col style="width: 25%;" />
+                    <col style="width: 60%;" />
+                    <col style="width: 15%;" />
                 </colgroup>
                     <tr>
                         <td class="row-title">Category:</td>
-                        <td class="row-data"></td>
+                        <td class="inner-data">
+                            @foreach($json_data['expertise'] as $expertise)
+                                @if($expertise->name !='')
+                                    <li>{{ $expertise->name }}</li>
+                                @endif
+                            @endforeach
+                        </td>
+                        <td class="row-data">
+                            <img style="border-radius:7px" src="{{$photo_encoded}}" 
+                            width="100" height="100" class="size-thumbnail p-1"></td>
+                        </td>
                     </tr>
+               
                     <tr>
                         <td class="row-title">Current Affiliation:</td>
-                        <td class="row-data"></td>
+                        <td class="row-data" colspan="2">{{ $json_data['current_organization'][0]->position}}, 
+                            {{$json_data['current_organization'][0]->organization}}, {{$json_data['current_organization'][0]->address}}</td>
                     </tr>
                     <tr>
                         <td class="row-title">Past Experiences:</td>
-                        <td class="row-data"></td>
+                        <td class="inner-data" colspan="2">
+                            @foreach($json_data['past_organization'] as $dt)
+                            <li>{{ $dt->position }} <span class="bracket-text"> ( {{ $dt->organization}} )</span></li>
+                            @endforeach
+                        </td>
                     </tr>
                     <tr>
                         <td class="row-title">Education:</td>
-                        <td class="row-data"></td>
+                        <td class="inner-data education" colspan="2">
+                            @foreach($json_data['doctorate_degree'] as $dt)
+                            <li>{{ $dt->degree_name }} <span class="bracket-text"> - {{ $dt->name_of_university_or_institution}}, {{$dt->country}}, {{$dt->year}}</span><br>
+                            <div class="subject"><span class="subject-title">Subject / Research Title</span> : <span class="subject-data">{{$dt->subject_or_research_title}}</span></div></li>
+                            @endforeach
+
+                            @foreach($json_data['masters_degree'] as $dt)
+                            <li>{{ ($dt->others_degree)? $dt->others_degree: $dt->degree_name }} <span class="bracket-text"> - {{ $dt->university_or_institution}}, {{$dt->country}}, {{$dt->year}}</span><br>
+                            <div class="subject"><span class="subject-title">Subject / Research Title</span> : <span class="subject-data">{{$dt->subject_or_research_title}}</span></div></li>
+                            @endforeach
+
+                            @foreach($json_data['bachelors_degree'] as $dt)
+                            <li>{{ ($dt->others_degree) ? $dt->others_degree: $dt->degree_name }} <span class="bracket-text"> - {{ $dt->university_or_institution}}, {{$dt->country}}, {{$dt->year}}</span><br>
+                            <div class="subject"><span class="subject-title">Subject / Research Title</span> : <span class="subject-data">{{$dt->subject_or_research_title}}</span></div></li>
+                            @endforeach
+                        </td>
                     </tr>
                     <tr>
                         <td class="row-title">Awards:</td>
-                        <td class="row-data"></td>
+                        <td class="inner-data" colspan="2">
+                            @foreach($json_data['awards'] as $award)
+                                @if($award->award_name !='')
+                                    <li>{{ $award->award_name }} <span class="bracket-text"> ( {{ $award->awarded_by}}, {{ $award->awarded_year}} )</span></li>
+                                @endif
+                            @endforeach
+                        </td>
                     </tr>
                     <tr>
                         <td class="row-title">Expertise:</td>
-                        <td class="row-data"></td>
+                        <td class="inner-data" colspan="2">
+                            @foreach($json_data['expertise'] as $expertise)
+                                @if($expertise->name !='')
+                                    <li>{{ $expertise->name }}</li>
+                                @endif
+                            @endforeach
+                        </td>
                     </tr>
                     <tr>
                         <td class="row-title">Professional Affiliation:</td>
-                        <td class="row-data"></td>
+                        <td class="inner-data" colspan="2">
+                            @foreach($json_data['affiliation'] as $affiliation)
+                                @if($affiliation->name !='')
+                                    <li>{{ $affiliation->name }}</li>
+                                @endif
+                            @endforeach
+                        </td>
                     </tr>
                     <tr>
                         <td class="row-title">Correspondence:</td>
-                        <td class="row-data"></td>
+                        <td class="row-data contact" colspan="2">
+                            <div>
+                                <span class="subject-head">Mailing Address : </span><span class="subject-data">{{$member->mailing_address}}</span>
+                            </div>
+                            <div>                                
+                                <span class="subject-head">Phone/Cell Number : </span><span class="subject-data">{{$member->phone}}</span>
+                            </div>
+                            <div>
+                             <span class="subject-head"> E-mail : </span><span class="subject-data">{{$member->email}}</span>
+                            </div>
+                            <div>
+                             <span class="subject-head"> Link to Google Scholar : </span><span class="subject-data">{{$member->link_to_google_scholar}}</span>
+                            </div>
+                        </td>
                     </tr>
             </table>
         </div>

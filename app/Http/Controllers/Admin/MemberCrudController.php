@@ -120,7 +120,7 @@ class MemberCrudController extends BaseCrudController
                     'max-length'=>200,
                 ],
                 'wrapper' => [
-                    'class' => 'form-group col-md-4',
+                    'class' => 'form-group col-md-3',
                 ],
             ],
 
@@ -132,7 +132,7 @@ class MemberCrudController extends BaseCrudController
                     'max-length'=>200,
                 ],
                 'wrapper' => [
-                    'class' => 'form-group col-md-4',
+                    'class' => 'form-group col-md-3',
                 ],
             ],
 
@@ -145,7 +145,19 @@ class MemberCrudController extends BaseCrudController
                     'max-length'=>200,
                 ],
                 'wrapper' => [
-                    'class' => 'form-group col-md-4',
+                    'class' => 'form-group col-md-3',
+                ],
+            ],
+            [   // Upload
+                'name' => 'photo_path',
+                'label' => trans('Photo'),
+                'type' => 'image',
+                'upload' => true,
+                'disk' => 'uploads',
+                'crop'=>true, 
+                'aspect_ratio'=>1,
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
                 ],
             ],
 
@@ -515,7 +527,7 @@ class MemberCrudController extends BaseCrudController
             [
                 'name' => 'email',
                 'label' => trans('E-mail'),
-                'type' => 'email',
+                'type' => 'text',
                 'attributes'=>[
                     'max-lenght'=>500,
                 ],
@@ -585,7 +597,16 @@ class MemberCrudController extends BaseCrudController
             'awards' => json_decode($member->awards),
         ];
 
-        $html = view('profile.individual_profile', compact('member','json_data'))->render();
-        PdfPrint::printPortrait($html, "Anusuchi_4.pdf"); 
+        $photo_encoded = "";
+        $photo_path = public_path('storage/uploads/'.$member->photo_path);
+        // Read image path, convert to base64 encoding
+        if($member->photo_path){
+            $imageData = base64_encode(file_get_contents($photo_path));
+            $photo_encoded = 'data: '.mime_content_type($photo_path).';base64,'.$imageData;
+        }
+            // Format the image SRC:  data:{mime};base64,{data};
+
+        $html = view('profile.individual_profile', compact('member','json_data','photo_encoded'))->render();
+        PdfPrint::printPortrait($html, $member->first_name.' '.$member->middle_name.' '.$member->last_name."_Profile.pdf"); 
     }
 }

@@ -24,6 +24,7 @@ class CreateMembersTable extends Migration
             $table->string('first_name',200);
             $table->string('middle_name',200)->nullable();
             $table->string('last_name',200);
+            $table->string('photo_path',500)->nullable();
             $table->boolean('is_other_country')->default(false);
             $table->unsignedSmallInteger('country_id')->nullable();
             $table->unsignedSmallInteger('province_id')->nullable();

@@ -54,7 +54,7 @@ class PdfPrint
         } else {
             header("Content-type:application/pdf");
             // It will be called downloaded.pdf
-            header("Content-Disposition:inline;filename=".'hellow.pdf');
+            header("Content-Disposition:inline;filename=".$file_name);
             echo $response;
         }
         exit();
