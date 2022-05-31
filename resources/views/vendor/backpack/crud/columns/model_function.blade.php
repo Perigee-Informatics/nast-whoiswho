@@ -14,9 +14,9 @@
 <span style="{{isset($column['style']) ? $column['style'] : ''}}">
 	@includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
         @if($column['escaped'])
-            {{ $column['text'] }}
+            {!! nl2br($column['text']) !!}
         @else
-            {!! $column['text'] !!}
+            {!! nl2br($column['text']) !!}
         @endif
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
 </span>

@@ -71,7 +71,7 @@ class MembersImport implements ToCollection,WithHeadingRow
                                             "degree_name"=>$row['doctorate_degree'],
                                             "others_degree"=>$row['others_degree'],
                                             "subject_or_research_title"=>$row['subjectresearch_title'],
-                                            "name_of_university_or_institution"=>$row['name_of_universityinstitution'],
+                                            "university_or_institution"=>$row['name_of_universityinstitution'],
                                             "country"=>$row['doctorate_country'],
                                             "year"=>$row['year'],
                                         ])]);

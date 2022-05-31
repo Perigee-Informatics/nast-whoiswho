@@ -45,8 +45,204 @@ class MemberCrudController extends BaseCrudController
     {
         $this->crud->addButtonFromView('top', 'excelImport', 'excelImport', 'end');
         
-        CRUD::setFromDb(); // columns
+        // CRUD::setFromDb(); // columns
         $this->crud->addButtonFromView('line', 'print_profile', 'print_profile', 'beginning');
+        $cols=[
+            $this->addRowNumberColumn(),
+            [   // Upload
+                'name' => 'photo_path',
+                'label' => trans('Photo'),
+                'type' => 'image',
+                'upload' => true,
+                'disk' => 'uploads',
+                'crop'=>true, 
+                'aspect_ratio'=>1,
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+            ],
+            [
+                'name' => 'first_name',
+                'label' => trans('First Name'),
+                'type' => 'text',
+                'attributes'=>[
+                    'id' => 'name-en',
+                    'required' => 'required',
+                    'max-length'=>200,
+                ],
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+            ],
+
+            [
+                'name' => 'middle_name',
+                'label' => trans('Middle Name'),
+                'type' => 'text',
+                'attributes'=>[
+                    'max-length'=>200,
+                ],
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+            ],
+
+            [
+                'name' => 'last_name',
+                'label' => trans('Last Name'),
+                'type' => 'text',
+                'attributes'=>[
+                    'required' => 'required',
+                    'max-length'=>200,
+                ],
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+            ],
+
+            [
+                'name' => 'gender_id',
+                'type' => 'select',
+                'entity'=>'genderEntity',
+                'attribute' => 'name_en',
+                'model'=>MstGender::class,
+                'label' => trans('Gender'),
+            ],
+            [
+                'name'=>'dob_ad',
+                'type'=>'model_function',
+                'function_name'=>'dob',
+                'label'=>'D.O.B (B.S/A.D)'
+            ],
+
+            [
+                'name'=>'nrn_number',
+                'type'=>'text',
+                'label'=>trans('NRN Number'),
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+            ],
+
+           
+           
+            [ //Toggle
+                'name' => 'is_other_country',
+                'label' => "Other".'<br>'."Country ?",
+                'type' => 'radio',
+                'options'     => [ 
+                    0 => trans('No'),
+                    1 => trans('Other'),
+                ],
+            ],
+            [
+                'name'=>'country_id',
+                'type'=>'select',
+                'label'=>trans("Country"),
+                'entity'=>'countryEntity',
+                'model'=>Country::class,
+                'attribute'=>'name_en',
+            ],
+            [
+                'name'=>'province_id',
+                'type'=>'select',
+                'label'=>trans('Province'),
+                'entity'=>'provinceEntity',
+                'model'=>MstFedProvince::class,
+                'attribute'=>'name_en',
+            ],
+            [
+                'name'=>'district_id',
+                'label'=>trans('District'),
+                'type'=>'select',
+                'model'=>MstFedDistrict::class,
+                'entity'=>'districtEntity',
+                'attribute'=>'name_en',
+            ],
+            [
+                'name'  => 'current_organization',
+                'label'   => '<center>Current Organization</center>',
+                'type'  => 'custom_table',
+                'columns' => [
+                    'position'=> 'Position',
+                    'organization' => 'Organization',
+                    'address' => 'Address',
+                ]
+            ],
+            [
+                'name'  => 'past_organization',
+                'label'   => '<center>Past Organization</center>',
+                'type'  => 'custom_table',
+                'columns' => [
+                    'position'=> 'Position',
+                    'organization' => 'Organization',
+                    'address' => 'Address',
+                ]
+            ],
+            [
+                'name'  => 'doctorate_degree',
+                'label'   => '<center>Educational Qualifications</center>',
+                'type'  => 'education_custom_table',
+                'columns' => [
+                    'degree_name'=> 'Degree Name',
+                    'others_degree' => 'Others (If any)',
+                    'subject_or_research_title' => 'Subject/Research Title',
+                    'university_or_institution' => 'Name of University/Institution',
+                    'country' => 'Address',
+                    'year' => 'Year',
+                ]
+            ],
+            [
+                'name'  => 'awards',
+                'label'   => '<center> Awards</center>',
+                'type'  => 'awards_custom_table',
+                'columns' => [
+                    'award_name'=> 'Award Name',
+                    'awarded_by' => 'Awarded By',
+                    'awarded_year' => 'Year',
+                ]
+            ],
+            [
+                'name'  => 'expertise',
+                'label'   => '<center> Expertise</center>',
+                'type'  => 'awards_custom_table',
+                'columns' => [
+                    'name'=> 'Name',
+                ]
+            ],
+            [
+                'name'  => 'affiliation',
+                'label'   => '<center> Affiliation</center>',
+                'type'  => 'awards_custom_table',
+                'columns' => [
+                    'name'=> 'Name',
+                ]
+            ],
+           
+            [
+                'name' => 'mailing_address',
+                'label' => trans('Mailing Address'),
+                'type' => 'text',
+            ],
+            [
+                'name' => 'phone',
+                'label' => trans('Phone/Cell'),
+                'type' => 'text',
+            ],
+            [
+                'name' => 'email',
+                'label' => trans('E-mail'),
+                'type' => 'text',
+            ],
+            [
+                'name' => 'link_to_google_scholar',
+                'label' => trans('Link to Google Scholar'),
+                'type' => 'url',
+            ],
+
+        ];
+
+        $this->crud->addColumns(array_filter($cols));
     }
 
     /**
