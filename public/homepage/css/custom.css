@@ -47,6 +47,8 @@
     color: black;
     position: relative;
     font-size: 15px;
+    font-family:cursive !important;
+
 }
 .breadcrumb-item:hover {
     cursor: pointer;
@@ -107,7 +109,7 @@
 }
 .circle-tile-number,
 .circle-tile-description {
-    font-family: "kalimati", sans-serif !important;
+    font-family:cursive !important;
 }
 
 .circle-tile-description {

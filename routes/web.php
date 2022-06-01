@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\DashboardCrudController;
 use App\Http\Controllers\Api\ProvinceDistrictController;
 use App\Http\Controllers\Api\DependentDropdownController;
 use App\Http\Controllers\Api\DistrictLocalLevelController;
@@ -38,11 +39,11 @@ Route::get('api/get_locallevel/{add_district_id}', [DistrictLocalLevelController
 Route::get('/district/{id}', [DependentDropdownController::class, 'getdistrict']);
 Route::get('/local_level/{id}', [DependentDropdownController::class,'getlocal_level']);
 
-// Route::get('get-nepal-map-data', [DashboardCrudController::class,'getNepalMapdata']);
-// Route::get('get-province-data', [DashboardCrudController::class,'getProvinceData']);
-// Route::get('get-district-data', [DashboardCrudController::class,'getDistrictData']);
-// Route::get('get-all-projects-on-local-level', [DashboardCrudController::class,'getLocalLevelProjectsData']);
-// Route::get('get-geodata', [DashboardCrudController::class,'getGeoData']);
+Route::get('get-nepal-map-data', [DashboardCrudController::class,'getNepalMapdata']);
+Route::get('get-province-data', [DashboardCrudController::class,'getProvinceData']);
+Route::get('get-district-data', [DashboardCrudController::class,'getDistrictData']);
+Route::get('get-all-members', [DashboardCrudController::class,'getMembersData']);
+Route::get('get-geodata', [DashboardCrudController::class,'getGeoData']);
 // Route::get('admin/report/masterdata', [BasePivotController::class,'getMasterData']);
 
 

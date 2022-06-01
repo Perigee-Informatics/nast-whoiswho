@@ -49,6 +49,8 @@
     text-shadow: 1px 1px darkgrey;
     font-weight: bold;
     color: black;
+    font-family:cursive !important;
+
 }
 
 .district_label {
@@ -57,13 +59,17 @@
     font-size: 15px;
     font-weight: bold;
     /* text-shadow: 1px 1px black; */
-    color: blue;
+    color: rgb(16, 16, 40);
+    font-family:cursive !important;
+
 }
 
 .localLevel_label {
     font-size: 13px;
     font-weight: bold;
     color: black;
+    font-family:cursive !important;
+
 }
 
 #custom_spinner {

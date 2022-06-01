@@ -1,7 +1,7 @@
 @extends(backpack_view('layouts.top_left'))
 
-@if(!backpack_user()->isClientUser())
     @section('content')
+
         <!-- leaflet -->
         <link rel="stylesheet" href="{{asset('homepage/css/leaflet.css')}}"/>
 
@@ -26,61 +26,28 @@
                 <span class="sr-only">Loading...</span>
             </div>
 
-            <div class="card mb-0" style="background-color:#d9d9d9; font-family:Kalimati">
+            <div class="card mb-0" style="background-color:#d9d9d9;">
                 <div class="card-header bg-primary p-0">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="row">
-                            <div class="col-md-3"><i class="la la-map-marked-alt ml-2"> GIS Map</i></div>
-                            <div>
-                                <nav aria-label="breadcrumb" class="map-breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><span id="country_button"></span></li>
-                                            
-                                        <i class="la la-angle-right" id="province-angle-right"></i>
-                                        <li class="breadcrumb-item"><span id="province_button"></span></li>
+                    <div class="row mb-3">
+                        <div class="col-md-3"><i class="la la-map-marked-alt ml-2"> GIS Map</i></div>
+                        <div>
+                            <nav aria-label="breadcrumb" class="map-breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><span id="country_button"></span></li>
                                         
-                                        <i class="la la-angle-right" id="district-angle-right"></i>
-                                        <li class="breadcrumb-item"><span id="district_button"></span></li>
-                                        
-                                        <i class="la la-angle-right" id="locallevel-angle-right"></i>
-                                        <li class="breadcrumb-item"><span id="locallevel_button"></span></li>
-                        
-                                    </ol>
-                                </nav>
-                            </div>
+                                    <i class="la la-angle-right" id="province-angle-right"></i>
+                                    <li class="breadcrumb-item"><span id="province_button"></span></li>
+                                    
+                                    <i class="la la-angle-right" id="district-angle-right"></i>
+                                    <li class="breadcrumb-item"><span id="district_button"></span></li>
+                                    
+                                    <i class="la la-angle-right" id="locallevel-angle-right"></i>
+                                    <li class="breadcrumb-item"><span id="locallevel_button"></span></li>
+                    
+                                </ol>
+                            </nav>
                         </div>
                     </div>
-                    <div class="col">
-                        <table>
-                            <tr>
-                                <td style="text-align:right"><span class="font-weight-bold">आर्थिक वर्ष  :</span></td>
-                                <td style="text-align:left">
-                                    <div>
-                                        <select name="fiscal_year_id" style="width:fit-content;" id="fiscal_year_id" onchange="filterChartData()">
-                                            @if(isset($fiscal_year_id))
-                                                <option class="font-weight-bold small" value="all" selected> सबै</option>
-                                                @foreach ($fiscal_year as $option)
-                                                    @if(intval($fiscal_year_id) === $option->getKey())
-                                                        <option class="font-weight-bold small" value="{{ $fiscal_year_id }}" selected }}>{{ $option->code }}</option>
-                                                    @else
-                                                        <option class="font-weight-bold small" value="{{ $option->getKey() }}" >{{ $option->code }}</option>
-                                                    @endif    
-                                                @endforeach
-                                            @else
-                                                <option class="font-weight-bold small" value="all" selected> सबै</option>
-                                                @foreach ($fiscal_year as $option)
-                                                        <option class="font-weight-bold small" value="{{ $option->getKey() }}" >{{ $option->code }}</option>
-                                                @endforeach
-                                            @endif    
-                                        </select>
-                                        <a href="javascript:;" id="reset_button" class="btn btn-sm btn-warning text-dark la la-refresh" onclick="resetFilter()" data-style="zoom-in" title="Reset Filter"></a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
                 </div>
             </div>
 
@@ -96,7 +63,7 @@
                 </div>
             </section>
 
-            <!-- Fed Area -->
+             <!-- Fed Area -->
             <section id="fed_area" class="parallax-section">
                 <div class="container bootstrap snippet" id="fed_area_container">
                     <div class="form-row">
@@ -106,7 +73,7 @@
                                     <img src={{asset("homepage/img/district.png")}} height="50" width="50" />
                                     <span class="circle-tile-number" id="total_district_count">-</span>
                                 </div>
-                                <div class="circle-tile-description"> जिल्ला</div>
+                                <div class="circle-tile-description"> Districts</div>
                             </div>
                         </div>
 
@@ -116,7 +83,7 @@
                                     <img src={{asset("homepage/img/Municipality.png")}} height="50" width="50" />
                                     <span class="circle-tile-number" id="metro_count">-</span>
                                 </div>
-                                <div class="circle-tile-description"> महानगरपालिका</div>
+                                <div class="circle-tile-description"> Metropolitian City</div>
                             </div>
                         </div>
 
@@ -126,7 +93,7 @@
                                     <img src={{asset("homepage/img/building.png")}} height="50" width="50" />
                                     <span class="circle-tile-number" id="sub_metro_count">-</span>
                                 </div>
-                                <div class="circle-tile-description"> उपमहानगरपालिका</div>
+                                <div class="circle-tile-description"> Sub-Metropolitian City</div>
                             </div>
                         </div>
 
@@ -136,7 +103,7 @@
                                     <img src={{asset("homepage/img/Village.png")}} height="50" width="50" />
                                     <span class="circle-tile-number" id="mun_count">-</span>
                                 </div>
-                                <div class="circle-tile-description"> नगरपालिका</div>
+                                <div class="circle-tile-description"> Municipality</div>
                             </div>
                         </div>
 
@@ -146,7 +113,7 @@
                                     <img src={{asset("homepage/img/house.png")}} height="50" width="50" />
                                     <span class="circle-tile-number" id="rural_mun_count">-</span>
                                 </div>
-                                <div class="circle-tile-description"> गाउँपालिका</div>
+                                <div class="circle-tile-description"> Rural Municipality</div>
                             </div>
                         </div>
 
@@ -156,7 +123,7 @@
                                     <img src={{asset("homepage/img/all.png")}} height="50" width="50" />
                                     <span class="circle-tile-number" id="total_local_level_count">-</span>
                                 </div>
-                                <div class="circle-tile-description"> जम्मा नपा/गापा</div>
+                                <div class="circle-tile-description"> Total Rural/Municipality</div>
                             </div>
                         </div>
                     </div>
@@ -164,7 +131,7 @@
             </section>
 
             <!-- Project Count Summary -->
-            <section id="project_count_summary" class="parallax-section">
+            {{-- <section id="project_count_summary" class="parallax-section">
                 <div class="container bootstrap snippet">
                     <div class="row">
                         <div class="col-lg-3 col-sm-6">
@@ -209,10 +176,10 @@
                     </div>
                 </div>
 
-            </section>
+            </section> --}}
 
             <!-- Project By Province -->
-            <section id="project_by_province" class="parallax-section">
+            {{-- <section id="project_by_province" class="parallax-section">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-7 col-lg-7">
@@ -242,7 +209,6 @@
                         </div>
 
                         <div class="col-sm-5 col-lg-5">
-                            {{-- chart --}}
                             <div class="card text-center font-weight-bold mb-3" style="border-top:5px solid red; border-bottom:5px solid lightgray; border-radius:20px">
                                 <canvas id="project_by_province_chart"  height="250" style="background-color:white; border-radius:20px;"></canvas>
                             </div>
@@ -250,10 +216,10 @@
                     
                     </div>
                 </div>
-            </section>
+            </section> --}}
 
             <!-- Project By Category -->
-            <section id="project_by_category" class="parallax-section">
+            {{-- <section id="project_by_category" class="parallax-section">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-7 col-lg-7">
@@ -283,8 +249,6 @@
                         </div>
 
                         <div class="col-sm-5 col-lg-5">
-                            {{-- chart --}}
-                                {{-- chart --}}
                                 <div class="card text-center font-weight-bold mb-3" style="border-top:5px solid green; border-bottom:5px solid lightgray; border-radius:20px">
                                     <canvas id="project_by_category_chart"  height="250" style="background-color:white; border-radius:20px;"></canvas>
                                 </div>
@@ -292,7 +256,7 @@
                     
                     </div>
                 </div>
-            </section>
+            </section>  --}}
     @endsection
 
     @push('after_scripts')
@@ -312,94 +276,9 @@
         <script src="{{asset('homepage/js/currencyFormatter.min.js')}}"></script>
         <script src="{{asset('homepage/js/plotmap.js')}}"></script>
 
-        <script>
-            function filterChartData(){
-            let fiscal_year_id = $('#fiscal_year_id').val();
-                window.location.href = '/admin/dashboard?fiscal_year_id='+fiscal_year_id;
-            }
-            function resetFilter(){
-                window.location.href = '/admin/dashboard';
-            }
-        </script>
-    @endpush
-@else
-
-    @section('content')
-
-        @php
-            if (isset($widgets)) {
-                foreach ($widgets as $section => $widgetSection) {
-                    foreach ($widgetSection as $key => $widget) {
-                        \Backpack\CRUD\app\Library\Widget::add($widget)->section($section);
-                    }
-                }
-            }
-        @endphp
-
-        <div class="row">
-            <div class="col">
-                <div class="card" style="background-color:#d9d9d9">
-                    <div class="card-header bg-primary p-1">
-                    <div class="row">
-                        <div class="col-md-7">
-                            <i class="la la-chart-pie"> <i class="la la-chart-bar"></i> Charts</i>
-                        </div>
-                        <div class="col">
-                            <table>
-                                <tr>
-                                    <td style="text-align:right"><span class="font-weight-bold">Fiscal Year :</span></td>
-                                    <td style="text-align:left">
-                                        <div>
-                                            <select class="form-control searchselect" name="fiscal_year_id" id="fiscal_year_id" onchange="filterChartData()">
-                                                @if(isset($fiscal_year_id))
-                                                    <option value="all" selected>All</option>
-                                                    @foreach ($fiscal_year as $option)
-                                                        @if(intval($fiscal_year_id) === $option->getKey())
-                                                            <option value="{{ $fiscal_year_id }}" selected >{{ $option->code }}</option>
-                                                        @else
-                                                            <option value="{{ $option->getKey() }}" >{{ $option->code }}</option>
-                                                        @endif    
-                                                    @endforeach
-                                                @else
-                                                    <option value="all" selected>All</option>
-                                                    @foreach ($fiscal_year as $option)
-                                                            <option value="{{ $option->getKey() }}" >{{ $option->code }}</option>
-                                                    @endforeach
-                                                @endif    
-                                            </select>
-                                            <a href="javascript:;" id="reset_button" class="btn btn-sm btn-warning text-dark" onclick="resetFilter()" data-style="zoom-in"><span class="ladda-label"><i class="la la-refresh"></i> Reset</span></a>
-                                        </div>
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="mt-4 ml-5 mr-5" id="charts-section">
-                        @include(backpack_view('inc.widgets'), [ 'widgets' => app('widgets')->where('section', 'before_content')->toArray() ])
-                    </div>
-
-                    <div class="m-2" id="charts-section">
-                        @include(backpack_view('inc.widgets'), [ 'widgets' => app('widgets')->where('section', 'after_content')->toArray() ])
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endsection  
-
-    @push('after_scripts')
-        <script>
-            function filterChartData(){
-                let fiscal_year_id = $('#fiscal_year_id').val();
-                window.location.href = '/admin/dashboard?fiscal_year_id='+fiscal_year_id;
-            }
-            function resetFilter(){
-                window.location.href = '/admin/dashboard';
-            }
-        </script>
     @endpush
 
-@endif        
+   
+
+  
 

@@ -124,8 +124,6 @@ class MemberCrudController extends BaseCrudController
                 ],
             ],
 
-           
-           
             [ //Toggle
                 'name' => 'is_other_country',
                 'label' => "Other".'<br>'."Country ?",
@@ -222,7 +220,8 @@ class MemberCrudController extends BaseCrudController
             [
                 'name' => 'mailing_address',
                 'label' => trans('Mailing Address'),
-                'type' => 'text',
+                'type' => 'model_function',
+                'function_name'=>'mailingAddress'
             ],
             [
                 'name' => 'phone',

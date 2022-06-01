@@ -24,6 +24,11 @@ $date = convert_bs_from_ad();
 
 <style>
 
+@font-face {
+      font-family: "Kalimati";
+      src: url("/fonts/Kalimati.ttf") format("truetype");
+  }
+
       .date-time{
         color: #73818f;
         font: small-caps bold 14px kalimati, serif;

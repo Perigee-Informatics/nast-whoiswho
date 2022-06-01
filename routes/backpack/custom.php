@@ -30,7 +30,7 @@ Route::group([
     Route::crud('mstgender', 'MstGenderCrudController');
 
 
-    // Route::crud('dashboard', 'DashboardCrudController');
+    Route::get('dashboard', 'DashboardCrudController@index');
     
     
     Route::crud('notification', 'NotificationCrudController');

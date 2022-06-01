@@ -124,7 +124,9 @@
                         <td class="row-title">Past Experiences:</td>
                         <td class="inner-data" colspan="2">
                             @foreach($json_data['past_organization'] as $dt)
-                            <li>{{ $dt->position }} <span class="bracket-text"> ( {{ $dt->organization}} )</span></li>
+                                @if($dt->position !='')
+                                <li>{{ $dt->position }} <span class="bracket-text"> ( {{ $dt->organization}} )</span></li>
+                                @endif
                             @endforeach
                         </td>
                     </tr>

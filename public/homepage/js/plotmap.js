@@ -62,7 +62,7 @@ var info = L.control();
 
 info.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info');
-    this._div.innerHTML = '<h4 id="country_info"><a onClick="resetToCountry()"><i class="la la-refresh" aria-hidden="true"></i> नेपाल</a></h4>';
+    this._div.innerHTML = '<h4 id="country_info"><a onClick="resetToCountry()"><i class="la la-refresh" aria-hidden="true"></i> Nepal</a></h4>';
     return this._div;
 };
 
@@ -100,8 +100,8 @@ $.get("/get-nepal-map-data", function (data) {
     }).addTo(map);
     var nepal = L.geoJSON(provinceData);
     map.fitBounds(nepal.getBounds());
-    showLocalLevelProjects(-1,-1);
-    $("#country_button").html("<a onClick='resetToCountry()'>नेपाल</span></a>");
+    showMembersData(-1,-1);
+    $("#country_button").html("<a onClick='resetToCountry()'>Nepal</span></a>");
     updateGeoData(-1,-1);
 });
 
@@ -130,40 +130,37 @@ function onEachProvinceFeature(feature, layer) {
 
 var markers = [];
 
-function showLocalLevelProjects(level,areaId){
-    var url = '/get-all-projects-on-local-level?level='+level+'&&area_id='+areaId;
+function showMembersData(level,areaId){
+    var url = '/get-all-members?level='+level+'&&area_id='+areaId;
     markerClusters.clearLayers();
     $.get(url, function (data) {
         if (data.length != 0) {
-            projectsData = JSON.parse(data);
+            membersData = JSON.parse(data);
 
-            projectsData.forEach(function (project) {
-                project_id = project.project_id;
-                icon = '/homepage/icons/' + project.icon + '.png';
-                project_name = project.project_name;
-                fiscal_year = project.fiscal_year;
-                project_category = project.project_category;
-                central_contribution = project.central_contribution;
-                local_level_contribution = project.local_level_contribution;
-                other_contribution = project.other_contribution;
-                total_cost = parseFloat(central_contribution) + parseFloat(local_level_contribution) + parseFloat(other_contribution);
-                project_status = project.project_status;
-                lat = project.lat;
-                long = project.long;
-                project_url = '/admin/ptproject/' + project_id + '/edit';
+            membersData.forEach(function (member) {
+                member_id = member.id;
+                first_name = member.first_name;
+                last_name = member.last_name;
+                province = member.province;
+                district = member.district;
 
-                var display_icon = L.icon({ iconUrl: icon, iconSize: [20, 25] });
+                if(member.gender =='Female'){
+                    icon = '/homepage/icons/female_icon.png';
+                }else{
+                    icon = '/homepage/icons/male_icon.png';
+                }
+                lat = member.lat;
+                long = member.long;
+                member_url = '/admin/member/' + member_id + '/edit';
+
+                var display_icon = L.icon({ iconUrl: icon, iconSize: [25, 25] });
 
                 new_marker = new L.marker([lat, long], { icon: display_icon }).bindPopup(
-                    '<b>आयोजनाको नाम : ' + '<font color="green">' + project_name + '</font></b>' + '<br>' +
-                    '<b>आर्थिक वर्ष : ' + '<font color="green">' + fiscal_year + '</font></b>' + '<br>' +
-                    '<b>आयोजना क्षेत्र : ' + '<font color="red">' + project_category + '</font></b>' + '<br>' +
-                    '<b>केन्द्रीय अनुदान :' + '<font color="blue">' + central_contribution + '</font></b>' + '<br>' +
-                    '<b>स्थानीय तह साझेदारी :' + '<font color="blue">' + local_level_contribution + '</font></b>' + '<br>' +
-                    '<b>अन्य अनुदान :' + '<font color="blue">' + other_contribution + '</font></b>' + '<br>' +
-                    '<b>कुल लागत :' + '<font color="blue">' + total_cost + '</font></b>' + '<br>' +
-                    '<b>आयोजना स्थिति: ' + '<font color="blue">' + project_status + '</font></b>' + '<br>' +
-                    '<b><a href="' + project_url + '" target="_blank"><i class="la la-eye"></i>View Details</a></b>' + '<br>',
+                    '<b>First Name : ' + '<font color="green">' + first_name + '</font></b>' + '<br>' +
+                    '<b>Last Name: ' + '<font color="green">' + last_name+ '</font></b>' + '<br>' +
+                    '<b>Province : ' + '<font color="red">' + province + '</font></b>' + '<br>' +
+                    '<b>District :' + '<font color="blue">' + district + '</font></b>' + '<br>' +
+                    '<b><a href="' + member_url + '" target="_blank"><i class="la la-eye"></i>View Details</a></b>' + '<br>',
                     {
                         autoClose: true,
                         autoPan: false
@@ -194,9 +191,9 @@ function provinceOnClick(layer) {
             map.fitBounds(nepal.getBounds());
             info.update(layer.feature.properties);
             //show local level projects only on clicked province;
-            showLocalLevelProjects(0,layer.feature.properties.Province);
+            showMembersData(0,layer.feature.properties.Province);
 
-            updateGeoData(layer.feature.properties.Province, layer.feature.properties.Level);
+            // updateGeoData(layer.feature.properties.Province, layer.feature.properties.Level);
         } else {
             resetToMapLevel(1);
             map.fitBounds(layer.getBounds());
@@ -210,9 +207,7 @@ function onEachDistrictFeature(feature, layer) {
     layer.on({
         'mouseover': function () { highlightFeature(layer) },
         'mouseout': function () { resetHighlight(layer) },
-        'click': function () {
-            (layer.feature.properties.TMPP_applicable === true) ? districtOnClick(layer) : layer.bindPopup('<font weight="bold"> छानिएको जिल्लामा <font color="red"> " तराई-मधेस समृद्धि कार्यक्रम "</font> लागू छैन !</font>')
-        }
+        'click': function () { districtOnClick(layer)}
     });
     var label = L.marker(layer.getBounds().getCenter(), {
         icon: L.divIcon({
@@ -222,7 +217,7 @@ function onEachDistrictFeature(feature, layer) {
         })
     }).addTo(map);
     label.on({
-        'click': function () { (layer.feature.properties.TMPP_applicable === true) ? districtOnClick(layer) : layer.bindPopup('<font weight="bold"> छानिएको जिल्लामा <font color="red"> " तराई-मधेस समृद्धि कार्यक्रम "</font> लागू छैन !</font>') }
+        'click': function () { districtOnClick(layer)}
     });
 }
 
@@ -243,8 +238,8 @@ function districtOnClick(layer) {
             info.update(layer.feature.properties);
 
             //show local level projects only on clicked district;
-            showLocalLevelProjects(1,layer.feature.properties.District);
-            updateGeoData(layer.feature.properties.District, layer.feature.properties.Level);
+            showMembersData(1,layer.feature.properties.District);
+            // updateGeoData(layer.feature.properties.District, layer.feature.properties.Level);
         } else {
             resetToMapLevel(1);
             map.fitBounds(layer.getBounds());
@@ -258,7 +253,7 @@ function onEachLocalLevelFeature(feature, layer) {
     layer.on({
         'mouseover': function () { highlightFeature(layer) },
         'mouseout': function () { resetHighlight(layer) },
-        'click': function () { (layer.feature.properties.TMPP_applicable === true) ? localLevelOnClick(layer) : layer.bindPopup('<font weight="bold"> छानिएको स्थानीय तहमा  <font color="red"> " तराई-मधेस समृद्धि कार्यक्रम "</font> लागू छैन !</font>') }
+        'click': function () { localLevelOnClick(layer) }
     });
 
     var label = L.marker(layer.getBounds().getCenter(), {
@@ -269,7 +264,7 @@ function onEachLocalLevelFeature(feature, layer) {
         })
     }).addTo(map);
     label.on({
-        'click': function (e) { (layer.feature.properties.TMPP_applicable === true) ? localLevelOnClick(layer)  : layer.bindPopup('<b>छानिएको स्थानीय तहमा  <font color="red"> " तराई-मधेस समृद्धि कार्यक्रम "</font> लागू छैन !</b>') }
+        'click': function () { localLevelOnClick(layer) }
     });
 }
 
@@ -278,9 +273,9 @@ function onEachLocalLevelFeature(feature, layer) {
 function localLevelOnClick(layer) {
        //show local level projects only on clicked province;
        map.fitBounds(layer.getBounds());
-       showLocalLevelProjects(2,layer.feature.properties.Locallevel);
+       showMembersData(2,layer.feature.properties.Locallevel);
        info.update(layer.feature.properties);
-       updateGeoData(layer.feature.properties.Locallevel, layer.feature.properties.Level);
+    //    updateGeoData(layer.feature.properties.Locallevel, layer.feature.properties.Level);
 
 }
 
@@ -338,19 +333,15 @@ function districtStyle(feature) {
         color: 'black',
         dashArray: '5',
         fillOpacity: 0.7,
-        fillColor: getDistrictColor(feature.properties.District, feature.properties.TMPP_applicable)
+        fillColor: getDistrictColor(feature.properties.District)
     }
 }
 
 // get color for each district 
 
-function getDistrictColor(d, is_tmpp) {
+function getDistrictColor(d) {
 
     var color = '';
-
-    if (!is_tmpp) {
-        return color = "white";
-    }
     switch (d) {
         case 1: case 11: case 21: case 31: case 41: case 51: case 61: case 71:
             color = '#fc6f6f';
@@ -397,17 +388,13 @@ function locallevelStyle(feature) {
         color: 'red',
         dashArray: '3',
         fillOpacity: 0.7,
-        fillColor: getLocalLevelColor(feature.properties.Locallevel, feature.properties.TMPP_applicable)
+        fillColor: getLocalLevelColor(feature.properties.Locallevel)
     }
 }
 
 // get color for each district 
-function getLocalLevelColor(id, is_tmpp) {
+function getLocalLevelColor(id) {
     var color = '';
-
-    if (!is_tmpp) {
-        return "white";
-    }
 
     switch (id) {
         case 1: case 11: case 21: case 31: case 41: case 51: case 61: case 71: case 81: case 91:
@@ -628,8 +615,8 @@ function resetToCountry() {
         var nepal = L.geoJSON(provinceData);
         map.fitBounds(nepal.getBounds());
         hideAllBreadCrumb();
-        showLocalLevelProjects(-1,-1);
-        updateGeoData(-1,-1);
+        showMembersData(-1,-1);
+        // updateGeoData(-1,-1);
     });
 }
 
@@ -655,8 +642,8 @@ function resetToProvince(id) {
         var nepal = L.geoJSON(districtData);
         map.fitBounds(nepal.getBounds());
          //show local level projects only on clicked province;
-        showLocalLevelProjects(0,id);
-        updateGeoData(id, 0);
+        showMembersData(0,id);
+        // updateGeoData(id, 0);
     });
 }
 
@@ -676,45 +663,43 @@ function resetToDistrict(id) {
         var nepal = L.geoJSON(locallevelData);
         map.fitBounds(nepal.getBounds());
         //show local level projects only on clicked district;
-        showLocalLevelProjects(1,id);
-        updateGeoData(id, 1);
+        showMembersData(1,id);
+        // updateGeoData(id, 1);
     });
 }
 
 // reset action for locallevel
 function resetToLocalLevel(id) {
+    var url = '/get-all-members?level='+level+'&&area_id='+areaId;
     markerClusters.clearLayers();
-
-    var url = '/get-projects-on-local-level?id=' + id;
     $.get(url, function (data) {
         if (data.length != 0) {
-            projectsData = JSON.parse(data);
+            membersData = JSON.parse(data);
 
-            projectsData.forEach(function (project) {
-                project_id = project.project_id;
-                icon = '/homepage/icons/' + project.icon + '.png';
-                project_name = project.project_name;
-                project_category = project.project_category;
-                central_contribution = project.central_contribution;
-                local_level_contribution = project.local_level_contribution;
-                other_contribution = project.other_contribution;
-                total_cost = parseFloat(central_contribution) + parseFloat(local_level_contribution) + parseFloat(other_contribution);
-                project_status = project.project_status;
-                lat = project.lat;
-                long = project.long;
-                project_url = '/admin/ptproject/' + project_id + '/edit';
+            membersData.forEach(function (member) {
+                member_id = member.id;
+                first_name = member.first_name;
+                last_name = member.last_name;
+                province = member.province;
+                district = member.district;
 
-                var display_icon = L.icon({ iconUrl: icon, iconSize: [20, 25] });
+                if(member.gender =='Female'){
+                    icon = '/homepage/icons/female_icon.png';
+                }else{
+                    icon = '/homepage/icons/male_icon.png';
+                }
+                lat = member.lat;
+                long = member.long;
+                member_url = '/admin/member/' + member_id + '/edit';
+
+                var display_icon = L.icon({ iconUrl: icon, iconSize: [25, 25] });
 
                 new_marker = new L.marker([lat, long], { icon: display_icon }).bindPopup(
-                    '<b>आयोजनाको नाम: ' + '<font color="green">' + project_name + '</font></b>' + '<br>' +
-                    '<b>आयोजना क्षेत्र: ' + '<font color="red">' + project_category + '</font></b>' + '<br>' +
-                    '<b>केन्द्रीय अनुदान :' + '<font color="blue">' + central_contribution + '</font></b>' + '<br>' +
-                    '<b>स्थानीय तह साझेदारी :' + '<font color="blue">' + local_level_contribution + '</font></b>' + '<br>' +
-                    '<b>अन्य अनुदान :' + '<font color="blue">' + other_contribution + '</font></b>' + '<br>' +
-                    '<b>कुल लागत :' + '<font color="blue">' + total_cost + '</font></b>' + '<br>' +
-                    '<b>आयोजना स्थिति: ' + '<font color="blue">' + project_status + '</font></b>' + '<br>' +
-                    '<b><a href="' + project_url + '" target="_blank"><i class="la la-eye"></i>View Details</a></b>' + '<br>',
+                    '<b>First Name : ' + '<font color="green">' + first_name + '</font></b>' + '<br>' +
+                    '<b>Last Name: ' + '<font color="green">' + last_name+ '</font></b>' + '<br>' +
+                    '<b>Province : ' + '<font color="red">' + province + '</font></b>' + '<br>' +
+                    '<b>District :' + '<font color="blue">' + district + '</font></b>' + '<br>' +
+                    '<b><a href="' + member_url + '" target="_blank"><i class="la la-eye"></i>View Details</a></b>' + '<br>',
                     {
                         autoClose: true,
                         autoPan: false
@@ -725,9 +710,6 @@ function resetToLocalLevel(id) {
                 markerClusters.addLayer(new_marker);
             });
             map.addLayer(markerClusters);
-            // updateGeoData(layer.feature.properties.Province, e.target.feature.properties.Level);
-        } else {
-
         }
     });
 }
@@ -739,7 +721,7 @@ function updateGeoData(id,level){
 
     $.get(url,function (data){
         //data for fed_area section
-        //shoe fed level information only if map_level is below 2
+        //show fed level information only if map_level is below 2
         if(data.level === 2){
             $('#fed_area').hide();
 
@@ -761,109 +743,59 @@ function updateGeoData(id,level){
             $('#total_local_level_count').text(data.count.total_local_level_count);
         }
         //data for project count summary
-        $('#new_projects_demand').text(data.count.new_projects_count);
-        $('#selected_projects').text(data.count.selected_projects_count);
-        $('#work_in_progress_projects').text(data.count.wip_projects_count);
-        $('#completed_projects').text(data.count.completed_projects_count);
 
         //province-wise project count and cost
-        var province_row_number_html = '';
-        var province_name_html = '';
-        var province_data_count_html = '';
-        var province_data_amount_html = '';
-        var total_category_projects_count = 0;
+        // var province_row_number_html = '';
+        // var province_name_html = '';
+        // var province_data_count_html = '';
+        // var province_data_amount_html = '';
+        // var total_category_projects_count = 0;
 
-        $.each(data.province_projects.main, function (index,row) {
-            province_row_number_html += '<div class="text-title">'+row.sn+'</div>'
-            province_name_html += '<div class="text-title text-left" id="province_'+row.province_id+'">'+row.name_lc+'</div>'; 
-            province_data_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.total_project+'</div>';
+        // $.each(data.province_projects.main, function (index,row) {
+        //     province_row_number_html += '<div class="text-title">'+row.sn+'</div>'
+        //     province_name_html += '<div class="text-title text-left" id="province_'+row.province_id+'">'+row.name_lc+'</div>'; 
+        //     province_data_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.total_project+'</div>';
 
-             //total_projects_count
-             total_category_projects_count += row.total_project;
+        //      //total_projects_count
+        //      total_category_projects_count += row.total_project;
 
-            //format currency
-            formatted_currency = OSREC.CurrencyFormatter.format(row.project_cost, { currency: 'INR',pattern:'रु ,##,##,##,###' });
+        //     //format currency
+        //     formatted_currency = OSREC.CurrencyFormatter.format(row.project_cost, { currency: 'INR',pattern:'रु ,##,##,##,###' });
 
-            province_data_amount_html += '<div class="text-blue text-value text-amount" id="province_'+row.province_id+'">'+formatted_currency+'</div>'; 
-        });
+        //     province_data_amount_html += '<div class="text-blue text-value text-amount" id="province_'+row.province_id+'">'+formatted_currency+'</div>'; 
+        // });
 
-        //for total cost
-        province_name_html += '<div class="text-blue text-value total_amount_sum">जम्मा</div>';
-        province_data_count_html += '<div class="text-blue text-value total_amount_sum">'+total_category_projects_count+'</div>';
-        let total_province_projects_cost = OSREC.CurrencyFormatter.format(data.province_projects.total_project_cost, { currency: 'INR',pattern:'रु ,##,##,##,###' });
-        province_data_amount_html += '<div class="text-blue text-value text-amount total_amount_sum">'+total_province_projects_cost+'</div>';
-        //for brand-card heading
-        if(data.level === -1){
-            $('#project_province_title').html('प्रदेश अनुसार आयोजना तथ्यांक');
-            $('#table_level_title').html('प्रदेश');
-            var chart_title = 'प्रदेश अनुसार आयोजना';
-        }else if(data.level === 0 && data.province_projects.main.length > 0){
-            $('#project_province_title').html( data.province_projects.main[0].name_lc+' को आयोजना तथ्यांक');
-            $('#table_level_title').html('प्रदेश');
-            var chart_title = data.province_projects.main[0].name_lc+' को आयोजना';
-        }else if(data.level === 1 && data.province_projects.main.length > 0){
-            $('#project_province_title').html( data.province_projects.main[0].name_lc+' जिल्लाको आयोजना तथ्यांक');
-            $('#table_level_title').html('जिल्ला');
-            var chart_title = data.province_projects.main[0].name_lc+' जिल्लाको आयोजना';
-        }else if(data.level === 2 && data.province_projects.main.length > 0){
-            $('#project_province_title').html( data.province_projects.main[0].name_lc+'को आयोजना तथ्यांक');
-            $('#table_level_title').html('स्थानीय तह');
-            var chart_title = data.province_projects.main[0].name_lc+'को आयोजना';
-        }
+        // //for total cost
+        // province_name_html += '<div class="text-blue text-value total_amount_sum">जम्मा</div>';
+        // province_data_count_html += '<div class="text-blue text-value total_amount_sum">'+total_category_projects_count+'</div>';
+        // let total_province_projects_cost = OSREC.CurrencyFormatter.format(data.province_projects.total_project_cost, { currency: 'INR',pattern:'रु ,##,##,##,###' });
+        // province_data_amount_html += '<div class="text-blue text-value text-amount total_amount_sum">'+total_province_projects_cost+'</div>';
+        // //for brand-card heading
+        // if(data.level === -1){
+        //     $('#project_province_title').html('प्रदेश अनुसार आयोजना तथ्यांक');
+        //     $('#table_level_title').html('प्रदेश');
+        //     var chart_title = 'प्रदेश अनुसार आयोजना';
+        // }else if(data.level === 0 && data.province_projects.main.length > 0){
+        //     $('#project_province_title').html( data.province_projects.main[0].name_lc+' को आयोजना तथ्यांक');
+        //     $('#table_level_title').html('प्रदेश');
+        //     var chart_title = data.province_projects.main[0].name_lc+' को आयोजना';
+        // }else if(data.level === 1 && data.province_projects.main.length > 0){
+        //     $('#project_province_title').html( data.province_projects.main[0].name_lc+' जिल्लाको आयोजना तथ्यांक');
+        //     $('#table_level_title').html('जिल्ला');
+        //     var chart_title = data.province_projects.main[0].name_lc+' जिल्लाको आयोजना';
+        // }else if(data.level === 2 && data.province_projects.main.length > 0){
+        //     $('#project_province_title').html( data.province_projects.main[0].name_lc+'को आयोजना तथ्यांक');
+        //     $('#table_level_title').html('स्थानीय तह');
+        //     var chart_title = data.province_projects.main[0].name_lc+'को आयोजना';
+        // }
 
-        $('#province_row_number').html(province_row_number_html);
-        $('#province_name').html(province_name_html);
-        $('#province_project_count').html(province_data_count_html);
-        $('#province_project_amount').html(province_data_amount_html);
+        // $('#province_row_number').html(province_row_number_html);
+        // $('#province_name').html(province_name_html);
+        // $('#province_project_count').html(province_data_count_html);
+        // $('#province_project_amount').html(province_data_amount_html);
 
-         //for building province-projects-charts
-         createChart('project_by_province_chart', chart_title, data.province_projects.chart, 'bar');
-
-
-        //category-wise project count and cost
-        var category_row_number_html = '';
-        var category_name_html = '';
-        var category_data_count_html = '';
-        var category_data_amount_html = '';
-        var total_province_projects_count = 0;
-        $.each(data.category_projects.main, function (index,row) {
-            category_row_number_html += '<div class="text-title">'+row.sn+'</div>'
-            category_name_html += '<div class="text-title text-left" id="category_'+row.category_id+'">'+row.name_lc+'</div>'; 
-            category_data_count_html += '<div class="text-blue text-value" id="category_'+row.category_id+'">'+row.total_project+'</div>';
-
-            //total_projects_count
-            total_province_projects_count += row.total_project;
-
-            //format currency
-            formatted_currency = OSREC.CurrencyFormatter.format(row.category_cost, { currency: 'INR',pattern:'रु ,##,##,##,###' });
-          
-            category_data_amount_html += '<div class="text-blue text-value text-amount" id="category_'+row.category_id+'">'+formatted_currency+'</div>'; 
-        });
-
-             //for total cost
-             category_name_html += '<div class="text-blue text-value total_amount_sum">जम्मा</div>';
-             category_data_count_html += '<div class="text-blue text-value total_amount_sum">'+total_province_projects_count+'</div>';
-             let total_category_projects_cost = OSREC.CurrencyFormatter.format(data.category_projects.total_project_cost, { currency: 'INR',pattern:'रु ,##,##,##,###' });
-             category_data_amount_html += '<div class="text-blue text-value text-amount total_amount_sum">'+total_category_projects_cost+'</div>';
-
-        //for brand-card heading
-        if(data.level === -1){
-            $('#project_category_title').html('आयोजना क्षेत्र अनुसार आयोजना तथ्यांक');
-        }else if(data.level === 0 && data.province_projects.main.length > 0){
-            $('#project_category_title').html( data.province_projects.main[0].name_lc+' को आयोजना क्षेत्र अनुसार तथ्यांक');
-        }else if(data.level === 1 && data.province_projects.main.length > 0){
-            $('#project_category_title').html( data.province_projects.main[0].name_lc+' जिल्लाको आयोजना क्षेत्र अनुसार तथ्यांक');
-        }else if(data.level === 2 && data.province_projects.main.length > 0){
-            $('#project_category_title').html( data.province_projects.main[0].name_lc+'को आयोजना क्षेत्र अनुसार तथ्यांक');
-        }
-
-        $('#category_row_number').html(category_row_number_html);
-        $('#category_name').html(category_name_html);
-        $('#category_project_count').html(category_data_count_html);
-        $('#category_project_amount').html(category_data_amount_html);
-
-       
-        createChart('project_by_category_chart', 'आयोजना क्षेत्र अनुसार आयोजना', data.category_projects.chart, 'bar');
+        //  //for building province-projects-charts
+        //  createChart('project_by_province_chart', chart_title, data.province_projects.chart, 'bar');
 
     });
 }

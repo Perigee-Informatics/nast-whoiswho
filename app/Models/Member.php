@@ -62,6 +62,11 @@ class Member extends BaseModel
         return $this->dob_bs."\n".$this->dob_ad; 
     }
 
+    public function mailingAddress()
+    {
+        return wordwrap($this->mailing_address,70,"\n",false);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

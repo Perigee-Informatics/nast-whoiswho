@@ -43,7 +43,7 @@
 						'award_name' => 200,
 						'awarded_by'=> 150,
 						'awarded_year' => 50,
-                        'name'=>250
+                        'name'=>300
 					];
 				@endphp
 			<tr>
