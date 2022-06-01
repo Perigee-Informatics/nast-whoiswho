@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Backpack\CRUD\app\Library\Widget;
 use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\Admin\Charts\ProjectByStatusChartController;
-use App\Http\Controllers\Admin\Charts\ProjectByCategoryChartController;
-use App\Http\Controllers\Admin\Charts\ProjectByCategoryCostChartController;
+
 
 /**
  * Class DashboardCrudController
@@ -89,8 +87,6 @@ class DashboardCrudController extends BaseCrudController
         $to_return_array=[];
         $to_return_array['type']='FeatureCollection';
 
-        //get tmpp_applicable districts only
-        $tmpp_applicable_districts = MstFedLocalLevel::distinct('district_id')->pluck('district_id')->toArray();
         $features=[];
         foreach($db_data as $key=> $dt){
             $district=DB::table('mst_fed_district')->where('code',$dt->code)->first();

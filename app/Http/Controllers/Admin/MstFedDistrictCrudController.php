@@ -74,6 +74,22 @@ class MstFedDistrictCrudController extends BaseCrudController
             $this->addProvinceField(),
             $this->addNameEnField(),
             $this->addNameLcField(),
+            [
+                'label' => trans('fedLocalLevel.gps_lat'),
+                'type' => 'text',
+                'name' => 'gps_lat',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-md-4'
+                ],
+            ],
+            [
+                'label' => trans('fedLocalLevel.gps_long'),
+                'type' => 'text',
+                'name' => 'gps_long',
+                'wrapper' => [
+                    'class' => 'form-group col-md-4'
+                ],
+            ],
             $this->addDisplayOrderField(),
         ];
         $arr = array_filter($arr);

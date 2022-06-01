@@ -19,7 +19,7 @@ class MstFedDistrict extends BaseModel
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['code','province_id','name_en','name_lc','display_order'];
+    protected $fillable = ['code','province_id','name_en','name_lc','gps_lat','gps_long','display_order'];
     // protected $hidden = [];
     // protected $dates = [];
 
