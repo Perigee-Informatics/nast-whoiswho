@@ -41,6 +41,16 @@ class MstFedDistrictCrudController extends BaseCrudController
             $this->addProvinceColumn(),
             $this->addNameEnColumn(),
             $this->addNameLcColumn(),
+            [
+                'label' => trans('GPS Lat'),
+                'type' => 'text',
+                'name' => 'gps_lat',
+            ],
+            [
+                'label' => trans('GPS Long'),
+                'type' => 'text',
+                'name' => 'gps_long',
+            ],
             $this->addDisplayOrderColumn(),
          
         ];
