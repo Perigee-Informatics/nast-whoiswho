@@ -29,7 +29,7 @@
             <div class="card mb-0" style="background-color:#d9d9d9;">
                 <div class="card-header bg-primary p-0">
                     <div class="row mb-3">
-                        <div class="col-md-3"><i class="la la-map-marked-alt ml-2"> GIS Map</i></div>
+                        <div class="col-md-3"><i class="la la-map-marked-alt ml-2"> WHO is WHO Scientist Distribution</i></div>
                         <div>
                             <nav aria-label="breadcrumb" class="map-breadcrumb">
                                 <ol class="breadcrumb">
