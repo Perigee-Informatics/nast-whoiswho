@@ -101,7 +101,6 @@ class CreateCoreMasterTables extends Migration
             $table->string('name_lc',200);
             $table->unsignedSmallInteger('level_type_id');
             $table->unsignedSmallInteger('wards_count')->nullable()->default(0);
-            $table->boolean('is_tmpp_applicable')->nullable()->default(false);
             $table->string('gps_lat',20)->nullable();
             $table->string('gps_long',20)->nullable();
             $table->string('remarks',500)->nullable();

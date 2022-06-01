@@ -18,8 +18,7 @@ class MstFedLocalLevel extends BaseModel
     protected $table = 'mst_fed_local_level';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
-    protected $fillable = ['id','code','district_id','level_type_id','name_en','name_lc','wards_count','gps_lat','gps_long',
-                            'is_tmpp_applicable','display_order','remarks','lmbiscode'];
+    protected $fillable = ['id','code','district_id','level_type_id','name_en','name_lc','wards_count','gps_lat','gps_long','display_order','remarks','lmbiscode'];
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];

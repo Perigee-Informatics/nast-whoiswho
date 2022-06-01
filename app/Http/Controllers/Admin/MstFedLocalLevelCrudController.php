@@ -43,29 +43,19 @@ class MstFedLocalLevelCrudController extends BaseCrudController
             $this->addNameEnColumn(),
             $this->addNameLcColumn(),
             [
-                'label' => trans('FedLocalLevel.wards_count'),
+                'label' => trans('Wards'),
                 'type' => 'text',
                 'name' => 'wards_count',
             ],
             [
-                'label' => trans('FedLocalLevel.gps_lat'),
+                'label' => trans('GPS Lat'),
                 'type' => 'text',
                 'name' => 'gps_lat',
             ],
             [
-                'label' => trans('FedLocalLevel.gps_long'),
+                'label' => trans('GPS Long'),
                 'type' => 'text',
                 'name' => 'gps_long',
-            ],
-            [
-                'name'=>'is_tmpp_applicable',
-                'label'=>trans('Is TMPP applicable ?'),
-                'type'=>'radio',
-                'options'=>
-                [
-                    1=>'Yes',
-                    0=>'No',
-                ],
             ],
             $this->addDisplayOrderColumn(),
          
@@ -138,21 +128,6 @@ class MstFedLocalLevelCrudController extends BaseCrudController
                 'name' => 'gps_long',
                 'wrapper' => [
                     'class' => 'form-group col-md-4'
-                ],
-            ],
-            [
-                'name'=>'is_tmpp_applicable',
-                'label'=>trans('Is TMPP applicable ?'),
-                'type'=>'radio',
-                'default'=>1,
-                'inline' => true,
-                'wrapper' => [
-                    'class' => 'form-group col-md-4',
-                ],
-                'options'=>
-                [
-                    1=>'Yes',
-                    0=>'No',
                 ],
             ],
             $this->addRemarksField(),
