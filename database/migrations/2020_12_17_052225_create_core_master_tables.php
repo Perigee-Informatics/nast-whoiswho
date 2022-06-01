@@ -42,7 +42,6 @@ class CreateCoreMasterTables extends Migration
             $table->string('code',20);
             $table->string('name_en',200);
             $table->string('name_lc',200);
-            $table->string('remarks',500)->nullable();
             $table->smallInteger('display_order')->default(0);
 
             $table->timestamps();
@@ -61,9 +60,9 @@ class CreateCoreMasterTables extends Migration
             $table->unsignedSmallInteger('province_id');
             $table->string('name_en',200);
             $table->string('name_lc',200);
-            $table->string('remarks',500)->nullable();
+            $table->string('gps_lat',20)->nullable();
+            $table->string('gps_long',20)->nullable();
             $table->smallInteger('display_order')->default(0);
-
 
             $table->timestamps();
             $table->unsignedInteger('created_by')->nullable();
