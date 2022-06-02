@@ -328,11 +328,11 @@ function getProvinceColor(id) {
 function districtStyle(feature) {
 
     return {
-        weight: 2,
+        weight: 3,
         opacity: 1,
         color: 'black',
-        dashArray: '5',
-        fillOpacity: 0.7,
+        dashArray: '3',
+        fillOpacity: 0.75,
         fillColor: getDistrictColor(feature.properties.District)
     }
 }
@@ -383,11 +383,11 @@ function getDistrictColor(d) {
 //get style for locallevel 
 function locallevelStyle(feature) {
     return {
-        weight: 2,
+        weight: 3,
         opacity: 1,
-        color: 'red',
+        color: 'white',
         dashArray: '3',
-        fillOpacity: 0.7,
+        fillOpacity: 0.75,
         fillColor: getLocalLevelColor(feature.properties.Locallevel)
     }
 }
@@ -734,6 +734,7 @@ function updateGeoData(id,level){
             }else{
                 district_div.show();
                 $('#total_district_count').text(data.count.districts_count);
+                $('#total_province_count').text(7);
             }
 
             $('#metro_count').text(data.count.metro_count);

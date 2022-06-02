@@ -39,7 +39,7 @@
 }
 
 .map-container {
-    margin-top: -16vh;
+    margin-top: -100px;
 }
 
 .province_label {
@@ -54,12 +54,12 @@
 }
 
 .district_label {
-    margin-left: -17px !important;
+    margin-left: -30px !important;
     margin-top: -11px !important;
     font-size: 15px;
     font-weight: bold;
     /* text-shadow: 1px 1px black; */
-    color: rgb(16, 16, 40);
+    color:white;
     font-family:cursive !important;
 
 }
@@ -71,6 +71,19 @@
     font-family:cursive !important;
 
 }
+
+@media screen and (min-width: 480px) and (max-width:1500px) {
+    .district_label {
+        margin-left: -30px !important;
+        margin-top: -11px !important;
+        font-size: 12px;
+    }
+
+    .localLevel_label {
+        font-size: 13px;
+    }
+  }
+
 
 #custom_spinner {
     position: fixed;

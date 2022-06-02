@@ -71,12 +71,20 @@
                             <div class="box">
                                 <div class="box-icon">
                                     <img src={{asset("homepage/img/district.png")}} height="50" width="50" />
+                                    <span class="circle-tile-number" id="total_province_count">-</span>
+                                </div>
+                                <div class="circle-tile-description"> Provinces</div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="box">
+                                <div class="box-icon">
+                                    <img src={{asset("homepage/img/district.png")}} height="50" width="50" />
                                     <span class="circle-tile-number" id="total_district_count">-</span>
                                 </div>
                                 <div class="circle-tile-description"> Districts</div>
                             </div>
                         </div>
-
                         <div class="col">
                             <div class="box ">
                                 <div class="box-icon">
@@ -96,7 +104,8 @@
                                 <div class="circle-tile-description"> Sub-Metropolitian City</div>
                             </div>
                         </div>
-
+                    </div>
+                    <div class="form-row mt-2">
                         <div class="col">
                             <div class="box">
                                 <div class="box-icon">
@@ -185,7 +194,7 @@
                         <div class="col-sm-7 col-lg-7">
                             <div class="brand-card">
                                 <div class="brand-card-header bg-stack-overflow">
-                                    <h5 style="color: white; font-weight:bold" id="gender_province_title"></h5>
+                                    <h6 style="color: white;" id="gender_province_title"></h6>
                                 </div>
                                 <div class="brand-card-body">
                                     <div style="max-width:60px;">
