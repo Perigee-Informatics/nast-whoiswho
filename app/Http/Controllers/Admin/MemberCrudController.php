@@ -527,7 +527,7 @@ class MemberCrudController extends BaseCrudController
                         'required' => true
                     ],
                     [
-                        'name'    => 'name_of_university_or_institution',
+                        'name'    => 'university_or_institution',
                         'type'    => 'text',
                         'label'   => trans('Name of University/Institution'),
                         'wrapper' => ['class' => 'form-group col-md-6'],
