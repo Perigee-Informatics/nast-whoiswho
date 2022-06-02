@@ -134,7 +134,7 @@
                         <td class="row-title">Education:</td>
                         <td class="inner-data education" colspan="2">
                             @foreach($json_data['doctorate_degree'] as $dt)
-                            <li>{{ $dt->degree_name }} <span class="bracket-text"> - {{ $dt->name_of_university_or_institution}}, {{$dt->country}}, {{$dt->year}}</span><br>
+                            <li>{{ $dt->degree_name }} <span class="bracket-text"> - {{ $dt->university_or_institution}}, {{$dt->country}}, {{$dt->year}}</span><br>
                             <div class="subject"><span class="subject-title">Subject / Research Title</span> : <span class="subject-data">{{$dt->subject_or_research_title}}</span></div></li>
                             @endforeach
 
