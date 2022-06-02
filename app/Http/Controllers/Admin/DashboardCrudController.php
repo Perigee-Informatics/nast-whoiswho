@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Member;
 use App\Models\PtProject;
 use App\Models\AppSetting;
 use Illuminate\Http\Request;
@@ -239,6 +240,40 @@ class DashboardCrudController extends BaseCrudController
         $data['count']['sub_metro_count']=array_key_exists(3,$count)?$count[3]:0;
         $data['count']['metro_count']=array_key_exists(4,$count)?$count[4]:0;
         $data['count']['total_local_level_count']=count($local_level);
+
+        $members = Member::all();
+        //male female
+        $gender_data_nepal =  DB::table('members as m')
+                        ->leftJoin('mst_gender as mg','mg.id','m.gender_id')
+                        ->select(DB::raw('count(m.gender_id) as gender_count'),'mg.name_en')
+                        ->groupBy('m.gender_id','mg.name_en')
+                        ->orderBy('m.gender_id')
+                        ->get();
+
+        $gender_data_province = DB::table('members as m')
+                        ->leftJoin('mst_fed_province as mfp','mfp.id','m.province_id')
+                        ->leftJoin('mst_gender as mg','mg.id','m.gender_id')
+                        ->select('m.province_id','mfp.name_en',
+                                DB::raw('count(case when gender_id = 1 then 1 end) as male'),
+                                DB::raw('count(case when gender_id = 2 then 1 end) as female'),
+                                DB::raw('count(m.gender_id) as total'))
+                        ->groupBy('m.province_id','mfp.name_en')
+                        ->orderBy('m.province_id')
+                        ->get();
+
+        $datas = [] ;
+        $labels = [];
+        //format data for charts
+        foreach($gender_data_province as $row){
+            $datas [] = $row;
+        }
+
+        $data['gender_data']['main'] = $gender_data_province->toArray();                    
+        $data['gender_data']['chart']['labels'] = $labels;                    
+        $data['gender_data']['chart']['data'] = $datas;     
+
+        unset($datas);
+        unset($labels);
 
         return $data;
     }

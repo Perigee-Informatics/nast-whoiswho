@@ -179,17 +179,17 @@
             </section> --}}
 
             <!-- Project By Province -->
-            {{-- <section id="project_by_province" class="parallax-section">
+            <section id="gender_by_province" class="parallax-section">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-7 col-lg-7">
                             <div class="brand-card">
                                 <div class="brand-card-header bg-stack-overflow">
-                                    <h5 style="color: white; font-weight:bold" id="project_province_title"></h5>
+                                    <h5 style="color: white; font-weight:bold" id="gender_province_title"></h5>
                                 </div>
                                 <div class="brand-card-body">
                                     <div style="max-width:60px;">
-                                        <div class="text-header">क्र.स.</div>
+                                        <div class="text-header">S.N.</div>
                                         <div id="province_row_number"></div>
                                     </div>
                                     <div>
@@ -197,12 +197,16 @@
                                         <div id="province_name"></div>
                                     </div>
                                     <div>
-                                        <div class="text-header">आयोजना संख्या</div>
-                                        <div id="province_project_count"></div>
+                                        <div class="text-header">Male</div>
+                                        <div id="province_male_count"></div>
                                     </div>
                                     <div>
-                                        <div class="text-header">कुल लागत</div>
-                                        <div id="province_project_amount"></div>
+                                        <div class="text-header">Female</div>
+                                        <div id="province_female_count"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-header">Total</div>
+                                        <div id="province_total_count"></div>
                                     </div>
                                 </div>
                             </div>
@@ -216,7 +220,7 @@
                     
                     </div>
                 </div>
-            </section> --}}
+            </section>
 
             <!-- Project By Category -->
             {{-- <section id="project_by_category" class="parallax-section">

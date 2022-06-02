@@ -56,16 +56,8 @@ trait ComboField
 
     public function getProvinceFilterComboOptions()
     {
-        $a = self::selectRaw("code|| ' - ' || name_en as name_en , id")
-                    ->whereIn('id', function($query) 
-                    {
-                        $query->select(DB::raw('distinct province_id'))
-                        ->from('mst_fed_district')
-                        ->whereIn('id', function($query) {
-                        $query->select(DB::raw('distinct district_id'))
-                            ->from('mst_fed_local_level');
-                        });
-                    });
+        $a = self::selectRaw("code|| ' - ' || name_en as name_en , id");
+                   
         return $a->orderBy('id', 'ASC')
         ->get()
         ->keyBy('id')

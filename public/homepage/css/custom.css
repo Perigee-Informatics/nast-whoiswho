@@ -47,7 +47,7 @@
     color: black;
     position: relative;
     font-size: 15px;
-    font-family:cursive !important;
+    font-family:ccursiveportant;
 
 }
 .breadcrumb-item:hover {
@@ -109,7 +109,7 @@
 }
 .circle-tile-number,
 .circle-tile-description {
-    font-family:cursive !important;
+    font-family:ccursiveportant;
 }
 
 .circle-tile-description {
@@ -128,7 +128,7 @@
     box-sizing: border-box;
     box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
     border-radius: 15px;
-    font-family: "kalimati", sans-serif !important;
+    font-family: cursive !important;
 }
 
 .bg-stack-overflow,
@@ -175,7 +175,7 @@
     margin-bottom: 5px;
     font-weight: bold;
     font-size: 15px;
-    font-family: "kalimati", sans-serif !important;
+    font-family: cursive !important;
 }
 .text-left {
     padding-left: 20px;
@@ -185,7 +185,7 @@
 .text-size {
     font-size: 15px;
     font-weight: bold;
-    font-family: "kalimati", sans-serif !important;
+    font-family:scursive!important;
 }
 .text-blue {
     color: #0d47a1;

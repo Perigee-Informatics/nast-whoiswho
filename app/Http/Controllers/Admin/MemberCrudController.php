@@ -33,6 +33,7 @@ class MemberCrudController extends BaseCrudController
         CRUD::setModel(Member::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/member');
         CRUD::setEntityNameStrings('member', 'members');
+        $this->setFilters();
     }
 
     /**
@@ -41,6 +42,46 @@ class MemberCrudController extends BaseCrudController
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
+
+    protected function setFilters()
+    {
+        $this->addProvinceIdFilter();
+        $this->addDistrictIdFilter();
+        $this->crud->addFilter(
+            [ // simple filter
+                'type' => 'select2',
+                'name' => 'is_other_country',
+                'label' => trans('Country'),
+                'placeholder'=>'--choose--'
+            ],
+            [
+                0 => 'Nepal',
+                1 => 'Other',
+            ],
+            function ($value) { // if the filter is active
+                if($value<2){
+                    $this->crud->addClause('where', 'is_other_country', "$value");
+                }
+            }
+        );
+
+        $this->crud->addFilter(
+            [ // simple filter
+                'type' => 'select2',
+                'name' => 'gender_id',
+                'label' => trans('Gender'),
+                'placeholder'=>'--choose--'
+
+            ], function () {
+                return MstGender::all()->pluck('name_en', 'id')->toArray();
+            },
+            function ($value) { // if the filter is active
+                $this->crud->query->whereGenderId($value);
+            });
+
+    }
+
+
     protected function setupListOperation()
     {
         $this->crud->addButtonFromView('top', 'excelImport', 'excelImport', 'end');
@@ -55,50 +96,30 @@ class MemberCrudController extends BaseCrudController
                 'type' => 'image',
                 'upload' => true,
                 'disk' => 'uploads',
-                'crop'=>true, 
-                'aspect_ratio'=>1,
-                'wrapper' => [
-                    'class' => 'form-group col-md-3',
-                ],
             ],
             [
-                'name' => 'first_name',
-                'label' => trans('First Name'),
-                'type' => 'text',
-                'attributes'=>[
-                    'id' => 'name-en',
-                    'required' => 'required',
-                    'max-length'=>200,
-                ],
-                'wrapper' => [
-                    'class' => 'form-group col-md-3',
-                ],
+                'name'=>'first_name',
+                'type'=>'model_function',
+                'function_name'=>'fullName',
+                'label'=>'Full Name'
             ],
+            // [
+            //     'name' => 'first_name',
+            //     'label' => trans('First Name'),
+            //     'type' => 'text',
+            // ],
 
-            [
-                'name' => 'middle_name',
-                'label' => trans('Middle Name'),
-                'type' => 'text',
-                'attributes'=>[
-                    'max-length'=>200,
-                ],
-                'wrapper' => [
-                    'class' => 'form-group col-md-3',
-                ],
-            ],
+            // [
+            //     'name' => 'middle_name',
+            //     'label' => trans('Middle Name'),
+            //     'type' => 'text',
+            // ],
 
-            [
-                'name' => 'last_name',
-                'label' => trans('Last Name'),
-                'type' => 'text',
-                'attributes'=>[
-                    'required' => 'required',
-                    'max-length'=>200,
-                ],
-                'wrapper' => [
-                    'class' => 'form-group col-md-3',
-                ],
-            ],
+            // [
+            //     'name' => 'last_name',
+            //     'label' => trans('Last Name'),
+            //     'type' => 'text',
+            // ],
 
             [
                 'name' => 'gender_id',
@@ -119,9 +140,6 @@ class MemberCrudController extends BaseCrudController
                 'name'=>'nrn_number',
                 'type'=>'text',
                 'label'=>trans('NRN Number'),
-                'wrapper' => [
-                    'class' => 'form-group col-md-3',
-                ],
             ],
 
             [ //Toggle

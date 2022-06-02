@@ -53,7 +53,7 @@
 	  .select2-container--bootstrap .select2-dropdown {
 	  	margin-top: -2px;
 	  	margin-left: -1px;
-		width:270px !important;
+		width:250px !important;
 
 	  }
 	  .select2-container--bootstrap {

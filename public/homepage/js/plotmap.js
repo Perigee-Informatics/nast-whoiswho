@@ -742,59 +742,48 @@ function updateGeoData(id,level){
             $('#rural_mun_count').text(data.count.rural_mun_count);
             $('#total_local_level_count').text(data.count.total_local_level_count);
         }
-        //data for project count summary
 
-        //province-wise project count and cost
-        // var province_row_number_html = '';
-        // var province_name_html = '';
-        // var province_data_count_html = '';
-        // var province_data_amount_html = '';
-        // var total_category_projects_count = 0;
+        // gender distribution
+        var province_row_number_html = '';
+        var province_name_html = '';
+        var province_male_count_html = '';
+        var province_female_count_html = '';
+        var province_total_count_html = '';
 
-        // $.each(data.province_projects.main, function (index,row) {
-        //     province_row_number_html += '<div class="text-title">'+row.sn+'</div>'
-        //     province_name_html += '<div class="text-title text-left" id="province_'+row.province_id+'">'+row.name_lc+'</div>'; 
-        //     province_data_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.total_project+'</div>';
+        $.each(data.gender_data.main, function (index,row) {
+            province_row_number_html += '<div class="text-title">'+ ++index +'</div>'
+            province_name_html += '<div class="text-title text-left" id="province_'+row.province_id+'">'+row.name_en+'</div>'; 
+            province_male_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.male+'</div>';
+            province_female_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.female+'</div>';
+            province_total_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.total+'</div>';
+        });
 
-        //      //total_projects_count
-        //      total_category_projects_count += row.total_project;
+        //for brand-card heading
+        if(data.level === -1){
+            $('#gender_province_title').html('Province wise gender distribution');
+            $('#table_level_title').html('Province');
+            var chart_title = 'Province wise gender distribution';
+        }else if(data.level === 0 && data.province_projects.main.length > 0){
+            $('#gender_province_title').html( data.province_projects.main[0].name_lc+' को आयोजना तथ्यांक');
+            $('#table_level_title').html('प्रदेश');
+            var chart_title = data.province_projects.main[0].name_lc+' को आयोजना';
+        }else if(data.level === 1 && data.province_projects.main.length > 0){
+            $('#gender_province_title').html( data.province_projects.main[0].name_lc+' जिल्लाको आयोजना तथ्यांक');
+            $('#table_level_title').html('जिल्ला');
+            var chart_title = data.province_projects.main[0].name_lc+' जिल्लाको आयोजना';
+        }else if(data.level === 2 && data.province_projects.main.length > 0){
+            $('#gender_province_title').html( data.province_projects.main[0].name_lc+'को आयोजना तथ्यांक');
+            $('#table_level_title').html('स्थानीय तह');
+            var chart_title = data.province_projects.main[0].name_lc+'को आयोजना';
+        }
 
-        //     //format currency
-        //     formatted_currency = OSREC.CurrencyFormatter.format(row.project_cost, { currency: 'INR',pattern:'रु ,##,##,##,###' });
+        $('#province_row_number').html(province_row_number_html);
+        $('#province_name').html(province_name_html);
+        $('#province_male_count').html(province_male_count_html);
+        $('#province_female_count').html(province_female_count_html);
+        $('#province_total_count').html(province_total_count_html);
 
-        //     province_data_amount_html += '<div class="text-blue text-value text-amount" id="province_'+row.province_id+'">'+formatted_currency+'</div>'; 
-        // });
-
-        // //for total cost
-        // province_name_html += '<div class="text-blue text-value total_amount_sum">जम्मा</div>';
-        // province_data_count_html += '<div class="text-blue text-value total_amount_sum">'+total_category_projects_count+'</div>';
-        // let total_province_projects_cost = OSREC.CurrencyFormatter.format(data.province_projects.total_project_cost, { currency: 'INR',pattern:'रु ,##,##,##,###' });
-        // province_data_amount_html += '<div class="text-blue text-value text-amount total_amount_sum">'+total_province_projects_cost+'</div>';
-        // //for brand-card heading
-        // if(data.level === -1){
-        //     $('#project_province_title').html('प्रदेश अनुसार आयोजना तथ्यांक');
-        //     $('#table_level_title').html('प्रदेश');
-        //     var chart_title = 'प्रदेश अनुसार आयोजना';
-        // }else if(data.level === 0 && data.province_projects.main.length > 0){
-        //     $('#project_province_title').html( data.province_projects.main[0].name_lc+' को आयोजना तथ्यांक');
-        //     $('#table_level_title').html('प्रदेश');
-        //     var chart_title = data.province_projects.main[0].name_lc+' को आयोजना';
-        // }else if(data.level === 1 && data.province_projects.main.length > 0){
-        //     $('#project_province_title').html( data.province_projects.main[0].name_lc+' जिल्लाको आयोजना तथ्यांक');
-        //     $('#table_level_title').html('जिल्ला');
-        //     var chart_title = data.province_projects.main[0].name_lc+' जिल्लाको आयोजना';
-        // }else if(data.level === 2 && data.province_projects.main.length > 0){
-        //     $('#project_province_title').html( data.province_projects.main[0].name_lc+'को आयोजना तथ्यांक');
-        //     $('#table_level_title').html('स्थानीय तह');
-        //     var chart_title = data.province_projects.main[0].name_lc+'को आयोजना';
-        // }
-
-        // $('#province_row_number').html(province_row_number_html);
-        // $('#province_name').html(province_name_html);
-        // $('#province_project_count').html(province_data_count_html);
-        // $('#province_project_amount').html(province_data_amount_html);
-
-        //  //for building province-projects-charts
+         //for building province-projects-charts
         //  createChart('project_by_province_chart', chart_title, data.province_projects.chart, 'bar');
 
     });

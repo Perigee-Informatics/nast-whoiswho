@@ -56,6 +56,13 @@ class Member extends BaseModel
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function fullName()
+    {
+        $name = [ $this->first_name,$this->middle_name,$this->last_name];
+
+        return implode(' ',$name);
+
+    }
 
     public function dob()
     {

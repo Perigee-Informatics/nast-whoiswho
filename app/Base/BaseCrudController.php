@@ -438,55 +438,52 @@ class BaseCrudController extends CrudController
 
     public function addProvinceIdFilter()
     {
-        if(backpack_user()->isClientUser() === false)
-        {
+ 
         return $this->crud->addFilter(
             [ 
-                'label' => 'प्रदेश',
+                'label' => 'Province',
                 'type' => 'select2',
                 'name' => 'province_id', // the db column for the foreign key
-                'placeholder' => 'प्रदेश छान्नुहोस्',
+                'placeholder' => '--select province--',
                 'attributes' => [
-                    'onChange'=>'TMPP.getDistrict(this)',
+                    'onChange'=>'NAST.getDistrict(this)',
                 ]
             ],
             function () {
                 return (new MstFedProvince())->getProvinceFilterComboOptions();
             },
             function ($value) { // if the filter is active
-                $data = $this->customFilterQuery();
-                $datas = collect(DB::select($data));
-                $client_ids = $datas->pluck('client_id')->toArray();
-                $this->crud->query->whereIn('client_id', $client_ids);
+                    $this->crud->query->whereProvinceId($value);
+                // $data = $this->customFilterQuery();
+                // $datas = collect(DB::select($data));
+                // $client_ids = $datas->pluck('province')->toArray();
+                // $this->crud->query->whereIn('client_id', $client_ids);
             }
         );
-        }
     }
 
     public function addDistrictIdFilter()
     {
-        if(backpack_user()->isClientUser() === false)
-        {
         return $this->crud->addFilter(
             [ 
                 'name'        => 'district_id',
                 'type'        => 'select2',
-                'label'       => 'जिल्ला',
-                'placeholder' => 'पहिला प्रदेश छान्नुहोस्',
+                'label'       => 'Distrit',
+                'placeholder' => '--select province first--',
                 'attributes' => [
-                    'onChange'=>'TMPP.getFedLocalLevel(this)',
+                    'onChange'=>'NAST.getFedLocalLevel(this)',
                 ]
             ],
             function () {
             },
             function ($value) { // if the filter is active
-                $data = $this->customFilterQuery();
-                $datas = collect(DB::select($data));
-                $client_ids = $datas->pluck('client_id')->toArray();
-                $this->crud->query->whereIn('client_id', $client_ids);
+                $this->crud->query->whereDistrictId($value);
+                // $data = $this->customFilterQuery();
+                // $datas = collect(DB::select($data));
+                // $client_ids = $datas->pluck('client_id')->toArray();
+                // $this->crud->query->whereIn('client_id', $client_ids);
             }
         );
-        }
     }
 
     public function customFilterQuery()
@@ -495,10 +492,9 @@ class BaseCrudController extends CrudController
         $district_id = request()->district_id;
         $table_name = $this->crud->model->getTable();
         $sql = "SELECT * from $table_name t
-                inner join app_client ap on ap.id = t.client_id
-                inner join mst_fed_local_level mfll on mfll.id = ap.fed_local_level_id
-                inner join mst_fed_district mfd on mfd.id = mfll.district_id
-                inner join mst_fed_province mp on mp.id = mfd.province_id
+                -- inner join mst_fed_local_level mfll on mfll.id = ap.fed_local_level_id
+                inner join mst_fed_district mfd on mfd.id = t.district_id
+                inner join mst_fed_province mp on mp.id = t.province_id
                 where 1 = 1";
 
         $whereas = [];

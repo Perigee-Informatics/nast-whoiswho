@@ -27,7 +27,7 @@ class DependentDropdownController extends Controller
         if ($validator->fails()) {
             abort(404);
         }else {
-            $district = MstFedDistrict::where('province_id', $id)->whereRaw("id in (SELECT distinct district_id from mst_fed_local_level where is_tmpp_applicable = true)")->get();
+            $district = MstFedDistrict::where('province_id', $id)->get();
             return response()->json($district);
         }
     }
@@ -40,7 +40,7 @@ class DependentDropdownController extends Controller
         if ($validator->fails()) {
             abort(404);
         }else {
-            $local_level = MstFedLocalLevel::where('district_id', $id)->where("is_tmpp_applicable", true)->get();
+            $local_level = MstFedLocalLevel::where('district_id', $id)->get();
             return response()->json($local_level);
         }
        
