@@ -3,9 +3,9 @@ var map;
 function initializeMap(){
     map = new L.map('map', {
         scrollWheelZoom: false,
-        minZoom: 7.45,
+        minZoom: 7.25,
         maxZoom: 12
-    }).setView([28.39, 84.12], 8);
+    }).setView([28.39, 84.12], 7.25);
     map.doubleClickZoom.disable();
 }
 
@@ -729,8 +729,10 @@ function updateGeoData(id,level){
             $('#fed_area').show();
 
             var district_div = $('#total_district_count').parent().parent().parent();
+            var province_div = $('#total_province_count').parent().parent().parent();
             if(data.level === 1){
                 district_div.hide();
+                province_div.hide();
             }else{
                 district_div.show();
                 $('#total_district_count').text(data.count.districts_count);
@@ -763,7 +765,7 @@ function updateGeoData(id,level){
         if(data.level === -1){
             $('#gender_province_title').html('Province wise gender distribution');
             $('#table_level_title').html('Province');
-            var chart_title = 'Province wise gender distribution';
+            var chart_title = 'Province-wise gender distribution';
         }else if(data.level === 0 && data.province_projects.main.length > 0){
             $('#gender_province_title').html( data.province_projects.main[0].name_lc+' को आयोजना तथ्यांक');
             $('#table_level_title').html('प्रदेश');
@@ -785,23 +787,26 @@ function updateGeoData(id,level){
         $('#province_total_count').html(province_total_count_html);
 
          //for building province-projects-charts
-        //  createChart('project_by_province_chart', chart_title, data.province_projects.chart, 'bar');
+         createChart('province_gender_distribution_chart', chart_title, data.gender_data.chart, 'bar');
 
     });
 }
 
 
 // element id , title of chart , data, type
-function createChart(element_id, title, data, type) {
+function createChart(element_id, title, data, type) 
+{
+    // let data_labels = data.labels;
+  
     var parent_div = $('#' + element_id).parent();
     $('#' + element_id).remove();
     parent_div.append('<canvas id="' + element_id + '" height="270"></canvas>');
     var ctx = document.getElementById(element_id);
     var customBackgroundColor;
-    var tooltip_label1 = '* आयोजना संख्या : ';
-    var tooltip_label2 = '* कुल लागत : ';
+    // var tooltip_label1 = '* Count : ';
+    // var tooltip_label2 = '* कुल लागत : ';
 
-    if(element_id === 'project_by_province_chart'){
+    if(element_id === 'province_gender_distribution_chart'){
          customBackgroundColor = ['brown','green','red','orange','purple','blue','skyblue'];
     }else{
          customBackgroundColor = ['red','blue','green','purple','orange','brown','real','lightgreen','skyblue'];
@@ -811,9 +816,14 @@ function createChart(element_id, title, data, type) {
         data: {
             labels: data.labels,
             datasets: [{    
-                label: title,
-                data: data.data,
-                cost :data.cost,
+                label: 'Male',
+                data: data.data.male,
+                maxBarThickness: 20,
+                backgroundColor: customBackgroundColor,
+            },
+            {
+                label: 'Female',
+                data: data.data.female,
                 maxBarThickness: 20,
                 backgroundColor: customBackgroundColor,
             }]
@@ -825,7 +835,7 @@ function createChart(element_id, title, data, type) {
                 text: title,
                 fontSize: 18,
                 fontColor:'black',
-                fontFamily:'Kalimati',
+                fontFamily:'Cursive',
             },
             animation: {
                 animateScale: true,
@@ -836,18 +846,19 @@ function createChart(element_id, title, data, type) {
                 mode: 'single',
                 displayColors:false,
                 titleFontSize:14,
-                titleFontFamily:'Kalimati',
+                titleFontFamily:'Cursive',
                 bodyFontSize:13,
-                bodyFontFamily:'Kalimati',
+                bodyFontFamily:'Cursive',
                 callbacks: {
                     label: function(tooltipItem, data) {
-                        var label1 = tooltip_label1;
+                        debugger;
+                        var label1 = data.datasets[0].label;
                         label1 += data.datasets[0].data[tooltipItem.index];
 
-                        var amount = OSREC.CurrencyFormatter.format(data.datasets[0].cost[tooltipItem.index], { currency: 'INR',pattern:'रु ,##,##,##,###' });
-                        var label2 = tooltip_label2;
-                        label2 += amount;
-                        return [label1,label2];
+                        // var amount = OSREC.CurrencyFormatter.format(data.datasets[0].cost[tooltipItem.index], { currency: 'INR',pattern:'रु ,##,##,##,###' });
+                        // var label2 = tooltip_label2;
+                        // label2 += amount;
+                        return label1;
                     },
                 }
             },
@@ -856,7 +867,7 @@ function createChart(element_id, title, data, type) {
                 position:'bottom',
                 labels: {
                     fontColor: 'black',
-                    fontFamily:'Kalimati',
+                    fontFamily:'Cursive',
                     fontSize:15
                 }
             },
@@ -865,7 +876,7 @@ function createChart(element_id, title, data, type) {
                     display: true,
                     ticks: {
                         beginAtZero: true,
-                        fontFamily:'Kalimati',
+                        fontFamily:'Cursive',
                         fontColor:'black'
                     },
                 }],

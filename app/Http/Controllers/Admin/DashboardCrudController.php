@@ -265,7 +265,9 @@ class DashboardCrudController extends BaseCrudController
         $labels = [];
         //format data for charts
         foreach($gender_data_province as $row){
-            $datas [] = $row;
+            $datas ['male'][] = $row->male;
+            $datas ['female'][] = $row->female;
+            $labels[] = $row->name_en;
         }
 
         $data['gender_data']['main'] = $gender_data_province->toArray();                    
