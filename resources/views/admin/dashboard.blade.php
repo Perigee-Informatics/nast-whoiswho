@@ -201,7 +201,7 @@
                                         <div class="text-header">S.N.</div>
                                         <div id="province_row_number"></div>
                                     </div>
-                                    <div>
+                                    <div style="min-width:150px;">
                                         <div class="text-header" id="table_level_title">-</div>
                                         <div id="province_name"></div>
                                     </div>
