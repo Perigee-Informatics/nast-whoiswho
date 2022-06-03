@@ -831,11 +831,10 @@ function createChart(element_id, title, data, type)
         },
         options: {
             responsive: true,
-            barValueSpacing: 2,
             title: {
                 display: true,
                 text: title,
-                fontSize: 18,
+                fontSize: 17,
                 fontColor:'black',
                 fontFamily:'Cursive',
             },
@@ -860,12 +859,12 @@ function createChart(element_id, title, data, type)
                 }
             },
             legend: {
-                display: false,
+                display: true,
                 position:'bottom',
                 labels: {
                     fontColor: 'black',
                     fontFamily:'Cursive',
-                    fontSize:15
+                    fontSize:12
                 }
             },
             scales: {

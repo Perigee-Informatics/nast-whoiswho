@@ -223,7 +223,7 @@
 
                         <div class="col-sm-6 col-lg-6">
                             <div class="card text-center font-weight-bold mb-3" style="border-top:5px solid red; border-bottom:5px solid lightgray; border-radius:20px">
-                                <canvas id="province_gender_distribution_chart"  height="220" style="background-color:white; border-radius:20px;"></canvas>
+                                <canvas id="province_gender_distribution_chart" style="background-color:white; border-radius:20px;"></canvas>
                             </div>
                         </div>
                     
