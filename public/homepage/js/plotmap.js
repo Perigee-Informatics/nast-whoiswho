@@ -755,7 +755,7 @@ function updateGeoData(id,level){
 
         $.each(data.gender_data.main, function (index,row) {
             province_row_number_html += '<div class="text-title">'+ ++index +'</div>'
-            province_name_html += '<div class="text-title text-left" id="province_'+row.province_id+'">'+row.name_en+'</div>'; 
+            province_name_html += '<div class="text-title" id="province_'+row.province_id+'">'+row.name_en+'</div>'; 
             province_male_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.male+'</div>';
             province_female_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.female+'</div>';
             province_total_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.total+'</div>';
@@ -807,7 +807,8 @@ function createChart(element_id, title, data, type)
     // var tooltip_label2 = '* कुल लागत : ';
 
     if(element_id === 'province_gender_distribution_chart'){
-         customBackgroundColor = ['brown','green','red','orange','purple','blue','skyblue'];
+         customBackgroundColor1 = ['brown','brown','brown','brown','brown','brown','brown'];
+         customBackgroundColor2 = ['green','green','green','green','green','green','green'];
     }else{
          customBackgroundColor = ['red','blue','green','purple','orange','brown','real','lightgreen','skyblue'];
     }
@@ -819,17 +820,18 @@ function createChart(element_id, title, data, type)
                 label: 'Male',
                 data: data.data.male,
                 maxBarThickness: 20,
-                backgroundColor: customBackgroundColor,
+                backgroundColor: customBackgroundColor1,
             },
             {
                 label: 'Female',
                 data: data.data.female,
                 maxBarThickness: 20,
-                backgroundColor: customBackgroundColor,
+                backgroundColor: customBackgroundColor2,
             }]
         },
         options: {
             responsive: true,
+            barValueSpacing: 2,
             title: {
                 display: true,
                 text: title,
@@ -851,13 +853,8 @@ function createChart(element_id, title, data, type)
                 bodyFontFamily:'Cursive',
                 callbacks: {
                     label: function(tooltipItem, data) {
-                        debugger;
-                        var label1 = data.datasets[0].label;
-                        label1 += data.datasets[0].data[tooltipItem.index];
-
-                        // var amount = OSREC.CurrencyFormatter.format(data.datasets[0].cost[tooltipItem.index], { currency: 'INR',pattern:'रु ,##,##,##,###' });
-                        // var label2 = tooltip_label2;
-                        // label2 += amount;
+                        var label1 = data.datasets[tooltipItem.datasetIndex].label;
+                        label1 += ' : '+data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                         return label1;
                     },
                 }

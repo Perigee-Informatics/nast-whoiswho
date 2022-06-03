@@ -202,7 +202,7 @@
                                         <div id="province_row_number"></div>
                                     </div>
                                     <div>
-                                        <div class="text-header text-left" id="table_level_title">-</div>
+                                        <div class="text-header" id="table_level_title">-</div>
                                         <div id="province_name"></div>
                                     </div>
                                     <div>
