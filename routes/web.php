@@ -2,8 +2,10 @@
 
 // use App\Base\BasePivotController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\MemberCrudController;
 use App\Http\Controllers\Admin\DashboardCrudController;
 use App\Http\Controllers\Api\ProvinceDistrictController;
 use App\Http\Controllers\Api\DependentDropdownController;
@@ -29,8 +31,9 @@ use App\Http\Controllers\Api\DistrictLocalLevelController;
 // Route::get('/admin/login', function(){
 //     return view('errors.503');
 // });
-Route::get('/', [AdminController::class,'redirect']);
-Route::get('/home', [AdminController::class,'redirect']);
+Route::get('/', [DashboardController::class,'index']);
+Route::get('/home', [DashboardController::class,'index']);
+Route::get('/admin', [AdminController::class,'redirect']);
 
 
 Route::post('api/district/{province_id}', [ProvinceDistrictController::class,'index']);
@@ -44,6 +47,9 @@ Route::get('get-province-data', [DashboardCrudController::class,'getProvinceData
 Route::get('get-district-data', [DashboardCrudController::class,'getDistrictData']);
 Route::get('get-all-members', [DashboardCrudController::class,'getMembersData']);
 Route::get('get-geodata', [DashboardCrudController::class,'getGeoData']);
+
+// Route::get('member/{member_id}/print-profile', [MemberCrudController::class,'printProfile']);
+
 // Route::get('admin/report/masterdata', [BasePivotController::class,'getMasterData']);
 
 

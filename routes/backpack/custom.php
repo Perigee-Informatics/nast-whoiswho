@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\DashboardCrudController;
 
 // --------------------------
@@ -8,6 +9,13 @@ use App\Http\Controllers\Admin\DashboardCrudController;
 // This route file is loaded automatically by Backpack\Base.
 // Routes you generate using Backpack\Generators will be placed here.
 
+Route::group([
+    'prefix'     => 'public',
+    'middleware' => ['XSS'],
+    'namespace'  => 'App\Http\Controllers',
+], function () { // custom admin routes
+    Route::get('member/{member_id}/print-profile', [DashboardController::class,'printProfile']);
+});
 
 
 Route::group([
@@ -41,4 +49,5 @@ Route::group([
     Route::crud('member', 'MemberCrudController');
     Route::post('import-member', 'MemberCrudController@importMembers')->name('importMemberExcel');
     Route::get('member/{member_id}/print-profile', 'MemberCrudController@printProfile');
+    Route::get('member/profiles/print-all', 'MemberCrudController@printAllProfiles');
 }); // this should be the absolute last line of this file

@@ -34,6 +34,10 @@ class MemberCrudController extends BaseCrudController
         CRUD::setRoute(config('backpack.base.route_prefix') . '/member');
         CRUD::setEntityNameStrings('member', 'members');
         $this->setFilters();
+
+        if(in_array($this->crud->getActionMethod(),['edit','index'])){
+            $this->crud->print_profile_btn = true;
+        }
     }
 
     /**
@@ -817,9 +821,47 @@ class MemberCrudController extends BaseCrudController
             $imageData = base64_encode(file_get_contents($photo_path));
             $photo_encoded = 'data: '.mime_content_type($photo_path).';base64,'.$imageData;
         }
+
+        $data['member']['basic'] = $member;
+        $data['member']['json_data'] = $json_data;
+        $data['member']['photo_encoded'] = $photo_encoded;
             // Format the image SRC:  data:{mime};base64,{data};
 
-        $html = view('profile.individual_profile', compact('member','json_data','photo_encoded'))->render();
+        $html = view('profile.individual_profile', compact('data'))->render();
         PdfPrint::printPortrait($html, $member->first_name.' '.$member->middle_name.' '.$member->last_name."_Profile.pdf"); 
+    }
+
+    public function printAllProfiles()
+    {
+        $data = [];
+        foreach(Member::all() as $member)
+        {
+            $json_data = [
+                'current_organization' => json_decode($member->current_organization),
+                'past_organization' => json_decode($member->past_organization),
+                'doctorate_degree' => json_decode($member->doctorate_degree),
+                'masters_degree' => json_decode($member->masters_degree),
+                'bachelors_degree' => json_decode($member->bachelors_degree),
+                'awards' => json_decode($member->awards),
+                'expertise' => json_decode($member->expertise),
+                'affiliation' => json_decode($member->affiliation),
+                'awards' => json_decode($member->awards),
+            ];
+    
+            $photo_encoded = "";
+            $photo_path = public_path('storage/uploads/'.$member->photo_path);
+            // Read image path, convert to base64 encoding
+            if($member->photo_path){
+                $imageData = base64_encode(file_get_contents($photo_path));
+                $photo_encoded = 'data: '.mime_content_type($photo_path).';base64,'.$imageData;
+            }
+
+            $data[$member->id]['basic'] = $member;
+            $data[$member->id]['json_data'] = $json_data;
+            $data[$member->id]['photo_encoded'] = $photo_encoded;
+    
+        }
+        $html = view('profile.individual_profile', compact('data'))->render();
+        PdfPrint::printPortrait($html,"Who_is_who_Profile.pdf"); 
     }
 }

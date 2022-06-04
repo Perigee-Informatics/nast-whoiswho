@@ -151,7 +151,7 @@ function showMembersData(level,areaId){
                 }
                 lat = member.lat;
                 long = member.long;
-                member_url = '/admin/member/' + member_id + '/edit';
+                member_url = 'public/member/' + member_id + '/print-profile';
 
                 var display_icon = L.icon({ iconUrl: icon, iconSize: [25, 25] });
 
@@ -159,8 +159,8 @@ function showMembersData(level,areaId){
                     '<b>First Name : ' + '<font color="green">' + first_name + '</font></b>' + '<br>' +
                     '<b>Last Name: ' + '<font color="green">' + last_name+ '</font></b>' + '<br>' +
                     '<b>Province : ' + '<font color="red">' + province + '</font></b>' + '<br>' +
-                    '<b>District :' + '<font color="blue">' + district + '</font></b>' + '<br>' +
-                    '<b><a href="' + member_url + '" target="_blank"><i class="la la-eye"></i>View Details</a></b>' + '<br>',
+                    '<b>District :' + '<font color="blue">' + district + '</font></b>' + '<br><br>' +
+                    '<b><center><a href="' + member_url + '" target="_blank"><i class="la la-file-pdf-o"></i>View Profile</a></center></b>',
                     {
                         autoClose: true,
                         autoPan: false
@@ -616,7 +616,7 @@ function resetToCountry() {
         map.fitBounds(nepal.getBounds());
         hideAllBreadCrumb();
         showMembersData(-1,-1);
-        // updateGeoData(-1,-1);
+        updateGeoData(-1,-1);
     });
 }
 
@@ -752,6 +752,10 @@ function updateGeoData(id,level){
         var province_male_count_html = '';
         var province_female_count_html = '';
         var province_total_count_html = '';
+        var total_male_count = 0;
+        var total_female_count = 0;
+        var total_final_count = 0;
+
 
         $.each(data.gender_data.main, function (index,row) {
             province_row_number_html += '<div class="text-title">'+ ++index +'</div>'
@@ -759,7 +763,20 @@ function updateGeoData(id,level){
             province_male_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.male+'</div>';
             province_female_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.female+'</div>';
             province_total_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.total+'</div>';
+
+            
+             //total_projects_count
+             total_male_count += row.male;
+             total_female_count += row.female;
+             total_final_count += row.total;
         });
+
+        //for total 
+        province_name_html += '<div class="text-blue text-value total-sum">Total</div>';
+        province_male_count_html += '<div class="text-blue text-value total-sum">'+total_male_count+'</div>';
+        province_female_count_html += '<div class="text-blue text-value total-sum">'+total_female_count+'</div>';
+        province_total_count_html += '<div class="text-blue text-value total-sum">'+total_final_count+'</div>';
+
 
         //for brand-card heading
         if(data.level === -1){
