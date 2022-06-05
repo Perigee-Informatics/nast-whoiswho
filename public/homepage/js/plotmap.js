@@ -844,6 +844,7 @@ function createChart(element_id, title, data, type)
     if(element_id === 'gender_distribution_chart'){
          customBackgroundColor1 = ['brown','brown','brown','brown','brown','brown','brown','brown','brown','brown','brown','brown','brown','brown'];
          customBackgroundColor2 = ['green','green','green','green','green','green','green','green','green','green','green','green','green','green'];
+         customBackgroundColor3 = ['blue','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue'];
     }else{
          customBackgroundColor = ['red','blue','green','purple','orange','brown','real','lightgreen','skyblue'];
     }
@@ -854,14 +855,26 @@ function createChart(element_id, title, data, type)
             datasets: [{    
                 label: 'Male',
                 data: data.data.male,
-                maxBarThickness: 20,
+                maxBarThickness: 10,
+                categoryPercentage: 0.4,
+                barPercentage:1,
                 backgroundColor: customBackgroundColor1,
             },
             {
                 label: 'Female',
                 data: data.data.female,
-                maxBarThickness: 20,
+                maxBarThickness: 10,
+                categoryPercentage: 0.4,
+                barPercentage:1,
                 backgroundColor: customBackgroundColor2,
+            },
+            {
+                label: 'Total',
+                data: data.data.total,
+                maxBarThickness: 10,
+                categoryPercentage: 0.4,
+                barPercentage:1,
+                backgroundColor: customBackgroundColor3,
             }]
         },
         options: {

@@ -191,7 +191,7 @@
             <section id="gender_card" class="parallax-section">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-6 col-lg-6">
+                        <div class="col-sm-12 col-lg-5">
                             <div class="brand-card">
                                 <div class="brand-card-header bg-stack-overflow">
                                     <h6 style="color: white;" id="gender_card_title"></h6>
@@ -221,7 +221,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6 col-lg-6">
+                        <div class="col-sm-12 col-lg-7">
                             <div class="card text-center font-weight-bold mb-3" style="border-top:5px solid red; border-bottom:5px solid lightgray; border-radius:20px">
                                 <canvas id="gender_distribution_chart" style="background-color:white; border-radius:20px;"></canvas>
                             </div>
