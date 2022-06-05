@@ -612,9 +612,9 @@ function removeLayer(){
 
 //reset current state to original state(country-with-province-state)
 function resetToCountry() {
-    markerClusters.clearLayers();
     resetToMapLevel(1);
     removeLayer();
+    markerClusters.clearLayers();
     $.get("/get-nepal-map-data", function (data) {
         provinceData = JSON.parse(data);
         geojson = L.geoJson(provinceData, {
@@ -673,7 +673,7 @@ function resetToDistrict(id) {
         map.fitBounds(nepal.getBounds());
         //show local level projects only on clicked district;
         showMembersData(1,id);
-        updateGeoData(id, 1);
+        // updateGeoData(id, 1);
     });
 }
 
