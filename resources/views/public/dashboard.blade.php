@@ -28,9 +28,9 @@
 
             <div class="card mb-0" style="background-color:#d9d9d9;">
                 <div class="card-header bg-primary p-0">
-                    <div class="row mb-3">
-                        <div class="col-md-4"><i class="la la-map-marked-alt ml-2"> WHO is WHO Scientist Distribution</i></div>
-                        <div>
+                    <div class="form-row mb-3">
+                        <div class="col-sm-12 col-md-4"><i class="la la-map-marked-alt ml-2"> WHO is WHO Scientist Distribution</i></div>
+                        <div class="col-sm-12 col-md-8">
                             <nav aria-label="breadcrumb" class="map-breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><span id="country_button"></span></li>
