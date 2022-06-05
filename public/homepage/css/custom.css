@@ -69,20 +69,6 @@
     background: #f3f5f9;
 }
 
-#project_count_summary {
-    padding: 25px;
-    background: #f3f5f9;
-}
-
-#project_by_province {
-    padding: 25px;
-    background: #cad5e6;
-}
-
-#project_by_category {
-    padding: 0px 25px;
-    background: #cad5e6;
-}
 
 @media (max-width: 100px) {
     #fed_area,
@@ -169,7 +155,7 @@
 
 .text-value {
     margin-bottom: 5px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
 }
 .text-title {
@@ -226,4 +212,11 @@ small {
     border-top:2px solid lightgrey;
     font-weight: bold !important;
     color:green;
+}
+
+    
+@media (min-width: 400px) {
+ .container{
+     min-width: 100% !important;
+ }
 }
