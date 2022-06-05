@@ -799,8 +799,10 @@ function updateGeoData(id,level){
         //for brand-card heading
         if(data.level === -1){
             $('#gender_card_title').html('Province wise gender distribution');
+            $('#age_card_title').html('Age wise Distribution');
             $('#table_level_title').html('Province');
-            var chart_title = 'Province wise gender distribution';
+            var gender_chart_title = 'Province wise gender distribution';
+            var age_chart_title = 'Age wise distribution';
         }else if(data.level === 0 && data.gender_data.main.length > 0){
             $('#gender_card_title').html( data.province_name+' (District wise gender distribution)');
             $('#table_level_title').html('District');
@@ -821,8 +823,37 @@ function updateGeoData(id,level){
         $('#gender_female_count').html(gender_female_count_html);
         $('#gender_total_count').html(gender_total_count_html);
 
+
+
+        // age wise distribution
+        var age_row_number_html = '';
+        var age_name_html = '';
+        var age_count_html = '';
+        var age_final_count = 0;
+
+        let j=0;
+        $.each(data.age_group_data.data, function (index,row) {
+            age_row_number_html += '<div class="text-title">'+ ++j +'</div>'
+            age_name_html += '<div class="text-title">'+index+'</div>'; 
+            age_count_html += '<div class="text-blue text-value">'+row+'</div>';
+            
+             //total_projects_count
+             age_final_count += row;
+        });
+
+        //for total 
+        age_name_html += '<div class="text-blue text-value total-sum">Total</div>';
+        age_count_html += '<div class="text-blue text-value total-sum">'+age_final_count+'</div>';
+
+        
+        $('#age_row_number').html(age_row_number_html);
+        $('#age_name').html(age_name_html);
+        $('#age_count').html(age_count_html);
+
+
          //for building province-projects-charts
-         createChart('gender_distribution_chart', chart_title, data.gender_data.chart, 'bar');
+         createChart('gender_distribution_chart', gender_chart_title, data.gender_data.chart, 'bar');
+         createChart('age_distribution_chart', age_chart_title, data.age_group_data.chart, 'bar');
 
     });
 }
@@ -831,26 +862,24 @@ function updateGeoData(id,level){
 // element id , title of chart , data, type
 function createChart(element_id, title, data, type) 
 {
-    // let data_labels = data.labels;
+    let data_new = '';
+    let legend_display = false;
+    let label_string = '';
   
     var parent_div = $('#' + element_id).parent();
     $('#' + element_id).remove();
     parent_div.append('<canvas id="' + element_id + '" height="300"></canvas>');
     var ctx = document.getElementById(element_id);
     var customBackgroundColor;
-    // var tooltip_label1 = '* Count : ';
-    // var tooltip_label2 = '* कुल लागत : ';
 
     if(element_id === 'gender_distribution_chart'){
          customBackgroundColor1 = ['brown','brown','brown','brown','brown','brown','brown','brown','brown','brown','brown','brown','brown','brown'];
          customBackgroundColor2 = ['green','green','green','green','green','green','green','green','green','green','green','green','green','green'];
          customBackgroundColor3 = ['blue','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue'];
-    }else{
-         customBackgroundColor = ['red','blue','green','purple','orange','brown','real','lightgreen','skyblue'];
-    }
-    var myChart = new Chart(ctx, {
-        type: type,
-        data: {
+
+        legend_display = true;
+        label_string = 'Province';
+        data_new= {
             labels: data.labels,
             datasets: [{    
                 label: 'Male',
@@ -876,13 +905,30 @@ function createChart(element_id, title, data, type)
                 barPercentage:1,
                 backgroundColor: customBackgroundColor3,
             }]
-        },
+        };
+    }else if(element_id === 'age_distribution_chart'){
+         customBackgroundColor = ['red','blue','green','purple','orange','brown','real','lightgreen','skyblue'];
+        let chart_data= [data.data['Below 30'],data.data['31-40'],data.data['41-50'],data.data['51-60'],data.data['60 & Above']];
+        label_string ='Age group';
+        data_new= {
+            labels: data.labels,
+            datasets: [{    
+                label: 'Count',
+                data: chart_data,
+                maxBarThickness: 20,
+                backgroundColor: customBackgroundColor,
+            }],
+        }
+    }
+    var myChart = new Chart(ctx, {
+        type: type,
+        data:data_new,
         options: {
             responsive: true,
             title: {
                 display: true,
                 text: title,
-                fontSize: 17,
+                fontSize: 15,
                 fontColor:'black',
                 fontFamily:'Cursive',
             },
@@ -893,10 +939,10 @@ function createChart(element_id, title, data, type)
             tooltips: {
                 enabled :true,
                 mode: 'single',
-                displayColors:false,
-                titleFontSize:14,
+                displayColors:true,
+                titleFontSize:13,
                 titleFontFamily:'Cursive',
-                bodyFontSize:13,
+                bodyFontSize:12,
                 bodyFontFamily:'Cursive',
                 callbacks: {
                     label: function(tooltipItem, data) {
@@ -907,8 +953,8 @@ function createChart(element_id, title, data, type)
                 }
             },
             legend: {
-                display: true,
-                position:'bottom',
+                display: legend_display,
+                position:'top',
                 labels: {
                     fontColor: 'black',
                     fontFamily:'Cursive',
@@ -917,12 +963,21 @@ function createChart(element_id, title, data, type)
             },
             scales: {
                 yAxes: [{
-                    display: true,
                     ticks: {
                         beginAtZero: true,
                         fontFamily:'Cursive',
                         fontColor:'black'
                     },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Number count'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: label_string
+                    }
                 }],
             }
         },
