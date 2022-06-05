@@ -1,5 +1,14 @@
 initializeMap();
 var map;
+
+//first letter upper case 
+ function camelize(str) {
+    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+      return index === 0 ? word.toUpperCase() : word.toLowerCase();
+    }).replace(/\s+/g, ' ');
+  }
+
+
 function initializeMap(){
     map = new L.map('map', {
         scrollWheelZoom: false,
@@ -193,7 +202,7 @@ function provinceOnClick(layer) {
             //show local level projects only on clicked province;
             showMembersData(0,layer.feature.properties.Province);
 
-            // updateGeoData(layer.feature.properties.Province, layer.feature.properties.Level);
+            updateGeoData(layer.feature.properties.Province, layer.feature.properties.Level);
         } else {
             resetToMapLevel(1);
             map.fitBounds(layer.getBounds());
@@ -643,7 +652,7 @@ function resetToProvince(id) {
         map.fitBounds(nepal.getBounds());
          //show local level projects only on clicked province;
         showMembersData(0,id);
-        // updateGeoData(id, 0);
+        updateGeoData(id, 0);
     });
 }
 
@@ -664,7 +673,7 @@ function resetToDistrict(id) {
         map.fitBounds(nepal.getBounds());
         //show local level projects only on clicked district;
         showMembersData(1,id);
-        // updateGeoData(id, 1);
+        updateGeoData(id, 1);
     });
 }
 
@@ -730,6 +739,12 @@ function updateGeoData(id,level){
 
             var district_div = $('#total_district_count').parent().parent().parent();
             var province_div = $('#total_province_count').parent().parent().parent();
+            if(data.level >= 0){
+                province_div.hide();
+            }else{
+                province_div.show();
+            }
+
             if(data.level === 1){
                 district_div.hide();
                 province_div.hide();
@@ -747,22 +762,22 @@ function updateGeoData(id,level){
         }
 
         // gender distribution
-        var province_row_number_html = '';
-        var province_name_html = '';
-        var province_male_count_html = '';
-        var province_female_count_html = '';
-        var province_total_count_html = '';
+        var gender_row_number_html = '';
+        var gender_name_html = '';
+        var gender_male_count_html = '';
+        var gender_female_count_html = '';
+        var gender_total_count_html = '';
         var total_male_count = 0;
         var total_female_count = 0;
         var total_final_count = 0;
 
 
         $.each(data.gender_data.main, function (index,row) {
-            province_row_number_html += '<div class="text-title">'+ ++index +'</div>'
-            province_name_html += '<div class="text-title" id="province_'+row.province_id+'">'+row.name_en+'</div>'; 
-            province_male_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.male+'</div>';
-            province_female_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.female+'</div>';
-            province_total_count_html += '<div class="text-blue text-value" id="province_'+row.province_id+'">'+row.total+'</div>';
+            gender_row_number_html += '<div class="text-title">'+ ++index +'</div>'
+            gender_name_html += '<div class="text-title">'+camelize(row.name_en)+'</div>'; 
+            gender_male_count_html += '<div class="text-blue text-value">'+row.male+'</div>';
+            gender_female_count_html += '<div class="text-blue text-value">'+row.female+'</div>';
+            gender_total_count_html += '<div class="text-blue text-value">'+row.total+'</div>';
 
             
              //total_projects_count
@@ -772,39 +787,39 @@ function updateGeoData(id,level){
         });
 
         //for total 
-        province_name_html += '<div class="text-blue text-value total-sum">Total</div>';
-        province_male_count_html += '<div class="text-blue text-value total-sum">'+total_male_count+'</div>';
-        province_female_count_html += '<div class="text-blue text-value total-sum">'+total_female_count+'</div>';
-        province_total_count_html += '<div class="text-blue text-value total-sum">'+total_final_count+'</div>';
+        gender_name_html += '<div class="text-blue text-value total-sum">Total</div>';
+        gender_male_count_html += '<div class="text-blue text-value total-sum">'+total_male_count+'</div>';
+        gender_female_count_html += '<div class="text-blue text-value total-sum">'+total_female_count+'</div>';
+        gender_total_count_html += '<div class="text-blue text-value total-sum">'+total_final_count+'</div>';
 
 
         //for brand-card heading
         if(data.level === -1){
-            $('#gender_province_title').html('Province wise gender distribution');
+            $('#gender_card_title').html('Province wise gender distribution');
             $('#table_level_title').html('Province');
-            var chart_title = 'Province-wise gender distribution';
-        }else if(data.level === 0 && data.province_projects.main.length > 0){
-            $('#gender_province_title').html( data.province_projects.main[0].name_lc+' को आयोजना तथ्यांक');
-            $('#table_level_title').html('प्रदेश');
-            var chart_title = data.province_projects.main[0].name_lc+' को आयोजना';
-        }else if(data.level === 1 && data.province_projects.main.length > 0){
-            $('#gender_province_title').html( data.province_projects.main[0].name_lc+' जिल्लाको आयोजना तथ्यांक');
-            $('#table_level_title').html('जिल्ला');
-            var chart_title = data.province_projects.main[0].name_lc+' जिल्लाको आयोजना';
+            var chart_title = 'Province wise gender distribution';
+        }else if(data.level === 0 && data.gender_data.main.length > 0){
+            $('#gender_card_title').html( data.province_name+' (District wise gender distribution)');
+            $('#table_level_title').html('District');
+            var chart_title = data.province_name+' (District wise gender distribution)';
+        }else if(data.level === 1 && data.gender_data.main.length > 0){
+            $('#gender_card_title').html( camelize(data.disrtict_name)+' (Locallevel wise gender distribution)');
+            $('#table_level_title').html('Local Level');
+            var chart_title = data.distict_name+' (Locallevel wise gender distribution)';
         }else if(data.level === 2 && data.province_projects.main.length > 0){
-            $('#gender_province_title').html( data.province_projects.main[0].name_lc+'को आयोजना तथ्यांक');
+            $('#gender_card_title').html( data.province_projects.main[0].name_lc+'को आयोजना तथ्यांक');
             $('#table_level_title').html('स्थानीय तह');
             var chart_title = data.province_projects.main[0].name_lc+'को आयोजना';
         }
 
-        $('#province_row_number').html(province_row_number_html);
-        $('#province_name').html(province_name_html);
-        $('#province_male_count').html(province_male_count_html);
-        $('#province_female_count').html(province_female_count_html);
-        $('#province_total_count').html(province_total_count_html);
+        $('#gender_row_number').html(gender_row_number_html);
+        $('#gender_name').html(gender_name_html);
+        $('#gender_male_count').html(gender_male_count_html);
+        $('#gender_female_count').html(gender_female_count_html);
+        $('#gender_total_count').html(gender_total_count_html);
 
          //for building province-projects-charts
-         createChart('province_gender_distribution_chart', chart_title, data.gender_data.chart, 'bar');
+         createChart('gender_distribution_chart', chart_title, data.gender_data.chart, 'bar');
 
     });
 }
@@ -817,15 +832,15 @@ function createChart(element_id, title, data, type)
   
     var parent_div = $('#' + element_id).parent();
     $('#' + element_id).remove();
-    parent_div.append('<canvas id="' + element_id + '" height="270"></canvas>');
+    parent_div.append('<canvas id="' + element_id + '" height="300"></canvas>');
     var ctx = document.getElementById(element_id);
     var customBackgroundColor;
     // var tooltip_label1 = '* Count : ';
     // var tooltip_label2 = '* कुल लागत : ';
 
-    if(element_id === 'province_gender_distribution_chart'){
-         customBackgroundColor1 = ['brown','brown','brown','brown','brown','brown','brown'];
-         customBackgroundColor2 = ['green','green','green','green','green','green','green'];
+    if(element_id === 'gender_distribution_chart'){
+         customBackgroundColor1 = ['brown','brown','brown','brown','brown','brown','brown','brown','brown','brown','brown','brown','brown','brown'];
+         customBackgroundColor2 = ['green','green','green','green','green','green','green','green','green','green','green','green','green','green'];
     }else{
          customBackgroundColor = ['red','blue','green','purple','orange','brown','real','lightgreen','skyblue'];
     }

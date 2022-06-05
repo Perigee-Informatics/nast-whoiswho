@@ -188,34 +188,34 @@
             </section> --}}
 
             <!-- Project By Province -->
-            <section id="gender_by_province" class="parallax-section">
+            <section id="gender_card" class="parallax-section">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-6 col-lg-6">
                             <div class="brand-card">
                                 <div class="brand-card-header bg-stack-overflow">
-                                    <h6 style="color: white;" id="gender_province_title"></h6>
+                                    <h6 style="color: white;" id="gender_card_title"></h6>
                                 </div>
                                 <div class="brand-card-body">
                                     <div style="max-width:60px;">
                                         <div class="text-header">S.N.</div>
-                                        <div id="province_row_number"></div>
+                                        <div id="gender_row_number"></div>
                                     </div>
                                     <div style="min-width:150px;">
                                         <div class="text-header" id="table_level_title">-</div>
-                                        <div id="province_name"></div>
+                                        <div id="gender_name"></div>
                                     </div>
                                     <div>
                                         <div class="text-header">Male</div>
-                                        <div id="province_male_count"></div>
+                                        <div id="gender_male_count"></div>
                                     </div>
                                     <div>
                                         <div class="text-header">Female</div>
-                                        <div id="province_female_count"></div>
+                                        <div id="gender_female_count"></div>
                                     </div>
                                     <div>
                                         <div class="text-header">Total</div>
-                                        <div id="province_total_count"></div>
+                                        <div id="gender_total_count"></div>
                                     </div>
                                 </div>
                             </div>
@@ -223,7 +223,7 @@
 
                         <div class="col-sm-6 col-lg-6">
                             <div class="card text-center font-weight-bold mb-3" style="border-top:5px solid red; border-bottom:5px solid lightgray; border-radius:20px">
-                                <canvas id="province_gender_distribution_chart" style="background-color:white; border-radius:20px;"></canvas>
+                                <canvas id="gender_distribution_chart" style="background-color:white; border-radius:20px;"></canvas>
                             </div>
                         </div>
                     

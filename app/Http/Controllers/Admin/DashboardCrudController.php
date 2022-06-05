@@ -8,6 +8,7 @@ use App\Models\AppSetting;
 use Illuminate\Http\Request;
 use App\Models\MstFiscalYear;
 use App\Models\MstFedDistrict;
+use App\Models\MstFedProvince;
 use App\Base\BaseCrudController;
 use App\Models\MstFedLocalLevel;
 use Illuminate\Support\Facades\DB;
@@ -283,20 +284,13 @@ class DashboardCrudController extends BaseCrudController
     //get Province Data
     public function getProvinceGeoData($request)
     {
-        $fiscal_year_id = Session::get('fiscal_year_id');
         $province_id = $request->id;
         $data['level'] = 0;
 
-        $districts =DB::table('mst_fed_local_level as mfll')
-                        ->leftJoin('mst_fed_district as mfd','mfd.id','mfll.district_id')
-                        ->leftJoin('mst_fed_province as mfp','mfp.id','mfd.province_id')
-                        ->where('mfll.is_tmpp_applicable',true)
-                        ->where('mfp.id',$province_id)
-                        ->distinct('mfll.district_id')
-                        ->pluck('mfll.district_id');
-                     
+        $districts =DB::table('mst_fed_district')->whereProvinceId($province_id)->pluck('id');
 
-        $local_level=DB::table('mst_fed_local_level')->whereIn('district_id',$districts)->where('is_tmpp_applicable',true)->pluck('level_type_id')->toArray();
+
+        $local_level=DB::table('mst_fed_local_level')->whereIn('district_id',$districts)->pluck('level_type_id')->toArray();
         $count = array_count_values($local_level);
 
         //count of districts, Metro/Sub-metro/Rural Mun
@@ -307,256 +301,93 @@ class DashboardCrudController extends BaseCrudController
         $data['count']['metro_count']=array_key_exists(4,$count)?$count[4]:0;
         $data['count']['total_local_level_count']=count($local_level);
 
-        //select app client only from respective districts of respective province
-        $app_client_ids = DB::table('app_client as ac')
-                            ->leftJoin('mst_fed_local_level as mfll','mfll.id','ac.fed_local_level_id')
-                            ->leftJoin('mst_fed_district as mfd','mfd.id','mfll.district_id')
-                            ->whereIn('mfll.district_id',$districts)
-                            ->pluck('ac.id')
-                            ->toArray();
+        $gender_data_districts = DB::table('members as m')
+                                    ->leftJoin('mst_fed_province as mfp','mfp.id','m.province_id')
+                                    ->leftJoin('mst_fed_district as mfd','mfd.id','m.district_id')
+                                    ->leftJoin('mst_gender as mg','mg.id','m.gender_id')
+                                    ->select('m.district_id','mfd.name_en',
+                                            DB::raw('count(case when gender_id = 1 then 1 end) as male'),
+                                            DB::raw('count(case when gender_id = 2 then 1 end) as female'),
+                                            DB::raw('count(m.gender_id) as total'))
+                                    ->where('mfd.province_id',$province_id)
+                                    ->groupBy('m.district_id','mfd.name_en')
+                                    ->orderBy('m.district_id')
+                                    ->get();
 
-        $new_projects = DB::table('pt_project')->where('project_status_id',1)
-                            ->whereIn('client_id',$app_client_ids)
-                            ->where('deleted_uq_code',1)
-                            ->get();
 
-        $selected_projects = DB::table('pt_selected_project')->where('project_status_id',2)
-                            ->whereIn('client_id',$app_client_ids)
-                            ->where('deleted_uq_code',1)
-                            ->get();
 
-        $wip_projects = DB::table('pt_selected_project')->where('project_status_id',3)
-                            ->whereIn('client_id',$app_client_ids)
-                            ->where('deleted_uq_code',1)
-                            ->get();
-
-        $completed_projects = DB::table('pt_selected_project')->where('project_status_id',4)
-                            ->whereIn('client_id',$app_client_ids)
-                            ->where('deleted_uq_code',1)
-                            ->get();
-
-        if(isset($fiscal_year_id)){
-            $new_projects = $new_projects->where('fiscal_year_id',$fiscal_year_id);
-            $selected_projects = $selected_projects->where('fiscal_year_id',$fiscal_year_id);
-            $wip_projects = $wip_projects->where('fiscal_year_id',$fiscal_year_id);
-            $completed_projects = $completed_projects->where('fiscal_year_id',$fiscal_year_id);
-        }
-
-        $new_projects_cnt =  $new_projects->count();
-        $selected_projects_cnt =  $selected_projects->count();
-        $wip_projects_cnt =  $wip_projects->count();
-        $completed_projects_cnt =  $completed_projects->count();
-
-        $data['count']['new_projects_count'] = $new_projects_cnt;
-        $data['count']['selected_projects_count'] = $selected_projects_cnt;
-        $data['count']['wip_projects_count'] = $wip_projects_cnt;
-        $data['count']['completed_projects_count'] = $completed_projects_cnt;
-
-        $fiscal_year_clause = "1=1";
-        if(isset($fiscal_year_id)){
-            $fiscal_year_clause = "pp.fiscal_year_id = ".$fiscal_year_id;
-        }
-
-        //get province-wise-project-data
-        $province_projects = DB::table('pt_selected_project as pp')->select(DB::raw('ROW_NUMBER() OVER(ORDER BY mfp.id ASC) AS sn'),'mfp.id as province_id','mfp.name_lc',DB::raw('count(mfp.id) as total_project'),DB::raw('sum(pp.source_federal_amount) as project_cost'))
-                                ->join('app_client as ac','ac.id','pp.client_id')
-                                ->join('mst_fed_local_level as mfll','mfll.id','ac.fed_local_level_id')
-                                ->join('mst_fed_district as mfd','mfd.id','mfll.district_id')
-                                ->join('mst_fed_province as mfp','mfp.id','mfd.province_id')
-                                ->join('mst_fiscal_year as mfy','mfy.id','pp.fiscal_year_id')
-                                ->whereIn('pp.project_status_id',[2,3,4])
-                                ->whereIn('pp.client_id',$app_client_ids)
-                                ->whereRaw($fiscal_year_clause)
-                                ->groupBy('mfp.id')
-                                ->orderBy('mfp.id','ASC')
-                                ->get();
-        $datas = [] ;
-        $labels = [];
-        $costs = [];
-        $total_project_cost = 0;
-        //format data for charts
-        foreach($province_projects as $row){
-            $labels [] = $row->name_lc;
-            $datas [] = $row->total_project;
-            $costs [] = $row->project_cost;
-            $total_project_cost += $row->project_cost;
-        }
-
-        $data['province_projects']['main'] = $province_projects->toArray();                    
-        $data['province_projects']['chart']['labels'] = $labels;                    
-        $data['province_projects']['chart']['data'] = $datas;     
-        $data['province_projects']['chart']['cost'] = $costs;     
-        $data['province_projects']['total_project_cost'] = $total_project_cost;     
-
-        unset($datas);
-        unset($labels);
-        unset($costs);
-        unset($total_project_cost);
-        //get projects category-wise
-        $category_projects = DB::table('pt_selected_project as pp')->select(DB::raw('ROW_NUMBER() OVER(ORDER BY mpc.id ASC) AS sn'),'mpc.id as category_id','mpc.name_lc',DB::raw('count(mpc.id) as total_project'),DB::raw('sum(pp.source_federal_amount) as category_cost'))
-                                ->join('mst_project_category as mpc','mpc.id','pp.category_id')
-                                ->join('mst_fiscal_year as mfy','mfy.id','pp.fiscal_year_id')
-                                ->whereIn('pp.project_status_id',[2,3,4])
-                                ->whereIn('pp.client_id',$app_client_ids)
-                                ->whereRaw($fiscal_year_clause)
-                                ->groupBy('mpc.id')
-                                ->orderBy('mpc.id','ASC')
-                                ->get();
-
-        $datas = [] ;
-        $labels = [];
-        $costs = [];
-        $total_project_cost = 0;
-
-        //format data for charts
-        foreach($category_projects as $row){
-            $labels [] = $row->name_lc;
-            $datas [] = $row->total_project;
-            $costs [] = $row->category_cost;
-            $total_project_cost += $row->category_cost;
-        }
-
-        $data['category_projects']['main'] = $category_projects->toArray();                    
-        $data['category_projects']['chart']['labels'] = $labels;                    
-        $data['category_projects']['chart']['data'] = $datas;  
-        $data['category_projects']['chart']['cost'] = $costs;     
-        $data['category_projects']['total_project_cost'] = $total_project_cost;     
-
-        return $data;
+           $datas = [] ;
+           $labels = [];
+           //format data for charts
+           foreach($gender_data_districts as $row){
+               $datas ['male'][] = $row->male;
+               $datas ['female'][] = $row->female;
+               $labels[] = $row->name_en;
+           }
+   
+           $data['gender_data']['main'] = $gender_data_districts->toArray();                    
+           $data['gender_data']['chart']['labels'] = $labels;                    
+           $data['gender_data']['chart']['data'] = $datas;
+           
+           $data['province_name'] = MstFedProvince::find($province_id)->name_en;
+   
+           unset($datas);
+           unset($labels);
+   
+           return $data;
     }
 
     //get District Data
     public function getDistrictGeoData($request)
     {
-        $fiscal_year_id = Session::get('fiscal_year_id');
         $district_id = $request->id;
         $data['level'] = 1;
 
 
-        $local_level=DB::table('mst_fed_local_level')->where('district_id',$district_id)->where('is_tmpp_applicable',true)->pluck('level_type_id')->toArray();
+        $local_level=DB::table('mst_fed_local_level')->where('district_id',$district_id)->pluck('level_type_id')->toArray();
         $count = array_count_values($local_level);
 
         //count of districts, Metro/Sub-metro/Rural Mun
-        $data['count']['districts_count']=0;
         $data['count']['rural_mun_count']=$count[1];
         $data['count']['mun_count']=array_key_exists(2,$count)?$count[2]:0;
         $data['count']['sub_metro_count']=array_key_exists(3,$count)?$count[3]:0;
         $data['count']['metro_count']=array_key_exists(4,$count)?$count[4]:0;
         $data['count']['total_local_level_count']=count($local_level);
 
-        //select app client only from respective districts of respective province
-        $app_client_ids = DB::table('app_client as ac')
-                            ->leftJoin('mst_fed_local_level as mfll','mfll.id','ac.fed_local_level_id')
-                            ->where('mfll.district_id',$district_id)
-                            ->pluck('ac.id')
-                            ->toArray();
+        $gender_data_local_level = DB::table('members as m')
+                                    ->leftJoin('mst_fed_province as mfp','mfp.id','m.province_id')
+                                    ->leftJoin('mst_fed_district as mfd','mfd.id','m.district_id')
+                                    ->leftJoin('mst_fed_local_level as mfll','mfll.id','m.local_level_id')
+                                    ->leftJoin('mst_gender as mg','mg.id','m.gender_id')
+                                    ->select('m.local_level_id','mfll.name_en',
+                                            DB::raw('count(case when gender_id = 1 then 1 end) as male'),
+                                            DB::raw('count(case when gender_id = 2 then 1 end) as female'),
+                                            DB::raw('count(m.gender_id) as total'))
+                                    ->where('mfd.district_id',$district_id)
+                                    ->groupBy('m.local_level_id','mfll.name_en')
+                                    ->orderBy('m.local_level_id')
+                                    ->get();
 
-        $new_projects = DB::table('pt_project')->where('project_status_id',1)
-                            ->whereIn('client_id',$app_client_ids)
-                            ->where('deleted_uq_code',1)
-                            ->get();
 
-        $selected_projects = DB::table('pt_selected_project')->where('project_status_id',2)
-                            ->whereIn('client_id',$app_client_ids)
-                            ->where('deleted_uq_code',1)
-                            ->get();
 
-        $wip_projects = DB::table('pt_selected_project')->where('project_status_id',3)
-                            ->whereIn('client_id',$app_client_ids)
-                            ->where('deleted_uq_code',1)
-                            ->get();
-
-        $completed_projects = DB::table('pt_selected_project')->where('project_status_id',4)
-                            ->whereIn('client_id',$app_client_ids)
-                            ->where('deleted_uq_code',1)
-                            ->get();
-
-        if(isset($fiscal_year_id)){
-            $new_projects = $new_projects->where('fiscal_year_id',$fiscal_year_id);
-            $selected_projects = $selected_projects->where('fiscal_year_id',$fiscal_year_id);
-            $wip_projects = $wip_projects->where('fiscal_year_id',$fiscal_year_id);
-            $completed_projects = $completed_projects->where('fiscal_year_id',$fiscal_year_id);
-        }
-
-        $new_projects_cnt =  $new_projects->count();
-        $selected_projects_cnt =  $selected_projects->count();
-        $wip_projects_cnt =  $wip_projects->count();
-        $completed_projects_cnt =  $completed_projects->count();
-
-        $data['count']['new_projects_count'] = $new_projects_cnt;
-        $data['count']['selected_projects_count'] = $selected_projects_cnt;
-        $data['count']['wip_projects_count'] = $wip_projects_cnt;
-        $data['count']['completed_projects_count'] = $completed_projects_cnt;
-        
-        if(isset($fiscal_year_id)){
-            $fiscal_year_clause = "pp.fiscal_year_id = ".$fiscal_year_id;
-        }
-
-        //get province-wise-project-data
-        $province_projects = DB::table('pt_selected_project as pp')->select(DB::raw('ROW_NUMBER() OVER(ORDER BY mfd.id ASC) AS sn'),'mfd.name_lc',DB::raw('count(mfd.id) as total_project'),DB::raw('sum(pp.source_federal_amount) as project_cost'))
-                                ->join('app_client as ac','ac.id','pp.client_id')
-                                ->join('mst_fed_local_level as mfll','mfll.id','ac.fed_local_level_id')
-                                ->join('mst_fed_district as mfd','mfd.id','mfll.district_id')
-                                ->join('mst_fiscal_year as mfy','mfy.id','pp.fiscal_year_id')
-                                ->whereIn('pp.project_status_id',[2,3,4])
-                                ->whereIn('pp.client_id',$app_client_ids)
-                                ->whereRaw($fiscal_year_clause)
-                                ->groupBy('mfd.id')
-                                ->orderBy('mfd.id','ASC')
-                                ->get();
-        $datas = [] ;
-        $labels = [];
-        $costs = [];
-        $total_project_cost = 0;
-
-        //format data for charts
-        foreach($province_projects as $row){
-            $labels [] = $row->name_lc;
-            $datas [] = $row->total_project;
-            $costs [] = $row->project_cost;
-            $total_project_cost += $row->project_cost;
-        }
-
-        $data['province_projects']['main'] = $province_projects->toArray();                    
-        $data['province_projects']['chart']['labels'] = $labels;                    
-        $data['province_projects']['chart']['data'] = $datas;     
-        $data['province_projects']['chart']['cost'] = $costs;     
-        $data['province_projects']['total_project_cost'] = $total_project_cost;     
-
-        unset($datas);
-        unset($labels);
-        unset($costs);
-        unset($total_project_cost);
-
-        //get projects category-wise
-        $category_projects = DB::table('pt_selected_project as pp')->select(DB::raw('ROW_NUMBER() OVER(ORDER BY mpc.id ASC) AS sn'),'mpc.id as category_id','mpc.name_lc',DB::raw('count(mpc.id) as total_project'),DB::raw('sum(pp.source_federal_amount) as category_cost'))
-                                ->join('mst_project_category as mpc','mpc.id','pp.category_id')
-                                ->join('mst_fiscal_year as mfy','mfy.id','pp.fiscal_year_id')
-                                ->whereIn('pp.project_status_id',[2,3,4])
-                                ->whereIn('pp.client_id',$app_client_ids)
-                                ->whereRaw($fiscal_year_clause)
-                                ->groupBy('mpc.id')
-                                ->orderBy('mpc.id','ASC')
-                                ->get();
-
-        $datas = [] ;
-        $labels = [];
-        $costs = [];
-        $total_project_cost = 0;
-
-        //format data for charts
-        foreach($category_projects as $row){
-            $labels [] = $row->name_lc;
-            $datas [] = $row->total_project;
-            $costs [] = $row->category_cost;
-            $total_project_cost += $row->category_cost;
-        }
-
-        $data['category_projects']['main'] = $category_projects->toArray();                    
-        $data['category_projects']['chart']['labels'] = $labels;                    
-        $data['category_projects']['chart']['data'] = $datas;  
-        $data['category_projects']['chart']['cost'] = $costs;     
-        $data['category_projects']['total_project_cost'] = $total_project_cost;     
+           $datas = [] ;
+           $labels = [];
+           //format data for charts
+           foreach($gender_data_local_level as $row){
+               $datas ['male'][] = $row->male;
+               $datas ['female'][] = $row->female;
+               $labels[] = $row->name_en;
+           }
+   
+           $data['gender_data']['main'] = $gender_data_local_level->toArray();                    
+           $data['gender_data']['chart']['labels'] = $labels;                    
+           $data['gender_data']['chart']['data'] = $datas;
+           
+           $data['district_name'] = MstFedDistrict::find($district_id)->name_en;
+   
+           unset($datas);
+           unset($labels);
+          
 
         return $data;
     }
