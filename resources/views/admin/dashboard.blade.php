@@ -139,55 +139,8 @@
                 </div>
             </section>
 
-            <!-- Project Count Summary -->
-            {{-- <section id="project_count_summary" class="parallax-section">
-                <div class="container bootstrap snippet">
-                    <div class="row">
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="box">
-                                <div class="box-icon">
-                                    <img src={{asset("homepage/img/plus.png")}} height="35" width="35" />
-                                    <span class="circle-tile-number text-margin-left" id="new_projects_demand">-</span>
-                                </div>
-                                <div class="circle-tile-description"> नया आयोजना माग</div>
-                            </div>
-                        </div>
 
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="box ">
-                                <div class="box-icon">
-                                    <img src={{asset("homepage/img/selected.png")}} height="35" width="35" />
-                                    <span class="circle-tile-number text-margin-left" id="selected_projects">-</span>
-                                </div>
-                                <div class="circle-tile-description"> स्वीकृत आयोजना</div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="box">
-                                <div class="box-icon">
-                                    <img src={{asset("homepage/img/work_in_progress.png")}} height="35" width="35" />
-                                    <span class="circle-tile-number text-margin-left" id="work_in_progress_projects">-</span>
-                                </div>
-                                <div class="circle-tile-description"> कार्य सुचारु आयोजना</div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="box">
-                                <div class="box-icon">
-                                    <img src={{asset("homepage/img/completed.png")}} height="35" width="35" />
-                                    <span class="circle-tile-number text-margin-left" id="completed_projects">-</span>
-                                </div>
-                                <div class="circle-tile-description"> कार्य सम्पन्न आयोजना</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </section> --}}
-
-            <!-- Project By Province -->
+            <!-- Gender wise Distribution -->
             <section id="gender_card" class="parallax-section">
                 <div class="container">
                     <div class="row">
@@ -231,45 +184,41 @@
                 </div>
             </section>
 
-            <!-- Project By Category -->
-            {{-- <section id="project_by_category" class="parallax-section">
+              <!-- age wise card -->
+              <section id="age_card" class="parallax-section">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-7 col-lg-7">
+                        <div class="col-sm-12 col-lg-5">
                             <div class="brand-card">
                                 <div class="brand-card-header bg-stack-overflow">
-                                    <h5 style="color: white; font-weight:bold" id="project_category_title"></h5>
+                                    <h6 style="color: white;" id="age_card_title"></h6>
                                 </div>
                                 <div class="brand-card-body">
                                     <div style="max-width:60px;">
-                                        <div class="text-header">क्र.स.</div>
-                                        <div id="category_row_number"></div>
+                                        <div class="text-header">S.N.</div>
+                                        <div id="age_row_number"></div>
                                     </div>
-                                    <div style="max-width:300px;">
-                                        <div class="text-header text-left">आयोजना क्षेत्र</div>
-                                        <div id="category_name"></div>
+                                    <div>
+                                        <div class="text-header">Age Group</div>
+                                        <div id="age_name"></div>
                                     </div>
-                                    <div style="max-width:150px;">
-                                        <div class="text-header">आयोजना संख्या</div>
-                                        <div id="category_project_count"></div>
-                                    </div>
-                                    <div style="max-width:175px;">
-                                        <div class="text-header">कुल लागत</div>
-                                        <div id="category_project_amount"></div>
+                                    <div>
+                                        <div class="text-header">Count</div>
+                                        <div id="age_count"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-sm-5 col-lg-5">
-                                <div class="card text-center font-weight-bold mb-3" style="border-top:5px solid green; border-bottom:5px solid lightgray; border-radius:20px">
-                                    <canvas id="project_by_category_chart"  height="250" style="background-color:white; border-radius:20px;"></canvas>
-                                </div>
+                        <div class="col-sm-12 col-lg-7">
+                            <div class="card text-center font-weight-bold mb-3" style="border-top:5px solid green; border-bottom:5px solid lightgray; border-radius:20px">
+                                <canvas id="age_distribution_chart"  style="background-color:white; border-radius:20px;"></canvas>
+                            </div>
                         </div>
                     
                     </div>
                 </div>
-            </section>  --}}
+            </section> 
     @endsection
 
     @push('after_scripts')
