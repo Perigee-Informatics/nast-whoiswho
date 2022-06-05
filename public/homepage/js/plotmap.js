@@ -614,6 +614,8 @@ function removeLayer(){
 function resetToCountry() {
     resetToMapLevel(1);
     removeLayer();
+    hideAllBreadCrumb();
+
     markerClusters.clearLayers();
     $.get("/get-nepal-map-data", function (data) {
         provinceData = JSON.parse(data);
@@ -623,8 +625,9 @@ function resetToCountry() {
         }).addTo(map);
         var nepal = L.geoJSON(provinceData);
         map.fitBounds(nepal.getBounds());
-        hideAllBreadCrumb();
-        showMembersData(-1,-1);
+        setTimeout(function(){
+            showMembersData(-1,-1);
+        },500);
         updateGeoData(-1,-1);
     });
 }
