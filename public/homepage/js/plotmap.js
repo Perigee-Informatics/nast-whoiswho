@@ -853,7 +853,7 @@ function updateGeoData(id,level){
 
          //for building province-projects-charts
          createChart('gender_distribution_chart', gender_chart_title, data.gender_data.chart, 'bar');
-         createChart('age_distribution_chart', age_chart_title, data.age_group_data.chart, 'bar');
+         createChart('age_distribution_chart', age_chart_title, data.age_group_data.chart, 'pie');
 
     });
 }
@@ -865,6 +865,8 @@ function createChart(element_id, title, data, type)
     let data_new = '';
     let legend_display = false;
     let label_string = '';
+    let scale_label=false;
+    let axis_scale= false;
   
     var parent_div = $('#' + element_id).parent();
     $('#' + element_id).remove();
@@ -878,6 +880,8 @@ function createChart(element_id, title, data, type)
          customBackgroundColor3 = ['blue','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue'];
 
         legend_display = true;
+        axis_scale=true;
+        scale_label=true;
         label_string = 'Province';
         data_new= {
             labels: data.labels,
@@ -909,7 +913,8 @@ function createChart(element_id, title, data, type)
     }else if(element_id === 'age_distribution_chart'){
          customBackgroundColor = ['red','blue','green','purple','orange','brown','real','lightgreen','skyblue'];
         let chart_data= [data.data['Below 30'],data.data['31-40'],data.data['41-50'],data.data['51-60'],data.data['60 & Above']];
-        label_string ='Age group';
+        // label_string ='Age group';
+        legend_display=true;
         data_new= {
             labels: data.labels,
             datasets: [{    
@@ -963,19 +968,21 @@ function createChart(element_id, title, data, type)
             },
             scales: {
                 yAxes: [{
+                    display:axis_scale,
                     ticks: {
                         beginAtZero: true,
                         fontFamily:'Cursive',
                         fontColor:'black'
                     },
                     scaleLabel: {
-                        display: true,
-                        labelString: 'Number count'
+                        display: scale_label,
+                        labelString: 'Number'
                     }
                 }],
                 xAxes: [{
+                    display:axis_scale,
                     scaleLabel: {
-                        display: true,
+                        display: scale_label,
                         labelString: label_string
                     }
                 }],
