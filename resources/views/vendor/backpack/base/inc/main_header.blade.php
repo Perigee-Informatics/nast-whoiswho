@@ -31,11 +31,10 @@ $date = convert_bs_from_ad();
 
       .date-time{
         color: #73818f;
-        font: small-caps bold 14px kalimati, serif;
         width: 250px;
         position: sticky;
         top: 0;
-        left: 82%;
+        left: 80%;
       }
       .notification-menu{
         margin-right: -90px !important;
