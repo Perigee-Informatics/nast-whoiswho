@@ -918,7 +918,7 @@ function createChart(element_id, title, data, type)
         data_new= {
             labels: data.labels,
             datasets: [{    
-                label: 'Count',
+                label: 'Member count',
                 data: chart_data,
                 maxBarThickness: 20,
                 backgroundColor: customBackgroundColor,

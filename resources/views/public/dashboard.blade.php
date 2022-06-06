@@ -203,7 +203,7 @@
                                         <div id="age_name"></div>
                                     </div>
                                     <div style="min-width:150px;">
-                                        <div class="text-header">Count</div>
+                                        <div class="text-header">Members Count</div>
                                         <div id="age_count"></div>
                                     </div>
                                 </div>
