@@ -16,9 +16,7 @@
             </div>
         </div>
 
-        <div class="card-body row">
-            <div class="col p-0 border rounded px-2" id="body-content"></div>
-        </div>
+        <div class="col p-0 border rounded p-2" id="body-content"></div>
     </div>
 
 @endsection
