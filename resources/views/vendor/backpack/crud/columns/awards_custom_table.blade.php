@@ -56,20 +56,23 @@
 
 		<tbody>
 			@foreach ($value as $tableRow)
-			<tr>   
-                <td>{{$loop->iteration}}</td>
-				@foreach($columns as $tableColumnKey => $tableColumnLabel)
-					<td style="overflow-x: scroll; overflow-y:hidden;">
-						@if( is_array($tableRow) && isset($tableRow[$tableColumnKey]) )
-							{{ $tableRow[$tableColumnKey] }}
-                        @elseif( is_object($tableRow) && property_exists($tableRow, $tableColumnKey) )
-							{!! nl2br($tableRow->$tableColumnKey) !!}
+				@if((isset($tableRow->award_name) && $tableRow->award_name != '' ) || ((isset($tableRow->name) && $tableRow->name != '')))
 
-                        @endif
+					<tr>   
+						<td>{{$loop->iteration}}</td>
+						@foreach($columns as $tableColumnKey => $tableColumnLabel)
+							<td style="overflow-x: scroll; overflow-y:hidden;">
+								@if( is_array($tableRow) && isset($tableRow[$tableColumnKey]) )
+									{{ $tableRow[$tableColumnKey] }}
+								@elseif( is_object($tableRow) && property_exists($tableRow, $tableColumnKey) )
+									{!! nl2br($tableRow->$tableColumnKey) !!}
 
-					</td>
-				@endforeach
-			</tr>
+								@endif
+
+							</td>
+						@endforeach
+					</tr>
+				@endif
 			@endforeach
 		</tbody>
     </table>

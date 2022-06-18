@@ -55,20 +55,22 @@
 
 		<tbody>
 			@foreach ($value as $tableRow)
-			<tr>   
-                <td>{{$loop->iteration}}</td>
-				@foreach($columns as $tableColumnKey => $tableColumnLabel)
-					<td style="overflow-x: scroll; overflow-y:hidden;">
-						@if( is_array($tableRow) && isset($tableRow[$tableColumnKey]) )
-							{{ $tableRow[$tableColumnKey] }}
-                        @elseif( is_object($tableRow) && property_exists($tableRow, $tableColumnKey) )
-							{!! nl2br($tableRow->$tableColumnKey) !!}
+			@if($tableRow->position != '')
+				<tr>   
+					<td>{{$loop->iteration}}</td>
+					@foreach($columns as $tableColumnKey => $tableColumnLabel)
+						<td style="overflow-x: scroll; overflow-y:hidden;">
+							@if( is_array($tableRow) && isset($tableRow[$tableColumnKey]) )
+								{{ $tableRow[$tableColumnKey] }}
+							@elseif( is_object($tableRow) && property_exists($tableRow, $tableColumnKey) )
+								{!! nl2br($tableRow->$tableColumnKey) !!}
 
-                        @endif
+							@endif
 
-					</td>
-				@endforeach
-			</tr>
+						</td>
+					@endforeach
+				</tr>
+			@endif
 			@endforeach
 		</tbody>
     </table>
