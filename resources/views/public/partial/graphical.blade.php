@@ -1,21 +1,15 @@
-@extends(backpack_view('layouts.plain'))
-
-    @section('content')
-
         <!-- leaflet -->
-        <link rel="stylesheet" href="{{asset('homepage/css/leaflet.css')}}"/>
+ <link rel="stylesheet" href="{{asset('homepage/css/leaflet.css')}}"/>
 
-        <!-- custom css -->
-        <link rel="stylesheet" href="{{asset('homepage/css/map.css')}}" />
+ <!-- custom css -->
+ <link rel="stylesheet" href="{{asset('homepage/css/map.css')}}" />
 
-        <!-- custom count css -->
-        <link rel="stylesheet" href="{{ asset('homepage/css/markerCluster.css') }}" />
-        <!-- chartjs -->
-        <link rel="stylesheet" href="{{asset('homepage/css/chart.min.css')}}" />
-        <link rel="stylesheet" href="{{asset('homepage/css/custom.css')}}">
+ <!-- custom count css -->
+ <link rel="stylesheet" href="{{ asset('homepage/css/markerCluster.css') }}" />
+ <!-- chartjs -->
+ <link rel="stylesheet" href="{{asset('homepage/css/chart.min.css')}}" />
+ <link rel="stylesheet" href="{{asset('homepage/css/custom.css')}}">
 
-
-        <script src="{{asset('homepage/js/leaflet.js')}}"></script>
             <!-- PRE LOADER -->
             <div class="preloader">
                 <div class="spinner">
@@ -219,11 +213,11 @@
                     </div>
                 </div>
             </section> 
-    @endsection
 
-    @push('after_scripts')
 
         <!-- SCRIPTS -->
+        <script src="{{asset('homepage/js/leaflet.js')}}"></script>
+
         <script src="{{asset('homepage/js/jquery.js')}}"></script>
         <script src="{{asset('packages/select2/dist/js/select2.full.min.js')}}"></script>
         <script src="{{asset('js/bootstrap.min.js')}}"></script>
@@ -238,7 +232,7 @@
         <script src="{{asset('homepage/js/currencyFormatter.min.js')}}"></script>
         <script src="{{asset('homepage/js/plotmap.js')}}"></script>
 
-    @endpush
+
 
    
 

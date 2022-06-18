@@ -8,7 +8,7 @@
   <div class="app-body">
     <main class="pt-4 pl-3" style="width:100%;">
 
-      <div class="container">
+      <div class="px-3">
         @yield('content')
       </div>
     </main>

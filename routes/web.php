@@ -33,6 +33,7 @@ use App\Http\Controllers\Api\DistrictLocalLevelController;
 // });
 Route::get('/', [DashboardController::class,'index']);
 Route::get('/home', [DashboardController::class,'index']);
+Route::get('/home/get-page-content', [DashboardController::class,'getPageContent']);
 Route::get('/admin', [AdminController::class,'redirect']);
 
 
