@@ -89,9 +89,12 @@
         <div class="hr-line">
             <hr/>
         </div>
+        @php
+            $dob = ($public_view == false) ? '; '.$member['basic']->dob_ad : ' ';
+        @endphp
         <div class="profile">
             <span class="name"><i class="fa fa-arrow-circle-right"></i>&nbsp;&nbsp;{{ $member['basic']->first_name .' '.$member['basic']->middle_name.' '. $member['basic']->last_name}}
-                ({{ $member['basic']->genderEntity->name_en.'; '.$member['basic']->dob_ad}} 
+                ({{ $member['basic']->genderEntity->name_en.$dob}} 
                 {{$member['basic']->district_id ?'; '.ucwords(strtolower($member['basic']->districtEntity->name_en)): ''}}
                 {{$member['basic']->is_other_country==true && $member['basic']->countryEntity ? '; '.$member['basic']->countryEntity->name_en : '; Nepal' }})
             </span>
@@ -187,9 +190,11 @@
                                 <div>
                                     <span class="subject-head">Mailing Address : </span><span class="subject-data">{{$member['basic']->mailing_address}}</span>
                                 </div>
-                                <div>                                
-                                    <span class="subject-head">Phone/Cell Number : </span><span class="subject-data">{{$member['basic']->phone}}</span>
-                                </div>
+                                @if(!$public_view)
+                                    <div>                                
+                                        <span class="subject-head">Phone/Cell Number : </span><span class="subject-data">{{$member['basic']->phone}}</span>
+                                    </div>
+                                @endif
                                 <div>
                                 <span class="subject-head"> E-mail : </span><span class="subject-data">{{$member['basic']->email}}</span>
                                 </div>

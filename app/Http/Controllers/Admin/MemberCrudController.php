@@ -799,7 +799,7 @@ class MemberCrudController extends BaseCrudController
 	}
 
 
-    public function printProfile($id){
+    public function printProfile($id,$public_view = false){
         $member = Member::find($id);
 
         $json_data = [
@@ -825,9 +825,10 @@ class MemberCrudController extends BaseCrudController
         $data['member']['basic'] = $member;
         $data['member']['json_data'] = $json_data;
         $data['member']['photo_encoded'] = $photo_encoded;
+
             // Format the image SRC:  data:{mime};base64,{data};
 
-        $html = view('profile.individual_profile', compact('data'))->render();
+        $html = view('profile.individual_profile', compact('data','public_view'))->render();
         PdfPrint::printPortrait($html, $member->first_name.' '.$member->middle_name.' '.$member->last_name."_Profile.pdf"); 
     }
 

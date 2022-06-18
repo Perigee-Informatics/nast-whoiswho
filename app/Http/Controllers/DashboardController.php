@@ -65,6 +65,6 @@ class DashboardController extends Controller
 
     public function printProfile($id)
     {
-        return (new MemberCrudController())->printProfile($id);
+        return (new MemberCrudController())->printProfile($id,true);
     }
 }
