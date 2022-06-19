@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="{{asset('homepage/css/map.css')}}" />
 <link rel="stylesheet" href="{{asset('homepage/css/custom.css')}}">
 
         <div>
