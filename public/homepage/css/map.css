@@ -9,6 +9,7 @@
     -webkit-transition: 0.5s linear;
     -o-transition: 0.5s linear;
     margin-bottom: 10px;
+    text-align: center;
 }
 .leaflet-container {
     background: none;
