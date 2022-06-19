@@ -1,14 +1,5 @@
-        <!-- leaflet -->
- <link rel="stylesheet" href="{{asset('homepage/css/leaflet.css')}}"/>
-
- <!-- custom css -->
- <link rel="stylesheet" href="{{asset('homepage/css/map.css')}}" />
-
- <!-- custom count css -->
- <link rel="stylesheet" href="{{ asset('homepage/css/markerCluster.css') }}" />
- <!-- chartjs -->
- <link rel="stylesheet" href="{{asset('homepage/css/chart.min.css')}}" />
- <link rel="stylesheet" href="{{asset('homepage/css/custom.css')}}">
+<link rel="stylesheet" href="{{asset('homepage/css/map.css')}}" />
+<link rel="stylesheet" href="{{asset('homepage/css/custom.css')}}">
 
         <div>
         <!-- PRE LOADER -->

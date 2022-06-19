@@ -1,5 +1,16 @@
 @extends(backpack_view('layouts.plain'))
 
+        <!-- leaflet -->
+        <link rel="stylesheet" href="{{asset('homepage/css/leaflet.css')}}"/>
+
+        <!-- custom css -->
+       
+        <!-- custom count css -->
+        <link rel="stylesheet" href="{{ asset('homepage/css/markerCluster.css') }}" />
+        <!-- chartjs -->
+        <link rel="stylesheet" href="{{asset('homepage/css/chart.min.css')}}" />
+       
+
 @section('content')
     <div class="row card" style="width: 100%">
         <div class="card-header">
