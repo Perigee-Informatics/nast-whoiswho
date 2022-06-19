@@ -77,6 +77,7 @@
 <script>
     $(document).ready(function() {
         getMembersData();
+               
     });
 
     function getMembersData() {
@@ -122,12 +123,10 @@
                     bInfo: true,
                     lengthChange: false
                 });
+                
+              
 
-                $('.fancybox').fancybox({
-                    openEffect: 'elastic',
-                    closeEffect: 'elastic',
-                    autoSize:true,
-                });
+               
             }
         });
     }

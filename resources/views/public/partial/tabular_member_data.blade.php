@@ -113,3 +113,11 @@
         padding:.5rem .75rem !important;
     }
 </style>
+
+<script>
+        $('.fancybox').fancybox({
+            openEffect: 'elastic',
+            closeEffect: 'elastic',
+            autoSize:true,
+        });
+</script>
