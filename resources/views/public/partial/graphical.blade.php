@@ -10,6 +10,7 @@
  <link rel="stylesheet" href="{{asset('homepage/css/chart.min.css')}}" />
  <link rel="stylesheet" href="{{asset('homepage/css/custom.css')}}">
 
+        <div>
         <!-- PRE LOADER -->
         <div class="preloader">
             <div class="spinner">
@@ -214,14 +215,13 @@
             </div>
         </section> 
 
-
+    </div>
         <!-- SCRIPTS -->
-        <script src="{{asset('homepage/js/leaflet.js')}}"></script>
 
         <script src="{{asset('homepage/js/jquery.js')}}"></script>
-        <script src="{{asset('packages/select2/dist/js/select2.full.min.js')}}"></script>
-        <script src="{{asset('js/bootstrap.min.js')}}"></script>
+        <script src="{{asset('homepage/js/leaflet.js')}}"></script>
         <script src="{{asset('homepage/js/jquery.parallax.js')}}"></script>
+        <script src="{{asset('js/bootstrap.min.js')}}"></script>
         <script src="{{asset('homepage/js/owl.carousel.min.js')}}"></script>
         <script src="{{asset('homepage/js/custom.js')}}"></script>
 
@@ -229,7 +229,6 @@
         <script src="{{asset('homepage/js/chart.min.js')}}"></script>
 
         <script src="{{ asset('homepage/js/leaflet.markercluster-src.js') }}"></script>
-        <script src="{{asset('homepage/js/currencyFormatter.min.js')}}"></script>
         <script src="{{asset('homepage/js/plotmap.js')}}"></script>
 
 

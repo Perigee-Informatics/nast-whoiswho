@@ -870,7 +870,7 @@ function createChart(element_id, title, data, type)
   
     var parent_div = $('#' + element_id).parent();
     $('#' + element_id).remove();
-    parent_div.append('<canvas id="' + element_id + '" height="300"></canvas>');
+    parent_div.append('<canvas id="' + element_id + '" height="320"></canvas>');
     var ctx = document.getElementById(element_id);
     var customBackgroundColor;
 
