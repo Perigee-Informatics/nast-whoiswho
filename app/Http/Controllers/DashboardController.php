@@ -24,17 +24,44 @@ class DashboardController extends Controller
             return view('public.partial.graphical');
         }else
         {
-            $data['provinces'] = MstFedProvince::all();
-            $data['districts'] = MstFedDistrict::all();
-            $data['genders'] = MstGender::all();
+            $data['provinces'] = MstFedProvince::orderBy('id')->get();
+            $data['districts'] = MstFedDistrict::orderBy('id')->get();
+            $data['genders'] = MstGender::orderBy('id')->get();
             return view('public.partial.tabular_index',$data);
         }
     }
 
-    public function getMembersList()
+    public function getMembersList(Request $request)
     { 
+
         $data = [];
-        foreach(Member::all() as $member)
+   
+        $members = Member::all();
+
+        if($request->province_id != '')
+        {
+           $members = $members->where('province_id',$request->province_id);
+        }
+        if($request->district_id != '')
+        {
+            $members =$members->where('district_id',$request->district_id);
+        }
+
+        if($request->gender_id != '')
+        {
+            $members =$members->where('gender_id',$request->gender_id);
+        }
+
+        if($request->country_status != '')
+        {
+            if($request->country_status == 'other'){
+                $members = $members->where('is_other_country',true);
+            }else{
+                $members =$members->where('is_other_country',false);
+            }
+        }
+
+        foreach($members as $member)
         {
             $json_data = [
                 'current_organization' => json_decode($member->current_organization),
@@ -61,6 +88,27 @@ class DashboardController extends Controller
             // $data[$member->id]['photo_encoded'] = $photo_encoded;
         }
         return view('public.partial.tabular_member_data',compact('data'));
+    }
+
+    public function viewDetailedInfo($id)
+    {
+        $data=[];
+        $member = Member::find($id);
+        $json_data = [
+            'current_organization' => json_decode($member->current_organization),
+            'past_organization' => json_decode($member->past_organization),
+            'doctorate_degree' => json_decode($member->doctorate_degree),
+            'masters_degree' => json_decode($member->masters_degree),
+            'bachelors_degree' => json_decode($member->bachelors_degree),
+            'awards' => json_decode($member->awards),
+            'expertise' => json_decode($member->expertise),
+            'affiliation' => json_decode($member->affiliation),
+            'awards' => json_decode($member->awards),
+        ];
+        $data['basic'] = $member;
+        $data['json_data'] = $json_data;
+        return view('public.partial.member-detail-info',compact('data'));
+
     }
 
     public function printProfile($id)

@@ -12,9 +12,9 @@ var map;
 function initializeMap(){
     map = new L.map('map', {
         scrollWheelZoom: false,
-        minZoom: 7.25,
+        minZoom: 7.20,
         maxZoom: 12
-    }).setView([28.39, 84.12], 7.25);
+    }).setView([28.39, 84.12], 7.20);
     map.doubleClickZoom.disable();
 }
 

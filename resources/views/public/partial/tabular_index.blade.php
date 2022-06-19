@@ -15,6 +15,10 @@
     }
 </style>
 
+<style src="{{asset('packages/dataTables-custom/css/dataTables.bootstrap4.min.css')}}"></style>
+<style src="{{asset('public/packages/dataTables-custom/css/select.dataTables.min.css')}}"></style>
+<style src="{{asset('css/jquery.fancybox.min.cs')}}"></style>
+
 <div class="card">
     <div class="card-header p-1 d-inline-block" style="background-color: rgb(43, 208, 223)">
         <span class="font-weight-bold"><i class="la la-users" aria-hidden="true"></i>&nbsp; Members List</span>
@@ -66,7 +70,10 @@
     <div class="col" id="members_data"></div>
 </div>
 
-
+<script src="{{asset('packages/dataTables-custom/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('packages/dataTables-custom/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('packages/dataTables-custom/js/dataTables.select.min.js')}}"></script>
+<script src="{{asset('js/jquery.fancybox.min.js')}}"></script>
 <script>
     $(document).ready(function() {
         getMembersData();
@@ -106,14 +113,21 @@
             data: data,
             success: function(response) {
                 $('#members_data').html(response);
-                // $('#members_data_table').DataTable({
-                //     searching: true,
-                //     paging: true,
-                //     ordering: true,
-                //     select: false,
-                //     bInfo: true,
-                //     lengthChange: false
-                // });
+
+                $('#members_data_table').DataTable({
+                    searching: true,
+                    paging: true,
+                    ordering: true,
+                    select: false,
+                    bInfo: true,
+                    lengthChange: false
+                });
+
+                $('.fancybox').fancybox({
+                    openEffect: 'elastic',
+                    closeEffect: 'elastic',
+                    autoSize:true,
+                });
             }
         });
     }

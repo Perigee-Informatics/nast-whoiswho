@@ -16,6 +16,7 @@ Route::group([
 ], function () { // custom admin routes
     Route::get('member/{member_id}/print-profile', [DashboardController::class,'printProfile']);
     Route::post('get-members-list', [DashboardController::class,'getMembersList']);
+    Route::get('member/{member_id}/view-detailed-info', [DashboardController::class,'viewDetailedInfo']);
 });
 
 
