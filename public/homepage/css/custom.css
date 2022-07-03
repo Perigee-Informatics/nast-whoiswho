@@ -164,6 +164,7 @@
     font-size: 14px;
     font-family: cursive !important;
 }
+
 .text-left {
     padding-left: 20px;
     text-align: left;
@@ -220,3 +221,4 @@ small {
      min-width: 100% !important;
  }
 }
+

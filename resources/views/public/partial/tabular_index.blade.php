@@ -78,8 +78,36 @@
 <script src="{{asset('js/dependentdropdown.js')}}"></script>
 <script>
     $(document).ready(function() {
-        getMembersData();
-               
+
+        let province_id = localStorage.getItem('province_id');
+        let district_id = localStorage.getItem('district_id');
+        let gender_id = localStorage.getItem('gender_id');
+
+        if(province_id)
+        {
+            $('#province_id option[value="'+province_id+'"').attr('selected','selected');
+            $('#province_id').trigger('change');
+        }
+        
+        if(district_id)
+        {   
+            setTimeout(() => {
+                $('#district_id option[value="'+district_id+'"').attr('selected','selected');
+            }, 600);
+        }
+        if(gender_id)
+        {
+            setTimeout(() => {
+                $('#gender_id option[value="'+gender_id+'"').attr('selected','selected');
+            }, 1000);
+        }
+
+        setTimeout(() => {
+            getMembersData();
+            localStorage.removeItem('province_id');
+            localStorage.removeItem('district_id');
+            localStorage.removeItem('gender_id');
+        }, 1200);
     });
 
     function getMembersData() {
@@ -142,4 +170,5 @@
             $('#'+element_name).removeClass('filter-active');
         }
     }
+
 </script>

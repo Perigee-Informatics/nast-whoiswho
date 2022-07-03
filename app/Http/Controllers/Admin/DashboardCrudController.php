@@ -344,12 +344,12 @@ class DashboardCrudController extends BaseCrudController
                                     ->leftJoin('mst_fed_province as mfp','mfp.id','m.province_id')
                                     ->leftJoin('mst_fed_district as mfd','mfd.id','m.district_id')
                                     ->leftJoin('mst_gender as mg','mg.id','m.gender_id')
-                                    ->select('m.district_id','mfd.name_en',
+                                    ->select('m.district_id','mfp.id as province_id','mfd.name_en',
                                             DB::raw('count(case when gender_id = 1 then 1 end) as male'),
                                             DB::raw('count(case when gender_id = 2 then 1 end) as female'),
                                             DB::raw('count(m.gender_id) as total'))
                                     ->where('mfd.province_id',$province_id)
-                                    ->groupBy('m.district_id','mfd.name_en')
+                                    ->groupBy('m.district_id','mfp.id','mfd.name_en')
                                     ->orderBy('m.district_id')
                                     ->get();
 
