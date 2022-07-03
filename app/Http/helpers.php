@@ -46,18 +46,3 @@ function convert_ad_from_bs(string $date_bs = null) {
     $dateHelper = new DateHelper();
     return $dateHelper->convertAdFromBs($date_bs);
 }
-
-function project_added_and_progress(){
-    $notifications = DB::table('notifications')->whereNull('read_at')->get();
-    return $notifications;
-}
-
-function new_project_added(){
-    $notifications = DB::table('notifications')->where('project_status',1)->whereNull('read_at')->get();
-    return $notifications;
-}
-
-function project_progress_added(){
-    $notifications = DB::table('notifications')->where('project_status',2)->whereNull('read_at')->get();
-    return $notifications;
-}

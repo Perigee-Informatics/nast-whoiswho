@@ -282,8 +282,8 @@ function onEachLocalLevelFeature(feature, layer) {
 function localLevelOnClick(layer) {
        //show local level projects only on clicked province;
        map.fitBounds(layer.getBounds());
-       showMembersData(2,layer.feature.properties.Locallevel);
-       info.update(layer.feature.properties);
+    //    showMembersData(2,layer.feature.properties.Locallevel);
+    //    info.update(layer.feature.properties);
     //    updateGeoData(layer.feature.properties.Locallevel, layer.feature.properties.Level);
 
 }
@@ -806,7 +806,8 @@ function updateGeoData(id,level){
         }else if(data.level === 0 && data.gender_data.main.length > 0){
             $('#gender_card_title').html( data.province_name+' (District wise gender distribution)');
             $('#table_level_title').html('District');
-            var chart_title = data.province_name+' (District wise gender distribution)';
+            var gender_chart_title = 'District wise gender distribution';
+            var age_chart_title = 'Age wise distribution';
         }else if(data.level === 1 && data.gender_data.main.length > 0){
             $('#gender_card_title').html( camelize(data.disrtict_name)+' (Locallevel wise gender distribution)');
             $('#table_level_title').html('Local Level');

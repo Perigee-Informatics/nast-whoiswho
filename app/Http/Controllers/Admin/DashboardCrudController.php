@@ -357,6 +357,8 @@ class DashboardCrudController extends BaseCrudController
 
            $datas = [] ;
            $labels = [];
+
+
            //format data for charts
             foreach($gender_data_districts as $row){
                $datas ['male'][] = $row->male;
@@ -373,6 +375,45 @@ class DashboardCrudController extends BaseCrudController
    
            unset($datas);
            unset($labels);
+
+            //for age wise distribution
+        $members = Member::whereProvinceId($province_id)->get();
+
+        $datas = [] ;
+        $labels = [];
+
+        $datas['Below 30']=0;
+        $datas['31-40']=0;
+        $datas['41-50']=0;
+        $datas['51-60']=0;
+        $datas['60 & Above']=0;
+        foreach($members as $member)
+        {
+            $member_age = Carbon::now()->diffInYears(Carbon::parse($member->dob_ad));
+
+            if($member_age <= 30){
+                $datas['Below 30']++;
+            }
+            if($member_age > 30 && $member_age <= 40){
+                $datas['31-40']++;
+            }
+            if($member_age > 40 && $member_age <= 50){
+                $datas['41-50']++;
+            }
+            if($member_age > 50 && $member_age <= 60){
+                $datas['51-60']++;
+            }
+            if($member_age > 60){
+                $datas['60 & Above']++;
+            }
+        }
+
+        $data['age_group_data']['data'] = $datas;  
+        $data['age_group_data']['chart']['labels'] = ['Below 30','31-40','41-50','51-60','60 & Above'];                    
+        $data['age_group_data']['chart']['data'] = $datas;     
+
+        unset($datas);
+        unset($labels);
    
            return $data;
     }

@@ -39,10 +39,11 @@
     
             <div class="col d-inline-flex">
                 <select class="form-control searchselect" name="district_id" id="district_id" style="width: 100%;" onchange="getMembersData()">
-                    <option class="text-mute" selected disabled value=""> -- District --</option>
-                    @foreach($districts as $d)
+                    <option class="text-mute" selected disabled value=""> -- Select Province First --</option>
+
+                    {{-- @foreach($districts as $d)
                     <option class="form-control" value="{{ $d->id }}">{{ $d->name_en }}</option>
-                    @endforeach
+                    @endforeach --}}
                 </select>
                 <button class="btn bg-light la la-times district_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
             </div>
@@ -74,6 +75,7 @@
 <script src="{{asset('packages/dataTables-custom/js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{asset('packages/dataTables-custom/js/dataTables.select.min.js')}}"></script>
 <script src="{{asset('js/jquery.fancybox.min.js')}}"></script>
+<script src="{{asset('js/dependentdropdown.js')}}"></script>
 <script>
     $(document).ready(function() {
         getMembersData();

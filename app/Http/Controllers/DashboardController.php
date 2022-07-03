@@ -16,6 +16,20 @@ class DashboardController extends Controller
         return view('public.index');
     }
 
+    public function updateProvinceId()
+    {
+        $members  = Member::all();
+      
+        foreach($members as $m)
+        {
+           $p_id = MstFedDistrict::find($m->district_id)->province_id;
+
+           Member::whereId($m->id)->update(['province_id'=>$p_id]);
+        
+        }
+        return back();
+    }
+
     public function getPageContent(Request $request)
     {   
         $key = $request->key;

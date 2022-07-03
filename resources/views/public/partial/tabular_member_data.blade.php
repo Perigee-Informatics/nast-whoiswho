@@ -1,7 +1,6 @@
     <table id="members_data_table" class="table table-bordered table-sm table-striped mr-2 pr-2 mt-3" style="background-color:#f8f9fa;">
         <thead>
             <tr>
-                <th class="report-heading">Action</th>
                 <th class="report-heading">S.N.</th>
                 <th class="report-heading th_large">Full Name</th>
                 <th class="report-heading th_large">Gender</th>
@@ -13,6 +12,7 @@
                 <th class="report-heading th_large">Mailing Address</th>
                 <th class="report-heading th_large">E-mail</th>
                 <th class="report-heading th_large">Link to Google Schloar</th>
+                <th class="report-heading th_large">Action</th>
             </tr>
         </thead>
 
@@ -26,11 +26,6 @@
                 @endphp
 
                 <tr data-toggle="collapse" data-target="{{ '#'.$rowId}}" class="accordion-toggle">
-                    <td class="text-center">
-                        <a class="fancybox show-btn" data-type="ajax" data-src="{{'public/member/'.$key.'/view-detailed-info'}} " title='View Detail'>
-                            <i class="la la-eye text-white font-weight-bold " style="font-size:18px;"></i>
-                        </a>
-                    </td>
                     <td class="report-data text-center">{{$loop->iteration}}</td>
                     <td class="report-data">{{$member_full_name}}</td>
                     <td class="report-data">{{$basic->genderEntity->name_en}}</td>
@@ -42,6 +37,13 @@
                     <td class="report-data">{{$basic->mailing_address}}</td>
                     <td class="report-data">{{$basic->email}}</td>
                     <td class="report-data">{{$basic->link_to_google_scholar}}</td>
+                    <td class="report-data text-center">
+                        <a class="fancybox btn btn-primary show-btn" data-type="ajax" data-src="{{'public/member/'.$key.'/view-detailed-info'}} " title='View Detail'>
+                            <i class="la la-eye text-white font-weight-bold"></i>
+                        </a>
+	                    <a target="_blank" href="{{ url('/public/member/'.$key.'/print-profile') }}" class="btn btn-primary print-btn" data-style="zoom-in">
+                            <i class="la la-print font-weight-bold"></i></a>
+                    </td>
                 </tr>
             
             @endforeach    
