@@ -788,11 +788,10 @@ function updateGeoData(id,level){
 
         $.each(data.gender_data.main, function (index,row) {
             gender_row_number_html += '<div class="text-title">'+ ++index +'</div>'
-            gender_name_html += '<div class="text-title"><a href="javascript:;" data-type="'+data_type+'" data-pid="'+row.province_id+'" data-did="'+row.district_id+'" onclick="filterData(this)">'+camelize(row.name_en)+'</a></div>'; 
-            // gender_name_html += '<div class="text-title" data-type="'+data_type+'" data-id="'+row.province_id+'">'+camelize(row.name_en)+'</div>'; 
-            gender_male_count_html += '<div class="text-blue text-value"><a href="javascript:;" data-type="'+data_type+'" data-pid="'+row.province_id+'" data-did="'+row.district_id+'" data-gender_id="1" onclick="filterData(this)">'+row.male+'</a></div>';
-            gender_female_count_html += '<div class="text-blue text-value"><a href="javascript:;" data-type="'+data_type+'" data-pid="'+row.province_id+'" data-did="'+row.district_id+'" data-gender_id="2" onclick="filterData(this)">'+row.female+'</a></div>';
-            gender_total_count_html += '<div class="text-blue text-value">'+row.total+'</div>';
+            gender_name_html += '<div class="text-title text-link"><a href="javascript:;" data-type="'+data_type+'" data-pid="'+row.province_id+'" data-did="'+row.district_id+'" onclick="filterData(this)">'+camelize(row.name_en)+'</a></div>'; 
+            gender_male_count_html += '<div class="text-blue text-value text-link"><a href="javascript:;" data-type="'+data_type+'" data-pid="'+row.province_id+'" data-did="'+row.district_id+'" data-gender_id="1" onclick="filterData(this)">'+row.male+'</a></div>';
+            gender_female_count_html += '<div class="text-blue text-value text-link"><a href="javascript:;" data-type="'+data_type+'" data-pid="'+row.province_id+'" data-did="'+row.district_id+'" data-gender_id="2" onclick="filterData(this)">'+row.female+'</a></div>';
+            gender_total_count_html += '<div class="text-blue text-value text-link"><a href="javascript:;" data-type="'+data_type+'" data-pid="'+row.province_id+'" data-did="'+row.district_id+'" onclick="filterData(this)">'+row.total+'</a></div>';
 
             
              //total_projects_count
@@ -845,9 +844,13 @@ function updateGeoData(id,level){
         var age_final_count = 0;
 
         let j=0;
+        var set_province_id='';
+        if(data.level == 0){
+            set_province_id=data.gender_data.main[0].province_id;
+        }
         $.each(data.age_group_data.data, function (index,row) {
             age_row_number_html += '<div class="text-title">'+ ++j +'</div>'
-            age_name_html += '<div class="text-title">'+index+'</div>'; 
+            age_name_html += '<div class="text-title text-link"><a href="javascript:;" data-type="age_group" data-set_pid="'+set_province_id+'" data-key="'+index+'" onclick="filterData(this)">'+index+'</a></div>'; 
             age_count_html += '<div class="text-blue text-value">'+row+'</div>';
             
              //total_projects_count

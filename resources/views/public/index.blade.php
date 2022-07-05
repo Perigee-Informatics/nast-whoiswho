@@ -5,6 +5,7 @@
 
         <!-- custom css -->
         <link rel="stylesheet" href="{{asset('homepage/css/map.css')}}" />
+        <link rel="stylesheet" href="{{asset('homepage/css/custom.css')}}" />
        
         <!-- custom count css -->
         <link rel="stylesheet" href="{{ asset('homepage/css/markerCluster.css') }}" />
@@ -83,6 +84,19 @@
                 }
                 if(gid != '' && gid != 'undefined'){
                     localStorage.setItem('gender_id',gid);
+                }
+
+                if(type == 'age_group'){
+
+                    let set_pid = $(item).data('set_pid');
+                    let key = $(item).data('key');
+
+                    if(set_pid != '' && set_pid != 'undefined'){
+                        localStorage.setItem('province_id',set_pid);
+                    }
+                    if(key != '' && key != 'undefined'){
+                        localStorage.setItem('age_group',key);
+                    }
                 }
 
                 $('a.tab-btn').click(function(event) {

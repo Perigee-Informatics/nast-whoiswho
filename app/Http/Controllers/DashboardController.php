@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Member;
 use App\Models\MstGender;
 use Illuminate\Http\Request;
 use App\Models\MstFedDistrict;
 use App\Models\MstFedProvince;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\Admin\MemberCrudController;
 
 class DashboardController extends Controller
@@ -74,6 +76,50 @@ class DashboardController extends Controller
                 $members =$members->where('is_other_country',false);
             }
         }
+
+        $member_ids = [];
+
+        if($request->age_group != '')
+        {
+            $_members = Member::all();
+
+            foreach($_members as $member)
+            {
+                $member_age = Carbon::now()->diffInYears(Carbon::parse($member->dob_ad));
+
+                switch($request->age_group){
+                    case "Below-30":
+                        if($member_age <= 30){
+                            $member_ids[] = $member->id; 
+                        }
+                    break;
+                    case "31-40":
+                        if($member_age > 30 && $member_age <= 40){
+                            $member_ids[] = $member->id; 
+                        }
+                    break;
+                    case "41-50":
+                        if($member_age > 40 && $member_age <= 50){
+                            $member_ids[] = $member->id; 
+                        }
+                    break;
+                    case "51-60":
+                        if($member_age > 50 && $member_age <= 60){
+                            $member_ids[] = $member->id; 
+                        }
+                    break;
+                    case "60-Above":
+                        if($member_age > 60){
+                            $member_ids[] = $member->id; 
+                        }
+                    break;
+
+                }
+              
+            }
+            $members = $members->whereIn('id',$member_ids);
+        }
+
 
         foreach($members as $member)
         {

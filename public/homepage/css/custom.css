@@ -164,6 +164,9 @@
     font-size: 14px;
     font-family: cursive !important;
 }
+.text-link a {
+    color:#0d47a1 !important;
+}
 
 .text-left {
     padding-left: 20px;
