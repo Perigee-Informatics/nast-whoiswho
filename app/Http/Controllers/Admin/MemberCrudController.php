@@ -81,7 +81,48 @@ class MemberCrudController extends BaseCrudController
             },
             function ($value) { // if the filter is active
                 $this->crud->query->whereGenderId($value);
-            });
+        });
+        $this->crud->addFilter(
+            [ // simple filter
+                'type' => 'select2',
+                'name' => 'channel_wiw',
+                'label' => trans('Channels'),
+                'placeholder'=>'--choose--'
+            ],
+            [
+                0 => 'Who Is Who',
+                1 => 'Women Scientists Forum Nepal',
+                2 => 'Foreign',
+            ],
+            function ($value) { // if the filter is active
+                if($value == 0){
+                    $this->crud->addClause('where', 'channel_wiw', true);
+                }
+                
+                if($value == 1){
+                    $this->crud->addClause('where', 'channel_wsfn', true);
+                }
+
+                if($value == 2){
+                    $this->crud->addClause('where', 'channel_foreign', true);
+                }
+            }
+        );
+        $this->crud->addFilter(
+            [ // simple filter
+                'type' => 'select2',
+                'name' => 'membership_type',
+                'label' => trans('Membership Type'),
+                'placeholder'=>'--choose--'
+            ],
+            [
+                'life' => 'Life',
+                'friends_of_wsfn' => 'Friends of WSFN',
+            ],
+            function ($value) { // if the filter is active
+                $this->crud->addClause('where', 'membership_type', "$value");
+            }
+        );
 
     }
 
@@ -144,6 +185,32 @@ class MemberCrudController extends BaseCrudController
                 'name'=>'nrn_number',
                 'type'=>'text',
                 'label'=>trans('NRN Number'),
+            ],
+            [
+                'name'=>'channel_wiw',
+                'label'=>trans('Is WIW ?'),
+                'type'=>'check',
+            ],
+
+            [
+                'name'=>'channel_wsfn',
+                'label'=>trans('Is WSFN ?'),
+                'type'=>'check',
+            ],
+          
+            [
+                'name'=>'channel_foreign',
+                'label'=>trans('Is CHANNEL FOREIGN ?'),
+                'type'=>'check',
+            ],
+            [
+                'name'=>'membership_type',
+                'label'=>'Membership Type',
+                'type'=>'select_from_array',
+                'options'=>[
+                    'life'=>'Life',
+                    'friends_of_wsfn'=>'Friends of WSFN'
+                ]
             ],
 
             [ //Toggle
@@ -376,6 +443,77 @@ class MemberCrudController extends BaseCrudController
                 'wrapper' => [
                     'class' => 'form-group col-md-3',
                 ],
+            ],
+            [
+                'name'=>'custom_html',
+                'fake'=>true,
+                'type'=>'custom_html',
+                'value'=>'</br>'
+            ],
+            [
+                'name'=>'channel_wiw',
+                'label'=>trans('Is WIW ?'),
+                'type'=>'radio',
+                'default'=>true,
+                'inline'=>true,
+                'options'=>
+                [
+                    true=>'Yes',
+                    false=>'No',
+                ],
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+            ],
+
+            [
+                'name'=>'channel_wsfn',
+                'label'=>trans('Is WSFN ?'),
+                'type'=>'radio',
+                'inline'=>true,
+                'default'=>false,
+                'options'=>
+                [
+                    true=>'Yes',
+                    false=>'No',
+                ],
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+            ],
+          
+            [
+                'name'=>'channel_foreign',
+                'label'=>trans('Is CHANNEL FOREIGN ?'),
+                'inline'=>true,
+                'type'=>'radio',
+                'options'=>
+                [
+                    true=>'Yes',
+                    false=>'No',
+                ],
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+                'default'=>false,
+            ],
+            [
+                'name'=>'membership_type',
+                'label'=>'Membership Type',
+                'type'=>'select_from_array',
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+                'options'=>[
+                    'life'=>'Life',
+                    'friends_of_wsfn'=>'Friends of WSFN'
+                ]
+            ],
+            [
+                'name'=>'custom_html_1',
+                'fake'=>true,
+                'type'=>'custom_html',
+                'value'=>'</br>'
             ],
 
             [ //Toggle
@@ -718,6 +856,23 @@ class MemberCrudController extends BaseCrudController
                     ],
                 ],
                 'min_rows' => 1,
+            ],
+
+            [
+                'name'=>'national_publication',
+                'type'=>'number',
+                'label'=>'No. of National Publications',
+                'wrapper'=>[
+                    'class'=>'col-md-6'
+                ],
+            ],
+            [
+                'name'=>'international_publication',
+                'type'=>'number',
+                'label'=>'No. of International Publications',
+                'wrapper'=>[
+                    'class'=>'col-md-6'
+                ],
             ],
             [
                 'name' => 'mailing_address',

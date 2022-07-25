@@ -34,7 +34,7 @@ class SecureHeadersMiddleware
         return $response;
     }
     private function getCSP(){
-        return "default-src 'self' google.com gstatic.com ; img-src * 'unsafe-inline' data:; style-src 'self' 'unsafe-inline' https://* fonts.googleapis.com unpkg.com cdn.datatables.net cdn.jsdelivr.net stackpath.bootstrapcdn.com gstatic.com; script-src 'self' 'unsafe-inline' https://* 'unsafe-eval' cdn.jsdelivr.net unpkg.com cdnjs.cloudflare.com www.googletagmanager.com cdn.rawgit.com static.fusioncharts.com google.com code.highcharts.com gstatic.com ; font-src 'self' data: 'unsafe-inline' fonts.gstatic.com stackpath.bootstrapcdn.com unpkg.com maxcdn.bootstrapcdn.com; connect-src 'self' www.google-analytics.com gstatic.com ;";
+        return "default-src 'self' google.com gstatic.com ; img-src * 'unsafe-inline' data:; style-src 'self' 'unsafe-inline' https://* fonts.googleapis.com cdnjs.cloudflare.com unpkg.com cdn.datatables.net cdn.jsdelivr.net stackpath.bootstrapcdn.com gstatic.com; script-src 'self' 'unsafe-inline' https://* 'unsafe-eval' cdn.jsdelivr.net unpkg.com cdnjs.cloudflare.com www.googletagmanager.com cdn.rawgit.com static.fusioncharts.com google.com code.highcharts.com gstatic.com ; font-src 'self' data: 'unsafe-inline' fonts.gstatic.com stackpath.bootstrapcdn.com cdnjs.cloudflare.com unpkg.com maxcdn.bootstrapcdn.com; connect-src 'self' www.google-analytics.com gstatic.com ;";
     }
     private function removeUnwantedHeaders($headerList)
     {

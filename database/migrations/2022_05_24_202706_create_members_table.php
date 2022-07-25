@@ -46,7 +46,7 @@ class CreateMembersTable extends Migration
             $table->json('awards');
             $table->json('expertise');
             $table->json('affiliation');
-            $table->string('mailing_address',500);
+            $table->string('mailing_address',500)->nullable();
             $table->string('phone',200)->nullable();
             $table->string('email',500)->nullable();
             $table->string('link_to_google_scholar',1000)->nullable();

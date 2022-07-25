@@ -35,11 +35,22 @@ class MembersImport implements ToCollection,WithHeadingRow
             'Province 7'=>7,
         ];
         foreach($rows as $row){
-            $data['gender_id']= MstGender::whereNameEn($row['gender'])->first()->id;
+            if(isset($row['gender'])){
+                $data['gender_id'] = MstGender::whereNameEn($row['gender'])->first()->id;
+            }else{
+                $data['gender_id']=2;
+            }
 
-            $dob_ad = Carbon::parse(Date::excelToDateTimeObject($row['dob']))->toDateString();
-            $data['dob_ad'] = $dob_ad;
-            $data['dob_bs'] = convert_bs_from_ad($dob_ad);
+            if(isset($row['dob_bs']) && $row['dob_bs'] != ''){
+                $dob_bs = Carbon::parse(Date::excelToDateTimeObject($row['dob_bs']))->toDateString();
+                $data['dob_bs'] = $dob_bs;
+                $data['dob_ad'] = convert_ad_from_bs($dob_bs);
+            }else{
+                $dob_ad = Carbon::parse(Date::excelToDateTimeObject($row['dob']))->toDateString();
+                $data['dob_ad'] = $dob_ad;
+                $data['dob_bs'] = convert_bs_from_ad($dob_ad);
+            }
+
             $data['nrn_number'] =$row['nri_number'];
             $data['first_name'] =$row['first_name'];
             $data['middle_name'] =$row['middle_name'];
@@ -47,6 +58,19 @@ class MembersImport implements ToCollection,WithHeadingRow
             $data['is_other_country'] =$row['country']=='Nepal' ? false : true;
             $data['province_id']=$province_mapping[$row['province']];
             $data['district_id']=MstFedDistrict::where('name_en','iLIKE',"%".$row['district']."%")->first()->id;
+
+            if(isset($row['channel_wsfn']) && $row['channel_wsfn']==1){
+                $data['channel_wsfn'] =True;
+            }else{
+                $data['channel_wiw'] =True;
+            }
+            $data['channel_foreign'] =False;
+
+            if(isset($row['membership_type']) && $row['membership_type']=='Friends of WSFN'){
+                $data['membership_type'] ='friends_of_wsfn';
+            }else{
+                $data['membership_type'] ='life';
+            }
 
             $data['current_organization']=json_encode([(object)([
                                             "position"=>$row['current_position'],
@@ -130,10 +154,24 @@ class MembersImport implements ToCollection,WithHeadingRow
                                 "name"=>$row['affiliation_three'],
                             ])]);
 
+            if(isset($row['national_publication']) && $row['national_publication']!=''){
+                $data['national_publication'] =$row['national_publication'];
+            }else{
+                $data['national_publication'] =0;
+            }
+
+            if(isset($row['international_publication']) && $row['international_publication'] !=''){
+                $data['international_publication'] =$row['international_publication'];
+            }else{
+                $data['international_publication'] =0;
+            }
+
             $data['mailing_address']=$row['mailing_address'];
             $data['phone']=$row['phonecell'];
             $data['email']=$row['email_address'];
             $data['link_to_google_scholar']=$row['link_to_google_scholar'];
+
+            // dump($data);
 
             Member::create($data);
         }
