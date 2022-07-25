@@ -851,7 +851,7 @@ function updateGeoData(id,level){
         $.each(data.age_group_data.data, function (index,row) {
             age_row_number_html += '<div class="text-title">'+ ++j +'</div>'
             age_name_html += '<div class="text-title text-link"><a href="javascript:;" data-type="age_group" data-set_pid="'+set_province_id+'" data-key="'+index+'" onclick="filterData(this)">'+index+'</a></div>'; 
-            age_count_html += '<div class="text-blue text-value">'+row+'</div>';
+            age_count_html += '<div class="text-blue text-value text-link"><a href="javascript:;" data-type="age_group" data-set_pid="'+set_province_id+'" data-key="'+index+'" onclick="filterData(this)">'+row+'</a></div>';
             
              //total_projects_count
              age_final_count += row;
