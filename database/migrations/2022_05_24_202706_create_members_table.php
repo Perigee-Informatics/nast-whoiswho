@@ -30,6 +30,14 @@ class CreateMembersTable extends Migration
             $table->unsignedSmallInteger('province_id')->nullable();
             $table->unsignedSmallInteger('district_id')->nullable();
 
+            $table->boolean('channel_wsfn')->default(false);
+            $table->boolean('channel_wiw')->default(false);
+            $table->boolean('channel_foreign')->default(false);
+
+            $table->string('membership_type')->nullable();
+            $table->unsignedSmallInteger('international_publication')->default(0);
+            $table->unsignedSmallInteger('national_publication')->default(0);
+
             $table->json('current_organization');
             $table->json('past_organization');
             $table->json('doctorate_degree');
