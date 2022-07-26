@@ -191,7 +191,8 @@ class DashboardCrudController extends BaseCrudController
                         ->join('mst_fed_district as mfd', 'm.district_id','mfd.id')
                         ->join('mst_fed_province as mfp','m.province_id','mfp.id')
                         ->join('mst_gender as mg','m.gender_id','mg.id')
-                        ->select('m.id','mfp.name_en as province','mfd.name_en as district','m.first_name','m.last_name','mg.name_en as gender','mfd.gps_lat as lat','mfd.gps_long as long')
+                        ->select('m.id','mfp.name_en as province','mfd.name_en as district','m.first_name','m.last_name','mg.name_en as gender',
+                        'mfd.gps_lat as lat','mfd.gps_long as long','m.channel_wiw','m.channel_wsfn','channel_foreign')
                         ->whereRaw($province_clause)
                         ->whereRaw($district_clause)
                         ->whereRaw($local_level_clause)

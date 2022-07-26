@@ -71,7 +71,7 @@ var info = L.control();
 
 info.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info');
-    this._div.innerHTML = '<h4 id="country_info"><a onClick="resetToCountry()"><i class="la la-refresh" aria-hidden="true"></i> Nepal</a></h4>';
+    this._div.innerHTML = '<h4 id="country_info"><a onClick="resetToCountry()"><i class="la la-refresh" aria-hidden="true"></i> Nepal</a></h4><div id="filter-info"></div>';
     return this._div;
 };
 
@@ -94,10 +94,8 @@ info.update = function (props) {
         showLocalLevelBreadCrumb();
         $('#locallevel_button').html("<a onClick='resetToLocalLevel(" + props.Locallevel + ")'>" + props.LOCALLEVEL_NAME + "</span></a>");
     }
-
 };
 info.addTo(map);
-
 
 // geting nepal map data for initial map load
 $.get("/get-nepal-map-data", function (data) {

@@ -34,6 +34,23 @@
                     </div>
                 </div>
             </div>
+            <div class="card-body bg-light py-1">
+                <div class="form-row align-content-center">
+                    <div class="col">
+                        <input type="checkbox" id="channel_wiw" name="channel_wiw" value="channel_wiw">
+                        <label for="channel_wiw"> Channel Who Is Who</label><br>
+                    </div>
+                    <div class="col">
+                        <input type="checkbox" id="channel_wsfn" name="channel_wsfn" value="channel_wsfn">
+                        <label for="channel_wsfn"> Channel WSFN</label><br>
+                    </div>
+                    <div class="col">
+                        <input type="checkbox" id="channel_foreign" name="channel_foreign" value="channel_foreign">
+                        <label for="channel_foreign"> Channel Foreign</label><br>
+                    </div>
+                </div>
+                
+            </div>
         </div>
 
 
