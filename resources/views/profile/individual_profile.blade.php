@@ -54,17 +54,17 @@
       }
       .subject-title{
           font-weight: 600;
-          font-size: 15px;
+          font-size: 20px;
           padding-top: 5px;
           text-decoration: underline;
       }
       .subject-head{
           font-weight: 600;
-          font-size: 15px;
+          font-size: 20px;
           padding-top: 5px;
       }
       .subject-data{
-        font-size: 15px;
+        font-size: 20px;
         padding-top: 5px;
       }
 
