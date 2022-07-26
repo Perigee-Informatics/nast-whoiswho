@@ -17,7 +17,7 @@
       }
       .name{
           margin-left:20px;
-          font-size:16px;
+          font-size:18px;
           font-weight: bold;
           color:rgb(29, 29, 170);
       }
@@ -45,7 +45,7 @@
           position: relative;
       }
       span.bracket-text{
-          font-size: 14px !important;
+          font-size: 16px !important;
           font-style: italic;
       }
       .subject{
