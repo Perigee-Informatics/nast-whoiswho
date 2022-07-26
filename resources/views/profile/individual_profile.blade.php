@@ -45,7 +45,7 @@
           position: relative;
       }
       span.bracket-text{
-          font-size: 16px !important;
+          font-size: 20px !important;
           font-style: italic;
       }
       .subject{
