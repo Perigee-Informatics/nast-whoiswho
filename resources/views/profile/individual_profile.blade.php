@@ -17,7 +17,7 @@
       }
       .name{
           margin-left:20px;
-          font-size:18px;
+          font-size:25px;
           font-weight: bold;
           color:rgb(29, 29, 170);
       }
@@ -45,7 +45,7 @@
           position: relative;
       }
       span.bracket-text{
-          font-size: 20px !important;
+          font-size: 25px !important;
           font-style: italic;
       }
       .subject{
@@ -54,13 +54,13 @@
       }
       .subject-title{
           font-weight: 600;
-          font-size: 20px;
+          font-size: 25px;
           padding-top: 5px;
           text-decoration: underline;
       }
       .subject-head{
           font-weight: 600;
-          font-size: 20px;
+          font-size: 25px;
           padding-top: 5px;
       }
       .subject-data{
