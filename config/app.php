@@ -177,6 +177,7 @@ return [
         App\Providers\BladeServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         \Alkhwlani\XssMiddleware\ServiceProvider::class,
+        \Barryvdh\DomPDF\ServiceProvider::class
     ],
 
     /*

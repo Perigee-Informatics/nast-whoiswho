@@ -10,6 +10,7 @@ use App\Base\Helpers\PdfPrint;
 use App\Imports\MembersImport;
 use App\Models\MstFedDistrict;
 use App\Models\MstFedProvince;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Base\BaseCrudController;
 use App\Http\Requests\MemberRequest;
 use Maatwebsite\Excel\Facades\Excel;
@@ -974,17 +975,20 @@ class MemberCrudController extends BaseCrudController
         // Read image path, convert to base64 encoding
         if($member->photo_path){
             $imageData = base64_encode(file_get_contents($photo_path));
-            $photo_encoded = 'data: '.mime_content_type($photo_path).';base64,'.$imageData;
+            $photo_encoded = 'data:'.mime_content_type($photo_path).';base64,'.$imageData;
         }
 
         $data['member']['basic'] = $member;
         $data['member']['json_data'] = $json_data;
         $data['member']['photo_encoded'] = $photo_encoded;
 
-            // Format the image SRC:  data:{mime};base64,{data};
+        // Format the image SRC:  data:{mime};base64,{data};
+        // dd($photo_encoded);
+        $pdf = Pdf::loadView('profile.individual_profile',compact('data','public_view') );
+        return $pdf->stream();
 
-        $html = view('profile.individual_profile', compact('data','public_view'))->render();
-        PdfPrint::printPortrait($html, $member->first_name.' '.$member->middle_name.' '.$member->last_name."_Profile.pdf"); 
+        // $html = view('profile.individual_profile', compact('data','public_view'))->render();
+        // PdfPrint::printPortrait($html, $member->first_name.' '.$member->middle_name.' '.$member->last_name."_Profile.pdf"); 
     }
 
     public function printAllProfiles()
@@ -1017,7 +1021,12 @@ class MemberCrudController extends BaseCrudController
             $data[$member->id]['photo_encoded'] = $photo_encoded;
     
         }
-        $html = view('profile.individual_profile', compact('data'))->render();
-        PdfPrint::printPortrait($html,"Who_is_who_Profile.pdf"); 
+        $public_view= false;
+
+        $pdf = Pdf::loadView('profile.individual_profile',compact('data','public_view') );
+        return $pdf->stream();
+
+        // $html = view('profile.individual_profile', compact('data','public_view'))->render();
+        // PdfPrint::printPortrait($html,"Who_is_who_Profile.pdf"); 
     }
 }

@@ -6,18 +6,19 @@ use Illuminate\Support\Facades\Config;
 class PdfPrint  
 {
     private static $jsreport_url = "";
+    private static $jsreport_port = "5488";
     public static function printLandscape($content, $file_name, $recipe = "chrome-pdf"){
-        return self::print("HJe27fgQIw", $content, $recipe, "none", $file_name);
+        return self::print("HJ_UbfC4P", $content, $recipe, "none", $file_name);
     }
-    public static function printPortrait($content, $file_name, $recipe = "chrome-pdf"){
-        return self::print("HJe27fgQIw", $content, $recipe, "none", $file_name);
+    public static function printPortrait($content, $file_name, $recipe = "chrome"){
+        return self::print("HJ_UbfC4P", $content, $recipe, "none", $file_name);
     }
     private static function loadJsReportConfig(){
         self::$jsreport_url= Config('report.jsreport_url');
     }
 
     public static function storeprintPortrait($content, $file_name, $recipe = "chrome-pdf"){
-        return self::store_print("HJe27fgQIw", $content, $recipe, "none", $file_name);
+        return self::store_print("HJ_UbfC4P", $content, $recipe, "none", $file_name);
     }
 
     public static function print($shortid, $content, $recipe, $engine, $file_name){
@@ -25,6 +26,7 @@ class PdfPrint
         $post_fields['template']['shortid']=$shortid;
         $post_fields['template']['content']=$content;
         $post_fields=\json_encode($post_fields);
+        
         $curl = curl_init();
 
         curl_setopt_array($curl, array(

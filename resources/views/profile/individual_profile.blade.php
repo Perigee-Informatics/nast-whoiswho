@@ -1,8 +1,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <style>
       @page{
         size: A4 portrait;
@@ -18,7 +17,7 @@
       }
       .name{
           margin-left:20px;
-          font-size:18px;
+          font-size:16px;
           font-weight: bold;
           color:rgb(29, 29, 170);
       }
@@ -39,7 +38,7 @@
           padding-top: 5px;
       }
       .fa{
-          font-size: 16px;
+          font-size: 15px;
           color:black;
       }
       img{
@@ -82,7 +81,6 @@
 
 <body class="main">
     @foreach($data as $member)
-        <p style="page-break-before: always"></p>
         <div class="header">
             Who is Who in Science, Technology and Innovation of Nepal
         </div>
@@ -102,8 +100,8 @@
                 <table width="100%">
                     <colgroup>
                         <col style="width: 25%;" />
-                        <col style="width: 60%;" />
-                        <col style="width: 15%;" />
+                        <col style="width: 70%;" />
+                        <col style="width: 10%;" />
                     </colgroup>
                         <tr>
                             <td class="row-title">Category:</td>
@@ -114,7 +112,7 @@
                                     @endif
                                 @endforeach
                             </td>
-                            <td class="row-data">
+                            <td class="row-data" style="text-align: right; padding-right:25px !important;">
                                 <img style="border-radius:7px" src="{{$member['photo_encoded']}}" 
                                 width="100" height="100" class="size-thumbnail p-1"></td>
                             </td>
@@ -205,9 +203,10 @@
                         </tr>
                 </table>
             </div>
-
-
         </div>
+        @if(count($data)>1)
+        <p style="page-break-after: always"></p>
+        @endif
     @endforeach
 </body>
 
