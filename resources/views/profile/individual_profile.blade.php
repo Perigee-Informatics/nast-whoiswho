@@ -99,8 +99,8 @@
             <div class="table-data">
                 <table width="100%">
                     <colgroup>
-                        <col style="width: 25%;" />
-                        <col style="width: 70%;" />
+                        <col style="width: 30%;" />
+                        <col style="width: 60%;" />
                         <col style="width: 10%;" />
                     </colgroup>
                         <tr>
