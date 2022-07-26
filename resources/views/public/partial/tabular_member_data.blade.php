@@ -4,8 +4,8 @@
                 <th class="report-heading">S.N.</th>
                 <th class="report-heading th_large">Full Name</th>
                 <th class="report-heading th_large">Gender</th>
-                <th class="report-heading th_large">NRN Number</th>
-                <th class="report-heading th_small">Is other country?</th>
+                <th class="report-heading th_large">Channel</th>
+                <th class="report-heading th_large">Membership Type</th>
                 <th class="report-heading th_large">Country</th>
                 <th class="report-heading th_large">Province</th>
                 <th class="report-heading th_large">District</th>
@@ -23,14 +23,20 @@
                     $basic = $member['basic'];
                     $json = $member['json_data'];
                     $member_full_name = $basic->first_name.' '.$basic->middle_name.' '.$basic->last_name;
+
+                    if($basic->channel_wiw){$channel = 'WIW';}
+                    if($basic->channel_wsfn){$channel = 'WSFN';}
+                    if($basic->channel_foreign){$channel = 'Foreign';}
+
+                    $m_type = ($basic->membership_type == 'friends_of_wsfn') ? 'Friends Of WSFN' : 'Life';
                 @endphp
 
                 <tr data-toggle="collapse" data-target="{{ '#'.$rowId}}" class="accordion-toggle">
                     <td class="report-data text-center">{{$loop->iteration}}</td>
                     <td class="report-data">{{$member_full_name}}</td>
                     <td class="report-data">{{$basic->genderEntity->name_en}}</td>
-                    <td class="report-data">{{$basic->nrn_number}}</td>
-                    <td class="report-data">{{$basic->is_other_country==true ? 'Yes' : 'No'}}</td>
+                    <td class="report-data">{{$channel}}</td>
+                    <td class="report-data">{{$m_type}}</td>
                     <td class="report-data">{{$basic->countryEntity ? $basic->countryEntity->name_en : 'Nepal'}}</td>
                     <td class="report-data">{{$basic->provinceEntity->name_en}}</td>
                     <td class="report-data">{{$basic->districtEntity->name_en}}</td>

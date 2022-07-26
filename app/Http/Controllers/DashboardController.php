@@ -120,6 +120,24 @@ class DashboardController extends Controller
             $members = $members->whereIn('id',$member_ids);
         }
 
+        
+        if($request->channel != '')
+        {
+            if($request->channel == 'wiw'){
+                $members = $members->where('channel_wiw',true);
+            }else if($request->channel == 'wsfn'){
+                $members =$members->where('channel_wsfn',true);
+            }else if($request->channel == 'foreign'){
+                $members =$members->where('channel_foreign',true);
+            }else{
+                $members = $members;
+            }
+        }
+        if($request->membership_type != '')
+        {
+            $members = $members->where('membership_type',$request->membership_type);
+        }
+
 
         foreach($members as $member)
         {

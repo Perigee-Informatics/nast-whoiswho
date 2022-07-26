@@ -30,6 +30,7 @@ var markerClusters = L.markerClusterGroup({
 });
 
 hideAllBreadCrumb();
+channelFilter(-1,-1,false);
 
 function hideAllBreadCrumb() {
     hideProvinceBreadCrumb();
@@ -97,6 +98,10 @@ info.update = function (props) {
 };
 info.addTo(map);
 
+
+var current_level=-1;
+var current_areaId=-1
+
 // geting nepal map data for initial map load
 $.get("/get-nepal-map-data", function (data) {
     resetToMapLevel(1);
@@ -107,9 +112,9 @@ $.get("/get-nepal-map-data", function (data) {
     }).addTo(map);
     var nepal = L.geoJSON(provinceData);
     map.fitBounds(nepal.getBounds());
-    showMembersData(-1,-1);
+    showMembersData(current_level,current_areaId);
     $("#country_button").html("<a onClick='resetToCountry()'>Nepal</span></a>");
-    updateGeoData(-1,-1);
+    updateGeoData(current_level,current_areaId);
 });
 
 
@@ -137,10 +142,23 @@ function onEachProvinceFeature(feature, layer) {
 
 var markers = [];
 
+
+var channel_wiw = true;
+var channel_wsfn = false;
+var channel_foreign = false;
+
+$('input[type=checkbox]').click(function(){ channelFilter(current_level,current_areaId,true)});
+
 function showMembersData(level,areaId){
     var url = '/get-all-members?level='+level+'&&area_id='+areaId;
+
     markerClusters.clearLayers();
-    $.get(url, function (data) {
+        var datas={
+            'channel_wiw':channel_wiw,
+            'channel_wsfn':channel_wsfn,
+            'channel_foreign':channel_foreign,
+        };
+    $.get(url,{datas}, function (data) {
         if (data.length != 0) {
             membersData = JSON.parse(data);
 
@@ -172,7 +190,6 @@ function showMembersData(level,areaId){
                         autoClose: true,
                         autoPan: false
                     }
-
                 );
               
                 markerClusters.addLayer(new_marker);
@@ -181,6 +198,7 @@ function showMembersData(level,areaId){
         }
     });
 }
+
 
 //for province click
 function provinceOnClick(layer) {
@@ -201,6 +219,8 @@ function provinceOnClick(layer) {
             showMembersData(0,layer.feature.properties.Province);
 
             updateGeoData(layer.feature.properties.Province, layer.feature.properties.Level);
+            current_level=0;
+            current_areaId=layer.feature.properties.Province;
         } else {
             resetToMapLevel(1);
             map.fitBounds(layer.getBounds());
@@ -247,6 +267,8 @@ function districtOnClick(layer) {
             //show local level projects only on clicked district;
             showMembersData(1,layer.feature.properties.District);
             // updateGeoData(layer.feature.properties.District, layer.feature.properties.Level);
+            current_level=1;
+            current_areaId=layer.feature.properties.District;
         } else {
             resetToMapLevel(1);
             map.fitBounds(layer.getBounds());
@@ -627,6 +649,8 @@ function resetToCountry() {
             showMembersData(-1,-1);
         },500);
         updateGeoData(-1,-1);
+        current_level=-1;
+        current_areaId=-1;
     });
 }
 
@@ -654,6 +678,8 @@ function resetToProvince(id) {
          //show local level projects only on clicked province;
         showMembersData(0,id);
         updateGeoData(id, 0);
+        current_level=0;
+        current_areaId=id;
     });
 }
 
@@ -724,12 +750,42 @@ function resetToLocalLevel(id) {
     });
 }
 
+function channelFilter(level,areaId,click_action)
+{
+    var ch_checkbox = $('[name="channel_filter[]"]');
+
+    ch_checkbox.each(function(){
+       
+        if(this.checked){
+            if(this.value=='channel_wiw') channel_wiw=true;
+            if(this.value=='channel_wsfn') channel_wsfn=true;
+            if(this.value=='channel_foreign') channel_foreign=true;
+        }else{
+            if(this.value=='channel_wiw') channel_wiw=false;
+            if(this.value=='channel_wsfn') channel_wsfn=false;
+            if(this.value=='channel_foreign') channel_foreign=false;
+        }
+    });
+
+        if(click_action){
+            updateGeoData(areaId,level)
+            showMembersData(level,areaId)
+        }
+
+}
+
 //get GeoData
 
 function updateGeoData(id,level){
     var url = '/get-geodata?id='+id+'&&level='+level;
 
-    $.get(url,function (data){
+    var datas={
+        'channel_wiw':channel_wiw,
+        'channel_wsfn':channel_wsfn,
+        'channel_foreign':channel_foreign,
+    };
+
+    $.get(url,{datas},function (data){
         //data for fed_area section
         //show fed level information only if map_level is below 2
         if(data.level === 2){
@@ -843,7 +899,7 @@ function updateGeoData(id,level){
 
         let j=0;
         var set_province_id='';
-        if(data.level == 0){
+        if(data.level == 0 && data.gender_data.main.legth>0){
             set_province_id=data.gender_data.main[0].province_id;
         }
         $.each(data.age_group_data.data, function (index,row) {

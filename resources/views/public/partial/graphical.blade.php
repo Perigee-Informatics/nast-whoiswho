@@ -14,7 +14,7 @@
         <div class="card mb-0" style="background-color:#d9d9d9;">
             <div class="card-header bg-primary p-0">
                 <div class="form-row mb-3">
-                    <div class="col-sm-12 col-md-4"><i class="la la-map-marked-alt ml-2"> WHO is WHO Scientist Distribution</i></div>
+                    <div class="col-sm-12 col-md-4"><i class="la la-map-marked-alt ml-2 pt-2"> WHO is WHO Scientist Distribution</i></div>
                     <div class="col-sm-12 col-md-8">
                         <nav aria-label="breadcrumb" class="map-breadcrumb">
                             <ol class="breadcrumb">
@@ -35,18 +35,21 @@
                 </div>
             </div>
             <div class="card-body bg-light py-1">
-                <div class="form-row align-content-center">
-                    <div class="col">
-                        <input type="checkbox" id="channel_wiw" name="channel_wiw" value="channel_wiw">
-                        <label for="channel_wiw"> Channel Who Is Who</label><br>
+                <div class="form-row" style=" font-weight:bold">
+                    <div class="col" style="text-align: center">
+                        <label for="channel_wiw"> CHANNEL</label><br>
                     </div>
                     <div class="col">
-                        <input type="checkbox" id="channel_wsfn" name="channel_wsfn" value="channel_wsfn">
-                        <label for="channel_wsfn"> Channel WSFN</label><br>
+                        <input type="checkbox" id="channel_wiw" name="channel_filter[]" value="channel_wiw" checked>
+                        <label for="channel_wiw"> Who Is Who</label><br>
                     </div>
                     <div class="col">
-                        <input type="checkbox" id="channel_foreign" name="channel_foreign" value="channel_foreign">
-                        <label for="channel_foreign"> Channel Foreign</label><br>
+                        <input type="checkbox" id="channel_wsfn" name="channel_filter[]" value="channel_wsfn">
+                        <label for="channel_wsfn">Women Scientists Forum Nepal</label><br>
+                    </div>
+                    <div class="col">
+                        <input type="checkbox" id="channel_foreign" name="channel_filter[]" value="channel_foreign">
+                        <label for="channel_foreign">Foreign</label><br>
                     </div>
                 </div>
                 
@@ -200,11 +203,11 @@
                                     <div class="text-header">S.N.</div>
                                     <div id="age_row_number"></div>
                                 </div>
-                                <div style="min-width:300px;">
+                                <div style="min-width:200px;">
                                     <div class="text-header">Age Group</div>
                                     <div id="age_name"></div>
                                 </div>
-                                <div style="min-width:150px;">
+                                <div style="min-width:120px;">
                                     <div class="text-header">Members Count</div>
                                     <div id="age_count"></div>
                                 </div>

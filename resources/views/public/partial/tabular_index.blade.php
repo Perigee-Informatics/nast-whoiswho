@@ -66,7 +66,7 @@
             </div>
             <div class="col d-inline-flex">
                 <select class="form-control searchselect" name="age_group" id="age_group" style="width: 100%;" onchange="getMembersData()">
-                    <option class="text-mute" selected disabled value=""> -- select age group --</option>
+                    <option class="text-mute" selected disabled value=""> -- Age group --</option>
                     <option class="form-control" value="Below-30">Below 30</option>
                     <option class="form-control" value="31-40">31-40</option>
                     <option class="form-control" value="41-50">41-50</option>
@@ -74,6 +74,25 @@
                     <option class="form-control" value="60-Above">60 & Above</option>
                 </select>
                 <button class="btn bg-light la la-times age_group_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
+            </div>
+
+            <div class="col d-inline-flex">
+                <select class="form-control searchselect" name="channel" id="channel" style="width: 100%;" onchange="getMembersData()">
+                    <option class="text-mute" selected disabled value=""> -- Channel --</option>
+                    <option class="form-control" value="wiw">WIW</option>
+                    <option class="form-control" value="wsfn">WSFN</option>
+                    <option class="form-control" value="foreign">Foreign</option>
+                </select>
+                <button class="btn bg-light la la-times channel_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
+            </div>
+
+            <div class="col d-inline-flex">
+                <select class="form-control searchselect" name="membership_type" id="membership_type" style="width: 100%;" onchange="getMembersData()">
+                    <option class="text-mute" selected disabled value=""> -- Membership Type --</option>
+                    <option class="form-control" value="life">Life</option>
+                    <option class="form-control" value="friends_of_wsfn">Friends of WSFN</option>
+                </select>
+                <button class="btn bg-light la la-times membership_type_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
             </div>
         </div>
     </div>
@@ -123,14 +142,19 @@
             }, 1500);
 
         }
-
-        setTimeout(() => {
+        if(document.getElementsByClassName('times-show').length == 0){
             getMembersData();
-            localStorage.removeItem('province_id');
-            localStorage.removeItem('district_id');
-            localStorage.removeItem('gender_id');
-            localStorage.removeItem('age_group');
-        }, 2500);
+        }else{
+            setTimeout(() => {
+                getMembersData();
+                localStorage.removeItem('province_id');
+                localStorage.removeItem('district_id');
+                localStorage.removeItem('gender_id');
+                localStorage.removeItem('age_group');
+            }, 2500);
+        }
+
+
     });
 
     function getMembersData() {
@@ -140,6 +164,8 @@
             gender_id: $('#gender_id').val(),
             country_status: $('#country_status').val(),
             age_group:$('#age_group').val(),
+            channel:$('#channel').val(),
+            membership_type:$('#membership_type').val(),
         }
         if($('#province_id').val()){
             $('.province_filter').removeClass('times-hidden').addClass('times-show');
@@ -157,6 +183,12 @@
         }
         if($('#age_group').val()){
             $('.age_group_filter').removeClass('times-hidden').addClass('times-show');
+        }
+        if($('#channel').val()){
+            $('.channel_filter').removeClass('times-hidden').addClass('times-show');
+        }
+        if($('#membership_type').val()){
+            $('.membership_type_filter').removeClass('times-hidden').addClass('times-show');
         }
 
         let active_ele = document.getElementsByClassName('times-show').forEach(function(ele){
@@ -180,10 +212,6 @@
                     bInfo: true,
                     lengthChange: false
                 });
-                
-              
-
-               
             }
         });
     }
