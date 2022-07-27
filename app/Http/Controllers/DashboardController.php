@@ -46,7 +46,6 @@ class DashboardController extends Controller
             $data['genders'] = MstGender::orderBy('id')->get();
 
 
-            $final_lists = [];
 
             $sql ="with expertise_data as (
                 select expertise->>'name' as expertise_name
@@ -66,17 +65,24 @@ class DashboardController extends Controller
 
                     $pattern = strtolower($r->expertise_name);
 
-                    $pattern_exploded = explode(' ',$pattern);
+                    if(strpos($pattern,$expertise_string) !== false){
+                        break;
+                    }else{
+                        $expertise_string .= '; '. $pattern;
+                    }
+
+
+                    // $pattern_exploded = explode(' ',$pattern);
 
                     //loop through exploded patterns
-                    foreach($pattern_exploded as $segment)
-                    {
-                        if(strpos($segment,$expertise_string) !== false){
-                            break;
-                        }else{
-                            $expertise_string .= '; '. $segment;
-                        }
-                    }
+                    // foreach($pattern_exploded as $segment)
+                    // {
+                    //     if(strpos($segment,$expertise_string) !== false){
+                    //         break;
+                    //     }else{
+                    //         $expertise_string .= '; '. $segment;
+                    //     }
+                    // }
              
            
                 }else{
@@ -92,31 +98,35 @@ class DashboardController extends Controller
             $explode_result = array_values(array_unique(array_values(array_filter($explode_result))));
             $final_result = [];
 
-            foreach($explode_result as $er)
-            {
-                $str_status = false;
+            // foreach($explode_result as $er)
+            // {
+            //     $str_status = false;
 
-                if(strlen($er)>2)
-                {
-                    $str_status= true;
-                }
+            //     if(strlen($er)>2)
+            //     {
+            //         $str_status= true;
+            //     }
 
-                for ($i = 0; $i < strlen($er); $i++) {
-                    if ( ctype_digit($er[$i]) ) {
-                        $str_status = false;
-                        break;
-                    }
-                }
+            //     for ($i = 0; $i < strlen($er); $i++) {
+            //         if (ctype_digit($er[$i]) ) {
+            //             $str_status = false;
+            //             break;
+            //         }
+            //     }
 
-                if($str_status == true)
-                {
-                    $final_result[$er] = $er;
-                }
-            }
+            //     if($str_status == true)
+            //     {
+            //         $final_result[$er] = $er;
+            //     }
+            // }
 
-            $final_result = collect($final_result);
+            $final_result = collect($explode_result);
 
-            dd($final_result);
+            //array to exclude items;
+
+            // $exclude = ['based','water','']
+
+           $data['expertise_result']= $final_result;
 
             return view('public.partial.tabular_index',$data);
         }

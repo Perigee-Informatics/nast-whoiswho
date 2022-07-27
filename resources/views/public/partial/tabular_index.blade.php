@@ -17,7 +17,9 @@
 
 <style src="{{asset('packages/dataTables-custom/css/dataTables.bootstrap4.min.css')}}"></style>
 <style src="{{asset('public/packages/dataTables-custom/css/select.dataTables.min.css')}}"></style>
+<style src="{{asset('packages/jquery-ui/css/jquery-ui.css')}}"></style>
 <style src="{{asset('css/jquery.fancybox.min.cs')}}"></style>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 <div class="card">
     <div class="card-header p-1 d-inline-block" style="background-color: rgb(43, 208, 223)">
@@ -77,6 +79,18 @@
             </div>
 
             <div class="col d-inline-flex">
+                <select class="form-control searchselect" name="membership_type" id="membership_type" style="width: 100%;" onchange="getMembersData()">
+                    <option class="text-mute" selected disabled value=""> -- Membership Type --</option>
+                    <option class="form-control" value="life">Life</option>
+                    <option class="form-control" value="friends_of_wsfn">Friends of WSFN</option>
+                </select>
+                <button class="btn bg-light la la-times membership_type_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
+            </div>
+           
+        </div>
+
+        <div class="form-row">
+            <div class="col d-inline-flex">
                 <select class="form-control searchselect" name="channel" id="channel" style="width: 100%;" onchange="getMembersData()">
                     <option class="text-mute" selected disabled value=""> -- Channel --</option>
                     <option class="form-control" value="wiw">WIW</option>
@@ -87,15 +101,7 @@
             </div>
 
             <div class="col d-inline-flex">
-                <select class="form-control searchselect" name="membership_type" id="membership_type" style="width: 100%;" onchange="getMembersData()">
-                    <option class="text-mute" selected disabled value=""> -- Membership Type --</option>
-                    <option class="form-control" value="life">Life</option>
-                    <option class="form-control" value="friends_of_wsfn">Friends of WSFN</option>
-                </select>
-                <button class="btn bg-light la la-times membership_type_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
-            </div>
-            <div class="col d-inline-flex">
-                <input class="form-control" id="expertise_name" type="text" name="expertise_name" placeholder="enter first 3 letters of item">
+                <input class="form-control" id="expertise_name" type="text" name="expertise_name" placeholder="Search using Expertise (enter first 3 letters of item)">
             </div>
         </div>
     </div>
@@ -104,25 +110,30 @@
     <div class="col" id="members_data"></div>
 </div>
 
+@php
+    $expertise_lists = json_encode($expertise_result);
+@endphp
+
 <script src="{{asset('packages/dataTables-custom/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('packages/dataTables-custom/js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{asset('packages/dataTables-custom/js/dataTables.select.min.js')}}"></script>
+<script src="{{asset('packages/jquery-ui/js/jquery-ui.js')}}"></script>
 <script src="{{asset('js/jquery.fancybox.min.js')}}"></script>
 <script src="{{asset('js/dependentdropdown.js')}}"></script>
 <script>
+    let expertise_lists = <?php echo $expertise_lists ?>;
+
     $(document).ready(function() {
+        let availableTags=[];
 
         let province_id = localStorage.getItem('province_id');
         let district_id = localStorage.getItem('district_id');
         let gender_id = localStorage.getItem('gender_id');
         let age_group = localStorage.getItem('age_group');
 
-
-        let expertise_lists='';
-
-        if(all_items){
-            all_items.forEach(function (item){
-                availableTags.push({'id':item.id,'label':item.code+' : '+item.brand_name});
+        if(expertise_lists){
+            expertise_lists.forEach(function (item){
+                availableTags.push({'label':item});
             });
         }
 
@@ -131,9 +142,7 @@
             minLength: 3,
             select: function (event, ui) {
                 $("#expertise_name").val(ui.item.label); // display the selected text
-                $("#expertise_name").attr('item_id',ui.item.id);
-
-                fetchItems(ui.item.id);
+                getMembersData();
             },
         });
 
