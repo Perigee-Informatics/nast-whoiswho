@@ -47,10 +47,10 @@
                         <input type="checkbox" id="channel_wsfn" name="channel_filter[]" value="channel_wsfn">
                         <label for="channel_wsfn">Women Scientists Forum Nepal</label><br>
                     </div>
-                    <div class="col">
+                    {{-- <div class="col">
                         <input type="checkbox" id="channel_foreign" name="channel_filter[]" value="channel_foreign">
                         <label for="channel_foreign">Foreign</label><br>
-                    </div>
+                    </div> --}}
                 </div>
                 
             </div>

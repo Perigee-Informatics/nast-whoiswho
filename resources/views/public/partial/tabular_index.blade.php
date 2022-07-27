@@ -13,6 +13,27 @@
         background-color: rgb(140, 245, 195) !important;
         color: black !important;
     }
+    .ui-autocomplete {
+         max-height: 400px;
+         max-width: 550px;
+         overflow-y: auto;
+         /* prevent horizontal scrollbar */
+         overflow-x: hidden;
+         /* add padding to account for vertical scrollbar */
+         padding-right: 20px;
+     }
+    .ui-menu .ui-menu-item {
+        margin: 2px !important;
+        padding: 2px !important;
+        padding-left:15px !important;
+        width: 100%;
+        list-style:square !important;
+    }
+    .ui-menu li {
+        padding:3px;
+        list-style:circle !important;
+        border-bottom: 2px solid lightgray;
+    }
 </style>
 
 <style src="{{asset('packages/dataTables-custom/css/dataTables.bootstrap4.min.css')}}"></style>
@@ -89,7 +110,7 @@
            
         </div>
 
-        <div class="form-row">
+        <div class="form-row p-2">
             <div class="col d-inline-flex">
                 <select class="form-control searchselect" name="channel" id="channel" style="width: 100%;" onchange="getMembersData()">
                     <option class="text-mute" selected disabled value=""> -- Channel --</option>
@@ -101,7 +122,7 @@
             </div>
 
             <div class="col d-inline-flex">
-                <input class="form-control" id="expertise_name" type="text" name="expertise_name" placeholder="Search using Expertise (enter first 3 letters of item)">
+                <input class="form-control" id="expertise_name" type="text" name="expertise_name" placeholder="Expertise (3 letters required)">
             </div>
         </div>
     </div>
@@ -109,7 +130,6 @@
 
     <div class="col" id="members_data"></div>
 </div>
-
 @php
     $expertise_lists = json_encode($expertise_result);
 @endphp
@@ -132,8 +152,8 @@
         let age_group = localStorage.getItem('age_group');
 
         if(expertise_lists){
-            expertise_lists.forEach(function (item){
-                availableTags.push({'label':item});
+            expertise_lists.forEach(function (item,index){
+                availableTags.push({'label':' '+item});
             });
         }
 
@@ -198,6 +218,7 @@
             age_group:$('#age_group').val(),
             channel:$('#channel').val(),
             membership_type:$('#membership_type').val(),
+            expertise:$('#expertise_name').val(),
         }
         if($('#province_id').val()){
             $('.province_filter').removeClass('times-hidden').addClass('times-show');
@@ -222,6 +243,9 @@
         if($('#membership_type').val()){
             $('.membership_type_filter').removeClass('times-hidden').addClass('times-show');
         }
+        // if($('#expertise_name').val()){
+        //     $('.expertise_name_filter').removeClass('times-hidden').addClass('times-show');
+        // }
 
         let active_ele = document.getElementsByClassName('times-show').forEach(function(ele){
             let itm = ele.previousElementSibling;

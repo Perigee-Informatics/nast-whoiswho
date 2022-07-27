@@ -48,11 +48,11 @@ class DashboardController extends Controller
 
 
             $sql ="with expertise_data as (
-                select expertise->>'name' as expertise_name
+                select expertise->>'name' as expertise_name,channel_wiw
                 from(
-                        select json_array_elements(expertise)::json as expertise from members)a
+                        select channel_wiw,json_array_elements(expertise)::json as expertise from members)a
                 )
-                select ed.* from expertise_data ed where expertise_name is not null";
+                select ed.* from expertise_data ed where expertise_name is not null and channel_wiw = true";
 
             $results = DB::select($sql);
             // $results = array_slice($results,0,100);
@@ -121,6 +121,8 @@ class DashboardController extends Controller
             // }
 
             $final_result = collect($explode_result);
+
+            // dd($final_result);
 
             //array to exclude items;
 
