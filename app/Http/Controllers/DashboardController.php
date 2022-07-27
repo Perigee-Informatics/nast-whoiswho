@@ -8,6 +8,7 @@ use App\Models\MstGender;
 use Illuminate\Http\Request;
 use App\Models\MstFedDistrict;
 use App\Models\MstFedProvince;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Admin\MemberCrudController;
 
@@ -43,6 +44,80 @@ class DashboardController extends Controller
             $data['provinces'] = MstFedProvince::orderBy('id')->get();
             $data['districts'] = MstFedDistrict::orderBy('id')->get();
             $data['genders'] = MstGender::orderBy('id')->get();
+
+
+            $final_lists = [];
+
+            $sql ="with expertise_data as (
+                select expertise->>'name' as expertise_name
+                from(
+                        select json_array_elements(expertise)::json as expertise from members)a
+                )
+                select ed.* from expertise_data ed where expertise_name is not null";
+
+            $results = DB::select($sql);
+            // $results = array_slice($results,0,100);
+
+            $expertise_string= '';
+
+            foreach($results as $r)
+            {
+                if($expertise_string != ''){
+
+                    $pattern = strtolower($r->expertise_name);
+
+                    $pattern_exploded = explode(' ',$pattern);
+
+                    //loop through exploded patterns
+                    foreach($pattern_exploded as $segment)
+                    {
+                        if(strpos($segment,$expertise_string) !== false){
+                            break;
+                        }else{
+                            $expertise_string .= '; '. $segment;
+                        }
+                    }
+             
+           
+                }else{
+                    $expertise_string .=strtolower($r->expertise_name);
+                }
+            }
+
+            $expertise_string = \str_replace([',','.','(',')','‘','“'],'',$expertise_string);
+            $expertise_string = \str_replace(['/','-'],' ',$expertise_string);
+            $expertise_string = preg_replace("/\r|\n/", "", $expertise_string);
+            $explode_result = \explode('; ',$expertise_string);
+
+            $explode_result = array_values(array_unique(array_values(array_filter($explode_result))));
+            $final_result = [];
+
+            foreach($explode_result as $er)
+            {
+                $str_status = false;
+
+                if(strlen($er)>2)
+                {
+                    $str_status= true;
+                }
+
+                for ($i = 0; $i < strlen($er); $i++) {
+                    if ( ctype_digit($er[$i]) ) {
+                        $str_status = false;
+                        break;
+                    }
+                }
+
+                if($str_status == true)
+                {
+                    $final_result[$er] = $er;
+                }
+            }
+
+            $final_result = collect($final_result);
+
+            dd($final_result);
+
             return view('public.partial.tabular_index',$data);
         }
     }

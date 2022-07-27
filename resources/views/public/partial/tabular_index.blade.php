@@ -94,6 +94,9 @@
                 </select>
                 <button class="btn bg-light la la-times membership_type_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
             </div>
+            <div class="col d-inline-flex">
+                <input class="form-control" id="expertise_name" type="text" name="expertise_name" placeholder="enter first 3 letters of item">
+            </div>
         </div>
     </div>
 
@@ -113,6 +116,26 @@
         let district_id = localStorage.getItem('district_id');
         let gender_id = localStorage.getItem('gender_id');
         let age_group = localStorage.getItem('age_group');
+
+
+        let expertise_lists='';
+
+        if(all_items){
+            all_items.forEach(function (item){
+                availableTags.push({'id':item.id,'label':item.code+' : '+item.brand_name});
+            });
+        }
+
+        $('#expertise_name').autocomplete({
+            source:availableTags,
+            minLength: 3,
+            select: function (event, ui) {
+                $("#expertise_name").val(ui.item.label); // display the selected text
+                $("#expertise_name").attr('item_id',ui.item.id);
+
+                fetchItems(ui.item.id);
+            },
+        });
 
         if(province_id)
         {
