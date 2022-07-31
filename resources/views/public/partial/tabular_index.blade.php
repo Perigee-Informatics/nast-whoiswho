@@ -34,13 +34,22 @@
         list-style:circle !important;
         border-bottom: 2px solid lightgray;
     }
+    .select2-hidden-accessible{
+        position:unset !important;
+
+    }
+    .select2-selection__choice{
+        margin-bottom:7px   ;
+    }
 </style>
 
 <style src="{{asset('packages/dataTables-custom/css/dataTables.bootstrap4.min.css')}}"></style>
 <style src="{{asset('public/packages/dataTables-custom/css/select.dataTables.min.css')}}"></style>
 <style src="{{asset('packages/jquery-ui/css/jquery-ui.css')}}"></style>
+<style src="{{asset('packages/select2/dist/css/select2.min.css')}}"></style>
 <style src="{{asset('css/jquery.fancybox.min.cs')}}"></style>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
 
 <div class="card">
     <div class="card-header p-1 d-inline-block" style="background-color: rgb(43, 208, 223)">
@@ -79,14 +88,14 @@
                 </select>
                 <button class="btn bg-light la la-times gender_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
             </div>
-            <div class="col d-inline-flex">
+            {{-- <div class="col d-inline-flex">
                 <select class="form-control searchselect" name="country_status" id="country_status" style="width: 100%;" onchange="getMembersData()">
                     <option class="text-mute" selected disabled value=""> -- Country --</option>
                     <option class="form-control" value="nepal">Nepal</option>
                     <option class="form-control" value="other">Other</option>
                 </select>
                 <button class="btn bg-light la la-times country_status_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
-            </div>
+            </div> --}}
             <div class="col d-inline-flex">
                 <select class="form-control searchselect" name="age_group" id="age_group" style="width: 100%;" onchange="getMembersData()">
                     <option class="text-mute" selected disabled value=""> -- Age group --</option>
@@ -97,6 +106,15 @@
                     <option class="form-control" value="60-Above">60 & Above</option>
                 </select>
                 <button class="btn bg-light la la-times age_group_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
+            </div>
+            <div class="col d-inline-flex">
+                <select class="form-control searchselect" name="channel" id="channel" style="width: 100%;" onchange="getMembersData()">
+                    <option class="text-mute" selected disabled value=""> -- Channel --</option>
+                    <option class="form-control" value="wiw">WIW</option>
+                    <option class="form-control" value="wsfn">WSFN</option>
+                    <option class="form-control" value="foreign">Foreign</option>
+                </select>
+                <button class="btn bg-light la la-times channel_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
             </div>
 
             <div class="col d-inline-flex">
@@ -111,18 +129,16 @@
         </div>
 
         <div class="form-row p-2">
-            <div class="col d-inline-flex">
-                <select class="form-control searchselect" name="channel" id="channel" style="width: 100%;" onchange="getMembersData()">
-                    <option class="text-mute" selected disabled value=""> -- Channel --</option>
-                    <option class="form-control" value="wiw">WIW</option>
-                    <option class="form-control" value="wsfn">WSFN</option>
-                    <option class="form-control" value="foreign">Foreign</option>
-                </select>
-                <button class="btn bg-light la la-times channel_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
-            </div>
-
-            <div class="col d-inline-flex">
-                <input class="form-control" id="expertise_name" type="text" name="expertise_name" placeholder="Expertise (3 letters required)">
+            <div class="col-md-12">
+                {{-- <label for="expertise" style="display: block !important"> --}}
+                    {{-- Choose multiple expertise --}}
+                    <select class="js-example-basic-multiple" name="expertise[]" id="expertise" multiple="multiple" style="width: 100%;">
+                        @foreach($expertise_result as $exp)
+                        <option value="{{$exp}}">{{$exp}}</option>
+                        @endforeach
+                    </select>
+                {{-- </label> --}}
+                {{-- <input class="form-control" id="expertise_name" type="text" name="expertise_name" placeholder="Expertise (3 letters required)"> --}}
             </div>
         </div>
     </div>
@@ -140,31 +156,42 @@
 <script src="{{asset('packages/jquery-ui/js/jquery-ui.js')}}"></script>
 <script src="{{asset('js/jquery.fancybox.min.js')}}"></script>
 <script src="{{asset('js/dependentdropdown.js')}}"></script>
+<script src="{{asset('packages/select2/dist/js/select2.full.min.js')}}"></script>
+{{-- <script src="{{ asset('js/select2.min.js') }}"></script> --}}
+
 <script>
-    let expertise_lists = <?php echo $expertise_lists ?>;
+    // let expertise_lists = <?php echo $expertise_lists ?>;
 
     $(document).ready(function() {
-        let availableTags=[];
+        // let availableTags=[];
+        $('.js-example-basic-multiple').select2({
+            placeholder: '--select multiple expertise here--'
+        });
 
         let province_id = localStorage.getItem('province_id');
         let district_id = localStorage.getItem('district_id');
         let gender_id = localStorage.getItem('gender_id');
         let age_group = localStorage.getItem('age_group');
 
-        if(expertise_lists){
-            expertise_lists.forEach(function (item,index){
-                availableTags.push({'label':' '+item});
-            });
-        }
 
-        $('#expertise_name').autocomplete({
-            source:availableTags,
-            minLength: 3,
-            select: function (event, ui) {
-                $("#expertise_name").val(ui.item.label); // display the selected text
-                getMembersData();
-            },
+        $("#expertise").on("select2:close", function(e){
+             getMembersData();
         });
+
+        // if(expertise_lists){
+        //     expertise_lists.forEach(function (item,index){
+        //         availableTags.push({'label':' '+item});
+        //     });
+        // }
+
+        // $('#expertise_name').autocomplete({
+        //     source:availableTags,
+        //     minLength: 3,
+        //     select: function (event, ui) {
+        //         $("#expertise_name").val(ui.item.label); // display the selected text
+        //         getMembersData();
+        //     },
+        // });
 
         if(province_id)
         {
@@ -218,7 +245,7 @@
             age_group:$('#age_group').val(),
             channel:$('#channel').val(),
             membership_type:$('#membership_type').val(),
-            expertise:$('#expertise_name').val(),
+            expertise:$('#expertise').val(),
         }
         if($('#province_id').val()){
             $('.province_filter').removeClass('times-hidden').addClass('times-show');

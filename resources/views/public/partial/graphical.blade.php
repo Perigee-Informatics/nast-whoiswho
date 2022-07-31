@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="{{asset('homepage/css/custom.css')}}">
-
         <div>
         <!-- PRE LOADER -->
         <div class="preloader">

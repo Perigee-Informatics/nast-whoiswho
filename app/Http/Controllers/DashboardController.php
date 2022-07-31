@@ -91,36 +91,36 @@ class DashboardController extends Controller
             }
 
             $expertise_string = \str_replace([',','.','(',')','‘','“'],'',$expertise_string);
-            $expertise_string = \str_replace(['/','-'],' ',$expertise_string);
+            $expertise_string = \str_replace(['/'],' ',$expertise_string);
             $expertise_string = preg_replace("/\r|\n/", "", $expertise_string);
             $explode_result = \explode('; ',$expertise_string);
 
             $explode_result = array_values(array_unique(array_values(array_filter($explode_result))));
             $final_result = [];
 
-            // foreach($explode_result as $er)
-            // {
-            //     $str_status = false;
+            foreach($explode_result as $er)
+            {
+                $str_status = false;
 
-            //     if(strlen($er)>2)
-            //     {
-            //         $str_status= true;
-            //     }
+                if(strlen($er)>2 && strlen($er) < 70)
+                {
+                    $str_status= true;
+                }
 
-            //     for ($i = 0; $i < strlen($er); $i++) {
-            //         if (ctype_digit($er[$i]) ) {
-            //             $str_status = false;
-            //             break;
-            //         }
-            //     }
+                // for ($i = 0; $i < strlen($er); $i++) {
+                //     if (ctype_digit($er[$i]) ) {
+                //         $str_status = false;
+                //         break;
+                //     }
+                // }
 
-            //     if($str_status == true)
-            //     {
-            //         $final_result[$er] = $er;
-            //     }
-            // }
+                if($str_status == true)
+                {
+                    $final_result[] = $er;
+                }
+            }
 
-            $final_result = collect($explode_result);
+            $final_result = collect($final_result);
 
             // dd($final_result);
 
@@ -223,6 +223,25 @@ class DashboardController extends Controller
         if($request->membership_type != '')
         {
             $members = $members->where('membership_type',$request->membership_type);
+        }
+        if($request->expertise != '')
+        {
+            $expertise = implode("','%",$request->expertise);
+
+            // dd($expertise);
+            $sql ="with expertise_data as (
+                select id,expertise->>'name' as expertise_name,channel_wiw
+                from( select id,channel_wiw,json_array_elements(expertise)::json as expertise from members)a)
+                select ed.* from expertise_data ed where expertise_name is not null and channel_wiw = true
+                and expertise_name iLike  ANY(ARRAY['%$expertise'])";
+
+            $results = collect(DB::select($sql));
+            $mem_ids = $results->pluck('id')->toArray();
+
+            $mem_ids_uq = array_unique($mem_ids);
+
+            $members = $members->whereIn('id',$mem_ids_uq);
+
         }
 
 
