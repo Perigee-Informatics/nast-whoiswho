@@ -24,7 +24,8 @@ return [
     // ----
 
     // Project name. Shown in the window title.
-    'project_name' => 'NAST-WHOisWHO',
+    'project_name' => "NEPAL ACADEMY OF SCIENCE AND TECHNOLOGY (NAST)",
+    'project_name_small' => '<b class="text-danger">NAST</b>',
 
     // When clicking on the admin panel's top-left logo/name,
     // where should the user be redirected?
@@ -72,7 +73,7 @@ return [
     // ------
 
     // Menu logo. You can replace this with an <img> tag if you have a logo.
-    'project_logo'   => '<img src="/css/images/govt-logo.png" height="52px;" width="58px;">&nbsp<b>NAST</b>' ,
+    'project_logo'   => '<img src="/css/images/NASTLogo.png" class="pt-2" height="62px;" width="55px;">' ,
 
 
     // Show / hide breadcrumbs on admin panel pages.

@@ -12,11 +12,7 @@
         <!-- chartjs -->
         <link rel="stylesheet" href="{{asset('homepage/css/chart.min.css')}}" />
 
-        {{-- <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}"/> --}}
 
-
-
-       
 
 @section('content')
     <div class="row card" style="width: 100%">
