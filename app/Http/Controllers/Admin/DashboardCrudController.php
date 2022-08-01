@@ -212,7 +212,7 @@ class DashboardCrudController extends BaseCrudController
                         ->select('m.id','mfp.name_en as province','mfd.name_en as district','m.first_name','m.last_name','mg.name_en as gender',
                         'mfd.gps_lat as lat','mfd.gps_long as long','m.channel_wiw','m.channel_wsfn','channel_foreign')
                         ->whereRaw($channel_wiw_clause)
-                        ->whereRaw($channel_wsfn_clause)
+                        ->orWhereRaw($channel_wsfn_clause)
                         ->whereRaw($channel_foreign_clause)
                         ->whereRaw($province_clause)
                         ->whereRaw($district_clause)
@@ -286,7 +286,7 @@ class DashboardCrudController extends BaseCrudController
         $members = DB::table('members as m')
                     ->select('*')
                     ->whereRaw($channel_wiw_clause)
-                    ->whereRaw($channel_wsfn_clause)
+                    ->orWhereRaw($channel_wsfn_clause)
                     ->whereRaw($channel_foreign_clause)
                     ->get();
 
@@ -298,7 +298,7 @@ class DashboardCrudController extends BaseCrudController
                                 DB::raw('count(case when gender_id = 2 then 1 end) as female'),
                                 DB::raw('count(m.gender_id) as total'))
                         ->whereRaw($channel_wiw_clause)
-                        ->whereRaw($channel_wsfn_clause)
+                        ->orWhereRaw($channel_wsfn_clause)
                         ->whereRaw($channel_foreign_clause)
                         ->groupBy('m.province_id','mfp.name_en')
                         ->orderBy('m.province_id')
@@ -409,7 +409,7 @@ class DashboardCrudController extends BaseCrudController
                                             DB::raw('count(m.gender_id) as total'))
                                     ->where('mfd.province_id',$province_id)
                                     ->whereRaw($channel_wiw_clause)
-                                    ->whereRaw($channel_wsfn_clause)
+                                    ->orWhereRaw($channel_wsfn_clause)
                                     ->whereRaw($channel_foreign_clause)
                                     ->groupBy('m.district_id','mfp.id','mfd.name_en')
                                     ->orderBy('m.district_id')
@@ -443,7 +443,7 @@ class DashboardCrudController extends BaseCrudController
                         ->select('*')
                         ->whereProvinceId($province_id)
                         ->whereRaw($channel_wiw_clause)
-                        ->whereRaw($channel_wsfn_clause)
+                        ->orWhereRaw($channel_wsfn_clause)
                         ->whereRaw($channel_foreign_clause)
                         ->get();
 
@@ -543,118 +543,7 @@ class DashboardCrudController extends BaseCrudController
     //get District Data
     public function getLocalLevelGeoData($request)
     {
-        $fiscal_year_id = Session::get('fiscal_year_id');
-        $local_level_id = $request->id;
-        $data['level'] = 2;
-
-        $app_client_id = DB::table('app_client')->where('fed_local_level_id',$local_level_id)->pluck('id')->first();
-        $new_projects = DB::table('pt_project')->where('project_status_id',1)
-                            ->where('client_id',$app_client_id)
-                            ->where('deleted_uq_code',1)
-                            ->get();
-
-        $selected_projects = DB::table('pt_selected_project')->where('project_status_id',2)
-                            ->where('client_id',$app_client_id)
-                            ->where('deleted_uq_code',1)
-                            ->get();
-
-        $wip_projects = DB::table('pt_selected_project')->where('project_status_id',3)
-                            ->where('client_id',$app_client_id)
-                            ->where('deleted_uq_code',1)
-                            ->get();
-
-        $completed_projects = DB::table('pt_selected_project')->where('project_status_id',4)
-                            ->where('client_id',$app_client_id)
-                            ->where('deleted_uq_code',1)
-                            ->get();
-
-        if(isset($fiscal_year_id)){
-            $new_projects = $new_projects->where('fiscal_year_id',$fiscal_year_id);
-            $selected_projects = $selected_projects->where('fiscal_year_id',$fiscal_year_id);
-            $wip_projects = $wip_projects->where('fiscal_year_id',$fiscal_year_id);
-            $completed_projects = $completed_projects->where('fiscal_year_id',$fiscal_year_id);
-        }
-
-        $new_projects_cnt =  $new_projects->count();
-        $selected_projects_cnt =  $selected_projects->count();
-        $wip_projects_cnt =  $wip_projects->count();
-        $completed_projects_cnt =  $completed_projects->count();
-
-        $data['count']['new_projects_count'] = $new_projects_cnt;
-        $data['count']['selected_projects_count'] = $selected_projects_cnt;
-        $data['count']['wip_projects_count'] = $wip_projects_cnt;
-        $data['count']['completed_projects_count'] = $completed_projects_cnt;
-        
-        if(isset($fiscal_year_id)){
-            $fiscal_year_clause = "pp.fiscal_year_id = ".$fiscal_year_id;
-        }
-
-        //get province-wise-project-data
-        $province_projects = DB::table('pt_selected_project as pp')->select(DB::raw('ROW_NUMBER() OVER(ORDER BY mfll.id ASC) AS sn'),'mfll.name_lc',DB::raw('count(mfll.id) as total_project'),DB::raw('sum(pp.source_federal_amount) as project_cost'))
-                                ->join('app_client as ac','ac.id','pp.client_id')
-                                ->join('mst_fed_local_level as mfll','mfll.id','ac.fed_local_level_id')
-                                ->join('mst_fiscal_year as mfy','mfy.id','pp.fiscal_year_id')
-                                ->whereIn('pp.project_status_id',[2,3,4])
-                                ->where('pp.client_id',$app_client_id)
-                                ->where('pp.deleted_uq_code',1)
-                                ->whereRaw($fiscal_year_clause)
-                                ->groupBy('mfll.id')
-                                ->orderBy('mfll.id','ASC')
-                                ->get();
-        $datas = [] ;
-        $labels = [];
-        $costs = [];
-        $total_project_cost = 0;
-
-        //format data for charts
-        foreach($province_projects as $row){
-            $labels [] = $row->name_lc;
-            $datas [] = $row->total_project;
-            $costs [] = $row->project_cost;
-            $total_project_cost += $row->project_cost;
-        }
-
-        $data['province_projects']['main'] = $province_projects->toArray();                    
-        $data['province_projects']['chart']['labels'] = $labels;                    
-        $data['province_projects']['chart']['data'] = $datas;     
-        $data['province_projects']['chart']['cost'] = $costs;     
-        $data['province_projects']['total_project_cost'] = $total_project_cost;     
-
-        unset($datas);
-        unset($labels);
-        unset($costs);
-        unset($total_project_cost);
-
-        //get projects category-wise
-        $category_projects = DB::table('pt_selected_project as pp')->select(DB::raw('ROW_NUMBER() OVER(ORDER BY mpc.id ASC) AS sn'),'mpc.id as category_id','mpc.name_lc',DB::raw('count(mpc.id) as total_project'),DB::raw('sum(pp.source_federal_amount) as category_cost'))
-                                ->join('mst_project_category as mpc','mpc.id','pp.category_id')
-                                ->join('mst_fiscal_year as mfy','mfy.id','pp.fiscal_year_id')
-                                ->whereIn('pp.project_status_id',[2,3,4])
-                                ->where('pp.client_id',$app_client_id)
-                                ->where('pp.deleted_uq_code',1)
-                                ->whereRaw($fiscal_year_clause)
-                                ->groupBy('mpc.id')
-                                ->orderBy('mpc.id','ASC')
-                                ->get();
-
-        $datas = [] ;
-        $labels = [];
-        $costs = [];
-        $total_project_cost = 0;
-
-        //format data for charts
-        foreach($category_projects as $row){
-            $labels [] = $row->name_lc;
-            $datas [] = $row->total_project;
-            $costs [] = $row->category_cost;
-            $total_project_cost += $row->category_cost;
-        }
-
-        $data['category_projects']['main'] = $category_projects->toArray();                    
-        $data['category_projects']['chart']['labels'] = $labels;                    
-        $data['category_projects']['chart']['data'] = $datas;  
-        $data['category_projects']['chart']['cost'] = $costs;     
-        $data['category_projects']['total_project_cost'] = $total_project_cost;     
+       $data = [];  
 
         return $data;
     }
