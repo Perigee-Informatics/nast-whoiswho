@@ -20,10 +20,10 @@ $current_url = url()->current();
  <div class="row" style="display: contents">
     <a class="ml-4 text-dark text-decoration-none font-xl" href="{{ url(config('backpack.base.home_link')) }}" title="{{ config('backpack.base.project_name') }}">
       {!! config('backpack.base.project_logo')  !!}
-      <span style="font-weight: 600; color: #dd3c36 !important; position:relative; top: -5px !important">
+      <span style="font-weight:700; color: #e3453f !important; position:relative; top: -5px !important">
         {{config('backpack.base.project_name')}}<br/>
       </span>
-      <span class="font-sm ml-5 pl-3" style="position:relative; top: -20px !important; color:black;">
+      <span class="font-sm ml-5 pl-3 font-weight-bold" style="position:relative; top: -22px !important; color:black;">
         Science & Technology for National Development
       </span>
     </a>
@@ -51,6 +51,7 @@ $current_url = url()->current();
         position: sticky;
         top: 0;
         left: 80%;
+        font-weight: bold;
       }
 
 </style>
