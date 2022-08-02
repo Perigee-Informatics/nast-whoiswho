@@ -15,8 +15,16 @@
 
 
 @section('content')
-    <div class="row card" style="width: 100%">
-        <div class="card-header">
+
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="#"><i class="la la-sitemap"></i>  Graphical</a>
+    <a href="#"><i class="la la-table"></i>  Tabular</a>
+  </div>
+
+    <div class="row card" style="width: 100%" id="main">
+
+        {{-- <div class="card-header">
             <div class="form-row">
                 <div class="col p-1 ml-3">
                     <div class="nav nav-pills">
@@ -28,7 +36,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="col p-0 border rounded p-2" id="body-content"></div>
     </div>
@@ -62,66 +70,82 @@
                 // Load default tab
                 $('a.tab-btn:first-child').click();
 
+                  $('body').on('keyup', function(e) {
+                    let keyPressed = e.which ? e.which : e.keyCode;
+
+                    //dissmiss modal on escape key
+                    if(keyPressed==27){
+                        closeNav();
+                    }
+        });
+
             });
         </script>
 
         {{-- for data filtering on chart data click --}}
         <script>
-            function filterData(item)
-            {
-                
-                let type = $(item).data('type');
-                let pid = $(item).data('pid');
-                let did = $(item).data('did');
-                let gid = $(item).data('gender_id');
-
-                localStorage.setItem('type',type);
-                if(pid != '' && pid != 'undefined'){
-                    localStorage.setItem('province_id',pid);
-                }
-                if(did != '' && did != 'undefined'){
-                    localStorage.setItem('district_id',did);
-                }
-                if(gid != '' && gid != 'undefined'){
-                    localStorage.setItem('gender_id',gid);
-                }
-
-                if(type == 'age_group'){
-
-                    let set_pid = $(item).data('set_pid');
-                    let key = $(item).data('key');
-
-                    if(set_pid != '' && set_pid != 'undefined'){
-                        localStorage.setItem('province_id',set_pid);
-                    }
-                    if(key != '' && key != 'undefined'){
-                        localStorage.setItem('age_group',key);
-                    }
-                }
-
-                $('a.tab-btn').click(function(event) {
-                    if(!$(this).hasClass('bg-primary')) {
-                        return false;
-                    }
-                    $('#body-content').html('<div class="text-center mt-5"><img src="/gif/loading.gif"/></div>');
-                    event.preventDefault();
-                    let key = 'btn-tabular'
-                    loadBodyContent(key);
-
-                    $('a.tab-btn').removeClass('bg-primary bg-success text-white').addClass('bg-primary text-white')
-                    $(this).removeClass('bg-primary bg-success text-dark text-white').addClass('bg-success text-white')
-                });
-
-                loadBodyContent = (key) => {
-                    let url = '/home/get-page-content';
-                    $.get(url,{key:key}, function(response) {
-                        $('#body-content').html(response);
-                    });
-                }
-
-                $('a.tab-btn:nth-child(2)').click();
-
+            function openNav() {
+                document.getElementById("mySidenav").style.width = "200px";
             }
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+            }
+
+            // function filterData(item)
+            // {
+                
+            //     let type = $(item).data('type');
+            //     let pid = $(item).data('pid');
+            //     let did = $(item).data('did');
+            //     let gid = $(item).data('gender_id');
+
+            //     localStorage.setItem('type',type);
+            //     if(pid != '' && pid != 'undefined'){
+            //         localStorage.setItem('province_id',pid);
+            //     }
+            //     if(did != '' && did != 'undefined'){
+            //         localStorage.setItem('district_id',did);
+            //     }
+            //     if(gid != '' && gid != 'undefined'){
+            //         localStorage.setItem('gender_id',gid);
+            //     }
+
+            //     if(type == 'age_group'){
+
+            //         let set_pid = $(item).data('set_pid');
+            //         let key = $(item).data('key');
+
+            //         if(set_pid != '' && set_pid != 'undefined'){
+            //             localStorage.setItem('province_id',set_pid);
+            //         }
+            //         if(key != '' && key != 'undefined'){
+            //             localStorage.setItem('age_group',key);
+            //         }
+            //     }
+
+            //     $('a.tab-btn').click(function(event) {
+            //         if(!$(this).hasClass('bg-primary')) {
+            //             return false;
+            //         }
+            //         $('#body-content').html('<div class="text-center mt-5"><img src="/gif/loading.gif"/></div>');
+            //         event.preventDefault();
+            //         let key = 'btn-tabular'
+            //         loadBodyContent(key);
+
+            //         $('a.tab-btn').removeClass('bg-primary bg-success text-white').addClass('bg-primary text-white')
+            //         $(this).removeClass('bg-primary bg-success text-dark text-white').addClass('bg-success text-white')
+            //     });
+
+            //     loadBodyContent = (key) => {
+            //         let url = '/home/get-page-content';
+            //         $.get(url,{key:key}, function(response) {
+            //             $('#body-content').html(response);
+            //         });
+            //     }
+
+            //     $('a.tab-btn:nth-child(2)').click();
+
+            // }
 
         </script>
 

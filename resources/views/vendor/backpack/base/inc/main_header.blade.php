@@ -18,7 +18,8 @@ $current_url = url()->current();
   </button>
  @else
  <div class="row" style="display: contents">
-    <a class="ml-4 text-dark text-decoration-none font-xl" href="{{ url(config('backpack.base.home_link')) }}" title="{{ config('backpack.base.project_name') }}">
+    <span class="btn font-weight-bolder font-2xl pl-3" style="cursor: pointer; color:black;" onclick="openNav()"><i class="la la-bars"></i></span>
+    <a class="ml-2 text-dark text-decoration-none font-xl" href="{{ url(config('backpack.base.home_link')) }}" title="{{ config('backpack.base.project_name') }}">
       {!! config('backpack.base.project_logo')  !!}
       <span style="font-weight:700; color: #e3453f !important; position:relative; top: -5px !important">
         {{config('backpack.base.project_name')}}<br/>
