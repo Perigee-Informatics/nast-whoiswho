@@ -60,7 +60,7 @@
         <div class="form-row p-2">
             
             <div class="col d-inline-flex">
-                <select class="form-control searchselect" name="province_id" id="province_id" style="width: 100%;" onchange="getMembersData()">
+                <select class="form-control" name="province_id" id="province_id" style="width: 100%;" onchange="getMembersData()">
                     <option class="text-mute" selected disabled value=""> -- Province --</option>
                     @foreach($provinces as $p)
                     <option class="form-control" value="{{ $p->id }}">{{ $p->name_en }}</option>
@@ -70,7 +70,7 @@
             </div>
     
             <div class="col d-inline-flex">
-                <select class="form-control searchselect" name="district_id" id="district_id" style="width: 100%;" onchange="getMembersData()">
+                <select class="form-control" name="district_id" id="district_id" style="width: 100%;" onchange="getMembersData()">
                     <option class="text-mute" selected disabled value=""> -- Select Province First --</option>
 
                     {{-- @foreach($districts as $d)
@@ -80,7 +80,7 @@
                 <button class="btn bg-light la la-times district_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
             </div>
             <div class="col d-inline-flex">
-                <select class="form-control searchselect" name="gender_id" id="gender_id" style="width: 100%;" onchange="getMembersData()">
+                <select class="form-control" name="gender_id" id="gender_id" style="width: 100%;" onchange="getMembersData()">
                     <option class="text-mute" selected disabled value=""> -- Gender --</option>
                     @foreach($genders as $g)
                         <option class="form-control" value="{{ $g->id }}">{{ $g->name_en }}</option>
@@ -89,7 +89,7 @@
                 <button class="btn bg-light la la-times gender_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
             </div>
             {{-- <div class="col d-inline-flex">
-                <select class="form-control searchselect" name="country_status" id="country_status" style="width: 100%;" onchange="getMembersData()">
+                <select class="form-control" name="country_status" id="country_status" style="width: 100%;" onchange="getMembersData()">
                     <option class="text-mute" selected disabled value=""> -- Country --</option>
                     <option class="form-control" value="nepal">Nepal</option>
                     <option class="form-control" value="other">Other</option>
@@ -97,7 +97,7 @@
                 <button class="btn bg-light la la-times country_status_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
             </div> --}}
             <div class="col d-inline-flex">
-                <select class="form-control searchselect" name="age_group" id="age_group" style="width: 100%;" onchange="getMembersData()">
+                <select class="form-control" name="age_group" id="age_group" style="width: 100%;" onchange="getMembersData()">
                     <option class="text-mute" selected disabled value=""> -- Age group --</option>
                     <option class="form-control" value="Below-30">Below 30</option>
                     <option class="form-control" value="31-40">31-40</option>
@@ -108,7 +108,7 @@
                 <button class="btn bg-light la la-times age_group_filter times-hidden font-weight-bold" onclick="filterClear(this)"></button>
             </div>
             <div class="col d-inline-flex">
-                <select class="form-control searchselect" name="channel" id="channel" style="width: 100%;" onchange="getMembersData()">
+                <select class="form-control" name="channel" id="channel" style="width: 100%;" onchange="getMembersData()">
                     <option class="text-mute" selected disabled value=""> -- Channel --</option>
                     <option class="form-control" value="wiw">WIW</option>
                     <option class="form-control" value="wsfn">WSFN</option>
@@ -118,7 +118,7 @@
             </div>
 
             <div class="col d-inline-flex">
-                <select class="form-control searchselect" name="membership_type" id="membership_type" style="width: 100%;" onchange="getMembersData()">
+                <select class="form-control" name="membership_type" id="membership_type" style="width: 100%;" onchange="getMembersData()">
                     <option class="text-mute" selected disabled value=""> -- Membership Type --</option>
                     <option class="form-control" value="life">Life</option>
                     <option class="form-control" value="friends_of_wsfn">Friends of WSFN</option>
@@ -211,11 +211,13 @@
 
     // });
 
-    function getMembersData() {
+    function getMembersData(query_string=null) {
 
         var urlParams = new URLSearchParams(window.location.search);
-	    var query_string = urlParams.get('page');
 
+        if(query_string == null){
+            query_string = urlParams.get('page');
+        }
         let data = {
             province_id: $('#province_id').val(),
             district_id: $('#district_id').val(),
@@ -254,18 +256,24 @@
         // if($('#expertise_name').val()){
         //     $('.expertise_name_filter').removeClass('times-hidden').addClass('times-show');
         // }
-
+ 
         let active_ele = document.getElementsByClassName('times-show').forEach(function(ele){
             let itm = ele.previousElementSibling;
             $(itm).addClass('filter-active');
         });
 
+        var href= '/public/list-members';
+
+        if(query_string)
+        {
+            href = '/public/list-members?page='+query_string;
+        }
        
 
         $('#members_data').html('<div class="text-center"><img src="/css/images/loading.gif"/></div>');
         $.ajax({
             type: "POST",
-            url: "/public/list-members",
+            url: href,
             data: data,
             success: function(response) {
                 $('#members_data').html(response);
