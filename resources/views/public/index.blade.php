@@ -90,61 +90,41 @@
                 document.getElementById("mySidenav").style.width = "0";
             }
 
-            // function filterData(item)
-            // {
+            function filterData(item)
+            {
                 
-            //     let type = $(item).data('type');
-            //     let pid = $(item).data('pid');
-            //     let did = $(item).data('did');
-            //     let gid = $(item).data('gender_id');
+                let type = $(item).data('type');
+                let pid = $(item).data('pid');
+                let did = $(item).data('did');
+                let gid = $(item).data('gender_id');
 
-            //     localStorage.setItem('type',type);
-            //     if(pid != '' && pid != 'undefined'){
-            //         localStorage.setItem('province_id',pid);
-            //     }
-            //     if(did != '' && did != 'undefined'){
-            //         localStorage.setItem('district_id',did);
-            //     }
-            //     if(gid != '' && gid != 'undefined'){
-            //         localStorage.setItem('gender_id',gid);
-            //     }
+                localStorage.setItem('type',type);
+                if(pid != '' && pid != 'undefined'){
+                    localStorage.setItem('province_id',pid);
+                }
+                if(did != '' && did != 'undefined'){
+                    localStorage.setItem('district_id',did);
+                }
+                if(gid != '' && gid != 'undefined'){
+                    localStorage.setItem('gender_id',gid);
+                }
 
-            //     if(type == 'age_group'){
+                if(type == 'age_group'){
 
-            //         let set_pid = $(item).data('set_pid');
-            //         let key = $(item).data('key');
+                    let set_pid = $(item).data('set_pid');
+                    let key = $(item).data('key');
 
-            //         if(set_pid != '' && set_pid != 'undefined'){
-            //             localStorage.setItem('province_id',set_pid);
-            //         }
-            //         if(key != '' && key != 'undefined'){
-            //             localStorage.setItem('age_group',key);
-            //         }
-            //     }
+                    if(set_pid != '' && set_pid != 'undefined'){
+                        localStorage.setItem('province_id',set_pid);
+                    }
+                    if(key != '' && key != 'undefined'){
+                        localStorage.setItem('age_group',key);
+                    }
+                }
 
-            //     $('a.tab-btn').click(function(event) {
-            //         if(!$(this).hasClass('bg-primary')) {
-            //             return false;
-            //         }
-            //         $('#body-content').html('<div class="text-center mt-5"><img src="/gif/loading.gif"/></div>');
-            //         event.preventDefault();
-            //         let key = 'btn-tabular'
-            //         loadBodyContent(key);
+                window.location.href= '/public/list-members';
 
-            //         $('a.tab-btn').removeClass('bg-primary bg-success text-white').addClass('bg-primary text-white')
-            //         $(this).removeClass('bg-primary bg-success text-dark text-white').addClass('bg-success text-white')
-            //     });
-
-            //     loadBodyContent = (key) => {
-            //         let url = '/home/get-page-content';
-            //         $.get(url,{key:key}, function(response) {
-            //             $('#body-content').html(response);
-            //         });
-            //     }
-
-            //     $('a.tab-btn:nth-child(2)').click();
-
-            // }
+            }
 
         </script>
 

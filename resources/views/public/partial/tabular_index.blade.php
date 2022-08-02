@@ -186,14 +186,14 @@
                 $('#gender_id option[value="'+gender_id+'"').attr('selected','selected');
             }, 1000);
         }
-
+        
         if(age_group)
         {
             if(age_group == "Below 30") age_group='Below-30';
             if(age_group == "60 & Above") age_group='60-Above';
             setTimeout(() => {
                 $('#age_group option[value="'+age_group+'"').attr('selected','selected');
-            }, 1500);
+            }, 1000);
 
         }
         if(document.getElementsByClassName('times-show').length == 0){
@@ -204,6 +204,7 @@
                 localStorage.removeItem('province_id');
                 localStorage.removeItem('district_id');
                 localStorage.removeItem('gender_id');
+                localStorage.removeItem('type');
                 localStorage.removeItem('age_group');
             }, 2500);
         }

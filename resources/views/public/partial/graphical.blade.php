@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="spinner-border" id="custom_spinner" role="status">
-            <span class="sr-only">Loading...</span>
+            <span id="loading">**..**</span>
         </div>
 
         <div class="card mb-0" style="background-color:#d9d9d9;">

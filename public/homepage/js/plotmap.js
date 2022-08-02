@@ -149,16 +149,19 @@ var channel_foreign = false;
 
 $('input[type=checkbox]').click(function(){ channelFilter(current_level,current_areaId,true)});
 
-function showMembersData(level,areaId){
+function showMembersData(level,areaId,clicked=false){
+
     var url = '/get-all-members?level='+level+'&&area_id='+areaId;
 
-    markerClusters.clearLayers();
+        markerClusters.clearLayers();
         var datas={
             'channel_wiw':channel_wiw,
             'channel_wsfn':channel_wsfn,
             'channel_foreign':channel_foreign,
         };
+        $('#loading').html('<div class="text-center"><img src="/gif/loading.gif"/></div>');
     $.get(url,{datas}, function (data) {
+
         if (data.length != 0) {
             membersData = JSON.parse(data);
 
@@ -195,6 +198,11 @@ function showMembersData(level,areaId){
                 markerClusters.addLayer(new_marker);
             });
             map.addLayer(markerClusters);
+
+            if(clicked == true && level== -1)
+            {
+                resetToCountry();
+            }
         }
     });
 }
@@ -645,9 +653,7 @@ function resetToCountry() {
         }).addTo(map);
         var nepal = L.geoJSON(provinceData);
         map.fitBounds(nepal.getBounds());
-        setTimeout(function(){
-            showMembersData(-1,-1);
-        },500);
+        showMembersData(-1,-1);
         updateGeoData(-1,-1);
         current_level=-1;
         current_areaId=-1;
@@ -752,10 +758,11 @@ function resetToLocalLevel(id) {
 
 function channelFilter(level,areaId,click_action)
 {
+
     var ch_checkbox = $('[name="channel_filter[]"]');
 
     ch_checkbox.each(function(){
-       
+
         if(this.checked){
             if(this.value=='channel_wiw') channel_wiw=true;
             if(this.value=='channel_wsfn') channel_wsfn=true;
@@ -768,8 +775,8 @@ function channelFilter(level,areaId,click_action)
     });
 
         if(click_action){
+            showMembersData(level,areaId,true)
             updateGeoData(areaId,level)
-            showMembersData(level,areaId)
         }
 
 }

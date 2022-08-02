@@ -211,9 +211,9 @@ class DashboardCrudController extends BaseCrudController
                         ->join('mst_gender as mg','m.gender_id','mg.id')
                         ->select('m.id','mfp.name_en as province','mfd.name_en as district','m.first_name','m.last_name','mg.name_en as gender',
                         'mfd.gps_lat as lat','mfd.gps_long as long','m.channel_wiw','m.channel_wsfn','channel_foreign')
-                        ->whereRaw($channel_wiw_clause)
-                        ->orWhereRaw($channel_wsfn_clause)
-                        ->whereRaw($channel_foreign_clause)
+                        ->where(function($query)use($channel_wiw_clause,$channel_wsfn_clause){
+                            $query->whereRaw($channel_wiw_clause)->orWhereRaw($channel_wsfn_clause);
+                        })
                         ->whereRaw($province_clause)
                         ->whereRaw($district_clause)
                         ->whereRaw($local_level_clause)
@@ -285,9 +285,9 @@ class DashboardCrudController extends BaseCrudController
 
         $members = DB::table('members as m')
                     ->select('*')
-                    ->whereRaw($channel_wiw_clause)
-                    ->orWhereRaw($channel_wsfn_clause)
-                    ->whereRaw($channel_foreign_clause)
+                    ->where(function($query)use($channel_wiw_clause,$channel_wsfn_clause){
+                        $query->whereRaw($channel_wiw_clause)->orWhereRaw($channel_wsfn_clause);
+                    })
                     ->get();
 
         $gender_data_province = DB::table('members as m')
@@ -297,8 +297,9 @@ class DashboardCrudController extends BaseCrudController
                                 DB::raw('count(case when gender_id = 1 then 1 end) as male'),
                                 DB::raw('count(case when gender_id = 2 then 1 end) as female'),
                                 DB::raw('count(m.gender_id) as total'))
-                        ->whereRaw($channel_wiw_clause)
-                        ->orWhereRaw($channel_wsfn_clause)
+                        ->where(function($query)use($channel_wiw_clause,$channel_wsfn_clause){
+                            $query->whereRaw($channel_wiw_clause)->orWhereRaw($channel_wsfn_clause);
+                        })
                         ->whereRaw($channel_foreign_clause)
                         ->groupBy('m.province_id','mfp.name_en')
                         ->orderBy('m.province_id')
@@ -407,10 +408,10 @@ class DashboardCrudController extends BaseCrudController
                                             DB::raw('count(case when gender_id = 1 then 1 end) as male'),
                                             DB::raw('count(case when gender_id = 2 then 1 end) as female'),
                                             DB::raw('count(m.gender_id) as total'))
+                                    ->where(function($query)use($channel_wiw_clause,$channel_wsfn_clause){
+                                        $query->whereRaw($channel_wiw_clause)->orWhereRaw($channel_wsfn_clause);
+                                    })
                                     ->where('mfd.province_id',$province_id)
-                                    ->whereRaw($channel_wiw_clause)
-                                    ->orWhereRaw($channel_wsfn_clause)
-                                    ->whereRaw($channel_foreign_clause)
                                     ->groupBy('m.district_id','mfp.id','mfd.name_en')
                                     ->orderBy('m.district_id')
                                     ->get();
@@ -442,9 +443,9 @@ class DashboardCrudController extends BaseCrudController
             $members = DB::table('members as m')
                         ->select('*')
                         ->whereProvinceId($province_id)
-                        ->whereRaw($channel_wiw_clause)
-                        ->orWhereRaw($channel_wsfn_clause)
-                        ->whereRaw($channel_foreign_clause)
+                        ->where(function($query)use($channel_wiw_clause,$channel_wsfn_clause){
+                            $query->whereRaw($channel_wiw_clause)->orWhereRaw($channel_wsfn_clause);
+                        })
                         ->get();
 
         $datas = [] ;
