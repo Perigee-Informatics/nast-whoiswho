@@ -653,7 +653,9 @@ function resetToCountry() {
         }).addTo(map);
         var nepal = L.geoJSON(provinceData);
         map.fitBounds(nepal.getBounds());
-        showMembersData(-1,-1);
+        setTimeout(() => {
+            showMembersData(-1,-1);
+        }, 500);
         updateGeoData(-1,-1);
         current_level=-1;
         current_areaId=-1;
