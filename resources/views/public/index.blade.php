@@ -11,17 +11,11 @@
         <link rel="stylesheet" href="{{ asset('homepage/css/markerCluster.css') }}" />
         <!-- chartjs -->
         <link rel="stylesheet" href="{{asset('homepage/css/chart.min.css')}}" />
+        
 
 
 
 @section('content')
-
-<div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <a href="#"><i class="la la-sitemap"></i>  Graphical</a>
-    <a href="#"><i class="la la-table"></i>  Tabular</a>
-  </div>
-
     <div class="row card" style="width: 100%" id="main">
 
         {{-- <div class="card-header">
@@ -38,7 +32,12 @@
             </div>
         </div> --}}
 
-        <div class="col p-0 border rounded p-2" id="body-content"></div>
+        {{-- <div class="col p-0 border rounded p-2" id="body-content"></div> --}}
+        @if(Str::contains(url()->current(),'public/list-members'))
+            @include('public.partial.tabular_index')
+        @else
+            @include('public.partial.graphical')
+        @endif
     </div>
 
 @endsection
@@ -47,28 +46,28 @@
         <script>
             $(document).ready(function(){
 
-                $('a.tab-btn').click(function(event) {
-                    if(!$(this).hasClass('bg-primary')) {
-                        return false;
-                    }
-                    $('#body-content').html('<div class="text-center mt-5"><img src="/gif/loading.gif"/></div>');
-                    event.preventDefault();
-                    let key = $(this).attr('id');
-                    loadBodyContent(key);
+                // $('a.tab-btn').click(function(event) {
+                //     if(!$(this).hasClass('bg-primary')) {
+                //         return false;
+                //     }
+                //     $('#body-content').html('<div class="text-center mt-5"><img src="/gif/loading.gif"/></div>');
+                //     event.preventDefault();
+                //     let key = $(this).attr('id');
+                //     loadBodyContent(key);
 
-                    $('a.tab-btn').removeClass('bg-primary bg-success text-white').addClass('bg-primary text-white')
-                    $(this).removeClass('bg-primary bg-success text-dark text-white').addClass('bg-success text-white')
-                });
+                //     $('a.tab-btn').removeClass('bg-primary bg-success text-white').addClass('bg-primary text-white')
+                //     $(this).removeClass('bg-primary bg-success text-dark text-white').addClass('bg-success text-white')
+                // });
 
-                loadBodyContent = (key) => {
-                    let url = '/home/get-page-content';
-                    $.get(url,{key:key}, function(response) {
-                        $('#body-content').html(response);
-                    });
-                }
+                // loadBodyContent = (key) => {
+                //     let url = '/home/get-page-content';
+                //     $.get(url,{key:key}, function(response) {
+                //         $('#body-content').html(response);
+                //     });
+                // }
 
-                // Load default tab
-                $('a.tab-btn:first-child').click();
+                // // Load default tab
+                // $('a.tab-btn:first-child').click();
 
                   $('body').on('keyup', function(e) {
                     let keyPressed = e.which ? e.which : e.keyCode;
@@ -77,7 +76,7 @@
                     if(keyPressed==27){
                         closeNav();
                     }
-        });
+                });
 
             });
         </script>

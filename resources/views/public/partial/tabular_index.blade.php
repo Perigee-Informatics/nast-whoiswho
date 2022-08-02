@@ -130,26 +130,20 @@
 
         <div class="form-row p-2">
             <div class="col-md-12">
-                {{-- <label for="expertise" style="display: block !important"> --}}
-                    {{-- Choose multiple expertise --}}
                     <select class="js-example-basic-multiple" name="expertise[]" id="expertise" multiple="multiple" style="width: 100%;">
                         @foreach($expertise_result as $exp)
                         <option value="{{$exp}}">{{$exp}}</option>
                         @endforeach
                     </select>
-                {{-- </label> --}}
-                {{-- <input class="form-control" id="expertise_name" type="text" name="expertise_name" placeholder="Expertise (3 letters required)"> --}}
             </div>
         </div>
     </div>
 
-
     <div class="col" id="members_data"></div>
 </div>
-@php
-    $expertise_lists = json_encode($expertise_result);
-@endphp
 
+
+@section('after_scripts')
 <script src="{{asset('packages/dataTables-custom/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('packages/dataTables-custom/js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{asset('packages/dataTables-custom/js/dataTables.select.min.js')}}"></script>
@@ -157,13 +151,9 @@
 <script src="{{asset('js/jquery.fancybox.min.js')}}"></script>
 <script src="{{asset('js/dependentdropdown.js')}}"></script>
 <script src="{{asset('packages/select2/dist/js/select2.full.min.js')}}"></script>
-{{-- <script src="{{ asset('js/select2.min.js') }}"></script> --}}
-
 <script>
-    // let expertise_lists = <?php echo $expertise_lists ?>;
 
-    $(document).ready(function() {
-        // let availableTags=[];
+    // $(document).ready(function() {
         $('.js-example-basic-multiple').select2({
             placeholder: '--select multiple expertise here--'
         });
@@ -177,21 +167,6 @@
         $("#expertise").on("select2:close", function(e){
              getMembersData();
         });
-
-        // if(expertise_lists){
-        //     expertise_lists.forEach(function (item,index){
-        //         availableTags.push({'label':' '+item});
-        //     });
-        // }
-
-        // $('#expertise_name').autocomplete({
-        //     source:availableTags,
-        //     minLength: 3,
-        //     select: function (event, ui) {
-        //         $("#expertise_name").val(ui.item.label); // display the selected text
-        //         getMembersData();
-        //     },
-        // });
 
         if(province_id)
         {
@@ -234,7 +209,7 @@
         }
 
 
-    });
+    // });
 
     function getMembersData() {
         let data = {
@@ -310,3 +285,4 @@
     }
 
 </script>
+@endsection

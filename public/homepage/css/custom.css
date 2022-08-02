@@ -230,7 +230,7 @@ small {
     height: 100%; /* 100% Full-height */
     width: 0; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
+    z-index: 10000; /* Stay on top */
     top: 70px; /* Stay at the top */
     left: 0;
     background-color: #399bbe !important; /* Black*/
@@ -263,7 +263,7 @@ small {
     font-size: 45px;
     margin-left: 50px;
     font-weight: bold;
-    color:rgb(184, 27, 27);
+    color:rgb(214, 42, 42);
   }
   
   /* Style page content - use this if you want to push the page content to the right when you open the side navigation */

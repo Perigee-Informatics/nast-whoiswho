@@ -22,6 +22,70 @@ class DashboardController extends Controller
         return view('public.index');
     }
 
+    public function tabularIndex()
+    {
+        $data['provinces'] = MstFedProvince::orderBy('id')->get();
+        $data['districts'] = MstFedDistrict::orderBy('id')->get();
+        $data['genders'] = MstGender::orderBy('id')->get();
+
+        $sql ="with expertise_data as (
+            select expertise->>'name' as expertise_name,channel_wiw
+            from(
+                    select channel_wiw,json_array_elements(expertise)::json as expertise from members)a
+            )
+            select ed.* from expertise_data ed where expertise_name is not null and channel_wiw = true";
+
+        $results = DB::select($sql);
+
+        $expertise_string= '';
+
+        foreach($results as $r)
+        {
+            if($expertise_string != ''){
+
+                $pattern = strtolower($r->expertise_name);
+
+                if(strpos($pattern,$expertise_string) !== false){
+                    break;
+                }else{
+                    $expertise_string .= '; '. $pattern;
+                }
+        
+            }else{
+                $expertise_string .=strtolower($r->expertise_name);
+            }
+        }
+
+        $expertise_string = \str_replace([',','.','(',')','‘','“'],'',$expertise_string);
+        $expertise_string = \str_replace(['/'],' ',$expertise_string);
+        $expertise_string = preg_replace("/\r|\n/", "", $expertise_string);
+        $explode_result = \explode('; ',$expertise_string);
+
+        $explode_result = array_values(array_unique(array_values(array_filter($explode_result))));
+        $final_result = [];
+
+        foreach($explode_result as $er)
+        {
+            $str_status = false;
+
+            if(strlen($er)>2 && strlen($er) < 70)
+            {
+                $str_status= true;
+            }
+
+            if($str_status == true)
+            {
+                $final_result[] = $er;
+            }
+        }
+
+        $final_result = collect($final_result);
+
+        $data['expertise_result']= $final_result;
+
+        return view('public.index',$data);
+    }
+
     public function updateProvinceId()
     {
         $members  = Member::all();
@@ -36,106 +100,106 @@ class DashboardController extends Controller
         return back();
     }
 
-    public function getPageContent(Request $request)
-    {   
-        $key = $request->key;
-        if($key == 'btn-graphical')
-        {
-            return view('public.partial.graphical');
-        }else
-        {
-            $data['provinces'] = MstFedProvince::orderBy('id')->get();
-            $data['districts'] = MstFedDistrict::orderBy('id')->get();
-            $data['genders'] = MstGender::orderBy('id')->get();
+    // public function getPageContent(Request $request)
+    // {   
+    //     $key = $request->key;
+    //     if($key == 'btn-graphical')
+    //     {
+    //         return view('public.partial.graphical');
+    //     }else
+    //     {
+    //         $data['provinces'] = MstFedProvince::orderBy('id')->get();
+    //         $data['districts'] = MstFedDistrict::orderBy('id')->get();
+    //         $data['genders'] = MstGender::orderBy('id')->get();
 
 
 
-            $sql ="with expertise_data as (
-                select expertise->>'name' as expertise_name,channel_wiw
-                from(
-                        select channel_wiw,json_array_elements(expertise)::json as expertise from members)a
-                )
-                select ed.* from expertise_data ed where expertise_name is not null and channel_wiw = true";
+    //         $sql ="with expertise_data as (
+    //             select expertise->>'name' as expertise_name,channel_wiw
+    //             from(
+    //                     select channel_wiw,json_array_elements(expertise)::json as expertise from members)a
+    //             )
+    //             select ed.* from expertise_data ed where expertise_name is not null and channel_wiw = true";
 
-            $results = DB::select($sql);
-            // $results = array_slice($results,0,100);
+    //         $results = DB::select($sql);
+    //         // $results = array_slice($results,0,100);
 
-            $expertise_string= '';
+    //         $expertise_string= '';
 
-            foreach($results as $r)
-            {
-                if($expertise_string != ''){
+    //         foreach($results as $r)
+    //         {
+    //             if($expertise_string != ''){
 
-                    $pattern = strtolower($r->expertise_name);
+    //                 $pattern = strtolower($r->expertise_name);
 
-                    if(strpos($pattern,$expertise_string) !== false){
-                        break;
-                    }else{
-                        $expertise_string .= '; '. $pattern;
-                    }
+    //                 if(strpos($pattern,$expertise_string) !== false){
+    //                     break;
+    //                 }else{
+    //                     $expertise_string .= '; '. $pattern;
+    //                 }
 
 
-                    // $pattern_exploded = explode(' ',$pattern);
+    //                 // $pattern_exploded = explode(' ',$pattern);
 
-                    //loop through exploded patterns
-                    // foreach($pattern_exploded as $segment)
-                    // {
-                    //     if(strpos($segment,$expertise_string) !== false){
-                    //         break;
-                    //     }else{
-                    //         $expertise_string .= '; '. $segment;
-                    //     }
-                    // }
+    //                 //loop through exploded patterns
+    //                 // foreach($pattern_exploded as $segment)
+    //                 // {
+    //                 //     if(strpos($segment,$expertise_string) !== false){
+    //                 //         break;
+    //                 //     }else{
+    //                 //         $expertise_string .= '; '. $segment;
+    //                 //     }
+    //                 // }
              
            
-                }else{
-                    $expertise_string .=strtolower($r->expertise_name);
-                }
-            }
+    //             }else{
+    //                 $expertise_string .=strtolower($r->expertise_name);
+    //             }
+    //         }
 
-            $expertise_string = \str_replace([',','.','(',')','‘','“'],'',$expertise_string);
-            $expertise_string = \str_replace(['/'],' ',$expertise_string);
-            $expertise_string = preg_replace("/\r|\n/", "", $expertise_string);
-            $explode_result = \explode('; ',$expertise_string);
+    //         $expertise_string = \str_replace([',','.','(',')','‘','“'],'',$expertise_string);
+    //         $expertise_string = \str_replace(['/'],' ',$expertise_string);
+    //         $expertise_string = preg_replace("/\r|\n/", "", $expertise_string);
+    //         $explode_result = \explode('; ',$expertise_string);
 
-            $explode_result = array_values(array_unique(array_values(array_filter($explode_result))));
-            $final_result = [];
+    //         $explode_result = array_values(array_unique(array_values(array_filter($explode_result))));
+    //         $final_result = [];
 
-            foreach($explode_result as $er)
-            {
-                $str_status = false;
+    //         foreach($explode_result as $er)
+    //         {
+    //             $str_status = false;
 
-                if(strlen($er)>2 && strlen($er) < 70)
-                {
-                    $str_status= true;
-                }
+    //             if(strlen($er)>2 && strlen($er) < 70)
+    //             {
+    //                 $str_status= true;
+    //             }
 
-                // for ($i = 0; $i < strlen($er); $i++) {
-                //     if (ctype_digit($er[$i]) ) {
-                //         $str_status = false;
-                //         break;
-                //     }
-                // }
+    //             // for ($i = 0; $i < strlen($er); $i++) {
+    //             //     if (ctype_digit($er[$i]) ) {
+    //             //         $str_status = false;
+    //             //         break;
+    //             //     }
+    //             // }
 
-                if($str_status == true)
-                {
-                    $final_result[] = $er;
-                }
-            }
+    //             if($str_status == true)
+    //             {
+    //                 $final_result[] = $er;
+    //             }
+    //         }
 
-            $final_result = collect($final_result);
+    //         $final_result = collect($final_result);
 
-            // dd($final_result);
+    //         // dd($final_result);
 
-            //array to exclude items;
+    //         //array to exclude items;
 
-            // $exclude = ['based','water','']
+    //         // $exclude = ['based','water','']
 
-           $data['expertise_result']= $final_result;
+    //        $data['expertise_result']= $final_result;
 
-            return view('public.partial.tabular_index',$data);
-        }
-    }
+    //         return view('public.partial.tabular_index',$data);
+    //     }
+    // }
 
     public function getMembersList(Request $request)
     { 

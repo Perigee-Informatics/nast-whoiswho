@@ -6,6 +6,11 @@
 <body class="{{ config('backpack.base.body_class') }}">
   @include(backpack_view('inc.main_header'))
   <div class="app-body">
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="/"><i class="la la-sitemap"></i>  Graphical</a>
+      <a href="/public/list-members"><i class="la la-table"></i>  Tabular</a>
+    </div>
     <main class="pt-4 pl-3" style="width:100%;">
 
       <div class="px-3">
