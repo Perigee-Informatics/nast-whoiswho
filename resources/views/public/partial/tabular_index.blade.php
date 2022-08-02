@@ -289,10 +289,10 @@
 
                 $('#members_data_table').DataTable({
                     searching: true,
-                    paging: true,
+                    paging: false,
                     ordering: true,
                     select: false,
-                    bInfo: true,
+                    bInfo: false,
                     lengthChange: false
                 });
             }

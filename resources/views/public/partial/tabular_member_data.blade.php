@@ -55,6 +55,13 @@
             @endforeach    
         </tbody>
     </table>
+    <div class="row mt-3">
+        <div class="col">
+            @include('public.partial.pagination', ['paginator' => $data])
+        </div>
+    </div>
+
+
 
 <style>
     .report-heading {

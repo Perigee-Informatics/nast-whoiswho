@@ -10,6 +10,9 @@ use App\Models\MstFedDistrict;
 use App\Models\MstFedProvince;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Controllers\Admin\MemberCrudController;
 
 class DashboardController extends Controller
@@ -271,7 +274,28 @@ class DashboardController extends Controller
             $data[$member->id]['json_data'] = $json_data;
             // $data[$member->id]['photo_encoded'] = $photo_encoded;
         }
+
+        $data = $this->paginate(collect($data), 10, null, url('/') . \Request::getRequestUri());
+
         return view('public.partial.tabular_member_data',compact('data'));
+    }
+
+    public function paginate($items, $perPage = 20, $page = null, $baseUrl = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ?$items : Collection::make($items);
+        $lap = new LengthAwarePaginator(
+                $items->forPage($page, $perPage),
+                $items->count(),
+                $perPage,
+                $page,
+                $options
+        );
+
+        if ($baseUrl) {
+            $lap->setPath($baseUrl);
+        }
+        return $lap;
     }
 
     public function viewDetailedInfo($id)
