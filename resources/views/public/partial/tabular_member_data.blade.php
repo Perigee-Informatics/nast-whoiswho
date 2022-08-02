@@ -31,7 +31,7 @@
                     $m_type = ($basic->membership_type == 'friends_of_wsfn') ? 'Friends Of WSFN' : 'Life';
                 @endphp
 
-                <tr data-toggle="collapse" data-target="{{ '#'.$rowId}}" class="accordion-toggle">
+                <tr>
                     <td class="report-data text-center">{{$loop->iteration}}</td>
                     <td class="report-data">{{$member_full_name}}</td>
                     <td class="report-data">{{$basic->genderEntity->name_en}}</td>
@@ -44,7 +44,7 @@
                     <td class="report-data">{{$basic->email}}</td>
                     <td class="report-data">{{$basic->link_to_google_scholar}}</td>
                     <td class="report-data text-center">
-                        <a class="fancybox btn btn-primary show-btn" data-type="ajax" data-src="{{'public/member/'.$key.'/view-detailed-info'}} " title='View Detail'>
+                        <a class="fancybox btn btn-primary show-btn" data-type="ajax" data-src="{{'/public/member/'.$key.'/view-detailed-info'}} " title='View Detail'>
                             <i class="la la-eye text-white font-weight-bold"></i>
                         </a>
 	                    <a target="_blank" href="{{ url('/public/member/'.$key.'/print-profile') }}" class="btn btn-primary print-btn" data-style="zoom-in">
@@ -129,10 +129,3 @@
     }
 </style>
 
-<script>
-        $('.fancybox').fancybox({
-            openEffect: 'elastic',
-            closeEffect: 'elastic',
-            autoSize:true,
-        });
-</script>

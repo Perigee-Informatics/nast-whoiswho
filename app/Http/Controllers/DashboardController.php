@@ -338,8 +338,9 @@ class DashboardController extends Controller
             $data[$member->id]['json_data'] = $json_data;
             // $data[$member->id]['photo_encoded'] = $photo_encoded;
         }
+        $page = $request->page_number;
+        $data = $this->paginate(collect($data), 10, $page, url('/') . \Request::getRequestUri());
 
-        $data = $this->paginate(collect($data), 10, null, url('/') . \Request::getRequestUri());
 
         return view('public.partial.tabular_member_data',compact('data'));
     }

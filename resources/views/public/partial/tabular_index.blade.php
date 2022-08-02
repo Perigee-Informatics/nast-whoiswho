@@ -212,6 +212,10 @@
     // });
 
     function getMembersData() {
+
+        var urlParams = new URLSearchParams(window.location.search);
+	    var query_string = urlParams.get('page');
+
         let data = {
             province_id: $('#province_id').val(),
             district_id: $('#district_id').val(),
@@ -221,6 +225,8 @@
             channel:$('#channel').val(),
             membership_type:$('#membership_type').val(),
             expertise:$('#expertise').val(),
+            page_number : query_string,
+
         }
         if($('#province_id').val()){
             $('.province_filter').removeClass('times-hidden').addClass('times-show');
@@ -254,10 +260,12 @@
             $(itm).addClass('filter-active');
         });
 
+       
+
         $('#members_data').html('<div class="text-center"><img src="/css/images/loading.gif"/></div>');
         $.ajax({
             type: "POST",
-            url: "/public/get-members-list",
+            url: "/public/list-members",
             data: data,
             success: function(response) {
                 $('#members_data').html(response);
@@ -270,6 +278,11 @@
                     bInfo: false,
                     lengthChange: false
                 });
+                    $('.fancybox').fancybox({
+                        openEffect: 'elastic',
+                        closeEffect: 'elastic',
+                        autoSize:true,
+                    });
             }
         });
     }
