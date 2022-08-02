@@ -161,7 +161,7 @@ div.DTFC_RightBodyWrapper {
 .sidebar .sidebar-nav,
 .sidebar .sidebar-scroll,
 .sidebar .nav {
-  width: 230px;
+  width: 200px;
 }
 
 /* css for current focus element */
@@ -310,7 +310,7 @@ hr.hr-line {
 }
 
 .sidebar.sidebar-pills {
-  width: 230px;
+  width: 200px;
 }
 
 li.nav-item {

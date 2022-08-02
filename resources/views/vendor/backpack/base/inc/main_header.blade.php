@@ -6,7 +6,7 @@ $current_url = url()->current();
 
 <header class="{{ config('backpack.base.header_class') }}">
   <!-- Logo -->
-@if(Str::contains($current_url,'admin'))
+{{-- @if(Str::contains($current_url,'admin'))
   <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto ml-3" type="button" data-toggle="sidebar-show" aria-label="{{ trans('backpack::base.toggle_navigation')}}">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -16,9 +16,13 @@ $current_url = url()->current();
   <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show" aria-label="{{ trans('backpack::base.toggle_navigation')}}">
     <span class="navbar-toggler-icon"></span>
   </button>
- @else
+ @else --}}
+
  <div class="row" style="display: contents">
-    <span class="btn font-weight-bolder font-2xl pl-3" style="cursor: pointer; color:black;" onclick="openNav()"><i class="la la-bars"></i></span>
+    <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto ml-3" type="button" data-toggle="sidebar-show" aria-label="{{ trans('backpack::base.toggle_navigation')}}">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    {{-- <span class="btn font-weight-bolder font-2xl pl-3" style="cursor: pointer; color:black;" onclick="openNav()"><i class="la la-bars"></i></span> --}}
     <a class="ml-2 text-dark text-decoration-none font-xl" href="{{ url(config('backpack.base.home_link')) }}" title="{{ config('backpack.base.project_name') }}">
       {!! config('backpack.base.project_logo')  !!}
       <span style="font-weight:700; color: #e3453f !important; position:relative; top: -5px !important">
@@ -28,8 +32,11 @@ $current_url = url()->current();
         Science & Technology for National Development
       </span>
     </a>
+    <button class="navbar-toggler sidebar-toggler d-md-down-none pb-4 text-dark" type="button" data-toggle="sidebar-lg-show" aria-label="{{ trans('backpack::base.toggle_navigation')}}">
+      <span class="navbar-toggler-icon"></span>
+    </button>
  </div>
- @endif
+ {{-- @endif --}}
 
   <div class="date-time d-lg-block d-sm-none">
     <p style="color: black;" class="mt-2">{{$date}} <br><span id="txt"></span></p>
