@@ -44,14 +44,13 @@
 }
 
 .province_label {
-    margin-left: -37px !important;
-    margin-top: -11px !important;
-    font-size: 18px;
+    margin-left: -55px !important;
+    margin-top: -15px !important;
+    font-size: 15px;
     text-shadow: 1px 1px darkgrey;
     font-weight: bold;
     color: black;
     font-family:cursive !important;
-
 }
 
 .district_label {

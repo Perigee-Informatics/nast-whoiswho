@@ -132,7 +132,7 @@ function onEachProvinceFeature(feature, layer) {
         icon: L.divIcon({
             className: 'province_label',
             html: feature.properties.PROVINCE_NAME,
-            iconSize: [70, 15],
+            iconSize: [120, 15],
         })
     }).addTo(map);
     label.on({
