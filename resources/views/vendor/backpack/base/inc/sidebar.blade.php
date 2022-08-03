@@ -4,7 +4,8 @@
       <nav class="sidebar-nav overflow-hidden">
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="nav">
-          @if(Str::contains( url()->current(),'admin'))
+
+          @if(Str::contains( url()->current(),'admin') && !Str::contains(url()->current(),'admin/login'))
             @include(backpack_view('inc.sidebar_content'))
           @else
             @include(backpack_view('inc.sidebar_content_public'))
