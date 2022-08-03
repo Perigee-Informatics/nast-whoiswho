@@ -22,6 +22,11 @@ class DashboardController extends Controller
         return view('public.index');
     }
 
+    public function membershipForm()
+    {
+        
+    }
+
     public function tabularIndex()
     {
         $data['provinces'] = MstFedProvince::orderBy('id')->get();

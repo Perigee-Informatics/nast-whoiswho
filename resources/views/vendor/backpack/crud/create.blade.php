@@ -33,7 +33,7 @@
 		@include('crud::inc.grouped_errors')
 
 		  <form method="post"
-		  		action="{{ url($crud->route) }}"
+		  		action="{{ backpack_user() ? url($crud->route): '/public/apply-for-membership/store' }}"
 				@if ($crud->hasUploadFields('create'))
 				enctype="multipart/form-data"
 				@endif
@@ -46,7 +46,11 @@
 		      	@include('crud::form_content', [ 'fields' => $crud->fields(), 'action' => 'create' ])
 		      @endif
 
+			@if(backpack_user())
 	          @include('crud::inc.form_save_buttons')
+			@else
+			<button type ="submit" class="btn btn-lg btn-success mb-5 px-5"><i class="la la-floppy-o"></i> Save</button>
+			@endif
 		  </form>
 	</div>
 </div>

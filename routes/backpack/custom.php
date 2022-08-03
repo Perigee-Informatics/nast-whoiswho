@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\DashboardCrudController;
+use App\Http\Controllers\Admin\MemberCrudController;
 
 // --------------------------
 // Custom Backpack Routes
@@ -20,6 +21,9 @@ Route::group([
     Route::get('list-members', [DashboardController::class,'tabularIndex']);
     Route::post('list-members', [DashboardController::class,'getMembersList']);
     Route::get('member/{member_id}/view-detailed-info', [DashboardController::class,'viewDetailedInfo']);
+
+    Route::crud('apply-for-membership','Admin\MemberCrudController');
+    Route::post('apply-for-membership/store','Admin\MemberCrudController@store');
 });
 
 
@@ -34,6 +38,7 @@ Route::group([
 ], function () { // custom admin routes
 
     // primary master routes
+    Route::crud('country', 'CountryCrudController');
     Route::crud('mstfedprovince', 'MstFedProvinceCrudController');
     Route::crud('mstfeddistrict', 'MstFedDistrictCrudController');
     Route::crud('mstfedlocallevel', 'MstFedLocalLevelCrudController');

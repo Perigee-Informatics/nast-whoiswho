@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Base\BaseCrudController;
 use App\Http\Requests\CountryRequest;
-use App\Base\Traits\CheckPermission;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 /**
  * Class CountryCrudController
@@ -13,14 +12,12 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class CountryCrudController extends BaseCrudController
 {
-    use CheckPermission;
   
     public function setup()
     {
         $this->crud->setModel('App\Models\Country');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/country');
         $this->crud->setEntityNameStrings('country', 'देश');
-        $this->checkPermission();
 
 
         $this->crud->addFilter(
@@ -50,12 +47,16 @@ class CountryCrudController extends BaseCrudController
     protected function setupListOperation()
     {
         $col = [
-            $this->addRowNumber(),
-            $this->addCodeColumn(),
+            $this->addRowNumberColumn(),
+            [
+                'name' => 'country_code',
+                'label' => trans('Country Code'),
+                'type' => 'text',
+            ],
             [
                 'name' => 'name_lc',
                 'type' => 'text',
-                'label' => trans('country.name_lc'),
+                'label' => trans('नाम'),
                 'wrapperAttributes' => [
                     'class' => 'form-group col-md-6',
                 ],
@@ -63,7 +64,7 @@ class CountryCrudController extends BaseCrudController
             [
                 'name' => 'name_en',
                 'type' => 'text',
-                'label' => trans('country.name_en'),
+                'label' => trans('Name'),
                 'wrapperAttributes' => [
                     'class' => 'form-group col-md-6',
                 ],
@@ -81,7 +82,14 @@ class CountryCrudController extends BaseCrudController
 
         $arr=[
          
-            $this->addCodeField(),
+            [
+                'name' => 'country_code',
+                'label' => trans('Country Code'),
+                'type' => 'text',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-md-6',
+                ],
+            ],            
             [ // CustomHTML
                 'name' => 'fieldset_open',
                 'type' => 'custom_html',
@@ -90,7 +98,7 @@ class CountryCrudController extends BaseCrudController
             [
                 'name' => 'name_en',
                 'type' => 'text',
-                'label' => trans('country.name_en'),
+                'label' => trans('Name'),
                 'wrapperAttributes' => [
                     'class' => 'form-group col-md-6',
                 ],
@@ -99,7 +107,7 @@ class CountryCrudController extends BaseCrudController
             [
                 'name' => 'name_lc',
                 'type' => 'text',
-                'label' => trans('country.name_lc'),
+                'label' => trans('नाम'),
                 'wrapperAttributes' => [
                     'class' => 'form-group col-md-6',
                 ],

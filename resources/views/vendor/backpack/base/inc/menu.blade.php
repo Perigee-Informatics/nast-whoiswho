@@ -18,7 +18,7 @@
 <!-- ========================================================= -->
 <ul class="nav navbar-nav ml-auto mr-3 @if(config('backpack.base.html_direction') == 'rtl') mr-0 @endif">
     @if (backpack_auth()->guest())
-        <li class="nav-item"><a class="btn btn-sm btn-light text-black font-weight-bold" href="{{ route('backpack.auth.login') }}"><i class="la la-lock"></i>{{ trans('backpack::base.login') }}</a>
+        <li class="nav-item"><a class="btn btn-sm btn-light text-black font-weight-bold mb-3" href="{{ route('backpack.auth.login') }}"><i class="la la-lock"></i>{{ trans('backpack::base.login') }}</a>
         </li>
         @if (config('backpack.base.registration_open'))
             <li class="nav-item"><a class="nav-link" href="{{ route('backpack.auth.register') }}">{{ trans('backpack::base.register') }}</a></li>

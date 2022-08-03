@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Member;
 use App\Models\Country;
 use App\Models\MstGender;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Base\Helpers\PdfPrint;
 use App\Imports\MembersImport;
@@ -35,9 +36,18 @@ class MemberCrudController extends BaseCrudController
         CRUD::setRoute(config('backpack.base.route_prefix') . '/member');
         CRUD::setEntityNameStrings('member', 'members');
         $this->setFilters();
-
         if(in_array($this->crud->getActionMethod(),['edit','index'])){
             $this->crud->print_profile_btn = true;
+        }
+
+        if(Str::contains(url()->current(),'public')){
+            $this->crud->denyAccess('update');
+            $this->crud->operation(['create','update'], function () {
+                $this->crud->loadDefaultOperationSettingsFromConfig();
+                $this->crud->setupDefaultSaveActions();
+                $this->crud->setOperationSetting('groupedErrors', false);
+                $this->crud->setOperationSetting('inlineErrors', false);
+            });
         }
     }
 
@@ -149,23 +159,6 @@ class MemberCrudController extends BaseCrudController
                 'function_name'=>'fullName',
                 'label'=>'Full Name'
             ],
-            // [
-            //     'name' => 'first_name',
-            //     'label' => trans('First Name'),
-            //     'type' => 'text',
-            // ],
-
-            // [
-            //     'name' => 'middle_name',
-            //     'label' => trans('Middle Name'),
-            //     'type' => 'text',
-            // ],
-
-            // [
-            //     'name' => 'last_name',
-            //     'label' => trans('Last Name'),
-            //     'type' => 'text',
-            // ],
 
             [
                 'name' => 'gender_id',
@@ -561,7 +554,7 @@ class MemberCrudController extends BaseCrudController
                 'minimum_input_length' => 0,
                 'dependencies'         => ['province_id'],
                 'include_all_form_fields'=>true,
-                'method'=>'POST',
+                'method'=>'GET',
                 'wrapper' => [
                     'class' => 'form-group col-md-4',
                 ],
@@ -579,7 +572,8 @@ class MemberCrudController extends BaseCrudController
                 ],
                 'attributes'=> [
                     'id'=> 'country-id',
-                ]
+                ],
+                'default'=>153
             ],
 
             [
@@ -921,8 +915,7 @@ class MemberCrudController extends BaseCrudController
             ],
 
         ];
-
-        $this->crud->addFields($arr);
+        $this->crud->addFields(array_filter($arr));
 
     }
 
@@ -935,6 +928,33 @@ class MemberCrudController extends BaseCrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function store()
+    {
+        // $this->crud->hasAccessOrFail('create');
+
+        // execute the FormRequest authorization and validation, if one is required
+        $request = $this->crud->validateRequest();
+
+        $request = $request->except(['_token','http_referrer','save_action']);
+        // dd($request,$this->crud->getStrippedSaveRequest());
+        // insert item in the db
+        $item = $this->crud->create($request);
+        $this->data['entry'] = $this->crud->entry = $item;
+
+        // show a success message
+        \Alert::success(trans('backpack::crud.insert_success'))->flash();
+
+        // save the redirect choice for next time
+        
+        if(backpack_user()){
+            $this->crud->setSaveAction();
+            return $this->crud->performSaveAction($item->getKey());
+        }else{
+            return redirect('/');
+        }
+
     }
 
 

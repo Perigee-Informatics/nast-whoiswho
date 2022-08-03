@@ -42,7 +42,7 @@ $current_url = url()->current();
     <p style="color: black;" class="mt-2">{{$date}} <br><span id="txt"></span></p>
   </div>
   @include(backpack_view('inc.menu'))
-  <img src="{{asset('css/images/nepalflag.gif')}}" border="0" alt=""  style="width:50px;height:50px;" />
+  <img class="mb-3 mr-2" src="{{asset('css/images/nepalflag.gif')}}" border="0" alt=""  style="width:50px;height:50px;" />
 
 </header>
 
