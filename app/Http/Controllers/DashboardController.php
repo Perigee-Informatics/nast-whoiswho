@@ -34,11 +34,11 @@ class DashboardController extends Controller
         $data['genders'] = MstGender::orderBy('id')->get();
 
         $sql ="with expertise_data as (
-            select expertise->>'name' as expertise_name,channel_wiw
+            select expertise->>'name' as expertise_name,channel_wiw,status
             from(
-                    select channel_wiw,json_array_elements(expertise)::json as expertise from members)a
+                    select channel_wiw,json_array_elements(expertise)::json as expertise,status from members)a
             )
-            select ed.* from expertise_data ed where expertise_name is not null and channel_wiw = true";
+            select ed.* from expertise_data ed where expertise_name is not null and channel_wiw = true and status=3";
 
         $results = DB::select($sql);
 
@@ -315,6 +315,7 @@ class DashboardController extends Controller
             $members = $members->whereIn('id',$mem_ids_uq);
 
         }
+        $members = $members->where('status',3);
 
 
         foreach($members as $member)

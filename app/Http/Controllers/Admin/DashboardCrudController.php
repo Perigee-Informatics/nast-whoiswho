@@ -217,6 +217,7 @@ class DashboardCrudController extends BaseCrudController
                         ->whereRaw($province_clause)
                         ->whereRaw($district_clause)
                         ->whereRaw($local_level_clause)
+                        ->where('m.status',3)
                         ->get();
         $members = json_encode($members);
 
@@ -288,6 +289,7 @@ class DashboardCrudController extends BaseCrudController
                     ->where(function($query)use($channel_wiw_clause,$channel_wsfn_clause){
                         $query->whereRaw($channel_wiw_clause)->orWhereRaw($channel_wsfn_clause);
                     })
+                    ->where('m.status',3)
                     ->get();
 
         $gender_data_province = DB::table('members as m')
@@ -301,6 +303,7 @@ class DashboardCrudController extends BaseCrudController
                             $query->whereRaw($channel_wiw_clause)->orWhereRaw($channel_wsfn_clause);
                         })
                         ->whereRaw($channel_foreign_clause)
+                        ->where('m.status',3)
                         ->groupBy('m.province_id','mfp.name_en')
                         ->orderBy('m.province_id')
                         ->get();
@@ -411,6 +414,7 @@ class DashboardCrudController extends BaseCrudController
                                     ->where(function($query)use($channel_wiw_clause,$channel_wsfn_clause){
                                         $query->whereRaw($channel_wiw_clause)->orWhereRaw($channel_wsfn_clause);
                                     })
+                                    ->where('m.status',3)
                                     ->where('mfd.province_id',$province_id)
                                     ->groupBy('m.district_id','mfp.id','mfd.name_en')
                                     ->orderBy('m.district_id')
@@ -446,6 +450,7 @@ class DashboardCrudController extends BaseCrudController
                         ->where(function($query)use($channel_wiw_clause,$channel_wsfn_clause){
                             $query->whereRaw($channel_wiw_clause)->orWhereRaw($channel_wsfn_clause);
                         })
+                        ->where('m.status',3)
                         ->get();
 
         $datas = [] ;
@@ -514,6 +519,7 @@ class DashboardCrudController extends BaseCrudController
                                             DB::raw('count(case when gender_id = 2 then 1 end) as female'),
                                             DB::raw('count(m.gender_id) as total'))
                                     ->where('mfd.district_id',$district_id)
+                                    ->where('m.status',3)
                                     ->groupBy('m.local_level_id','mfll.name_en')
                                     ->orderBy('m.local_level_id')
                                     ->get();

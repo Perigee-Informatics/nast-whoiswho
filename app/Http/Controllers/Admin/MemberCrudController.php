@@ -134,6 +134,24 @@ class MemberCrudController extends BaseCrudController
                 $this->crud->addClause('where', 'membership_type', "$value");
             }
         );
+        $this->crud->addFilter(
+            [ // simple filter
+                'type' => 'select2',
+                'name' => 'status',
+                'label' => trans('Status'),
+                'placeholder'=>'--choose--'
+
+            ],
+            function () {
+                return Member::$status;
+            },
+            
+            function ($value) { // if the filter is active
+                if($value){
+                    $this->crud->addClause('where', 'status', "$value");
+                }
+            }
+        );
 
     }
 
@@ -336,6 +354,20 @@ class MemberCrudController extends BaseCrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(MemberRequest::class);
+
+        $status = NULL;
+
+        if(backpack_user()){
+            $status =    [
+                'name'=>'status',
+                'label'=>'Status',
+                'type'=>'select_from_array',
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+                'options'=>Member::$status
+            ];
+        }
 
         // CRUD::setFromDb(); // fields
         $arr=[
@@ -913,6 +945,8 @@ class MemberCrudController extends BaseCrudController
                     'class' => 'form-group col-md-12',
                 ],
             ],
+            $status
+         
 
         ];
         $this->crud->addFields(array_filter($arr));
@@ -936,6 +970,8 @@ class MemberCrudController extends BaseCrudController
 
         // execute the FormRequest authorization and validation, if one is required
         $request = $this->crud->validateRequest();
+
+        $request->request->set('status',1);
 
         $request = $request->except(['_token','http_referrer','save_action']);
         // dd($request,$this->crud->getStrippedSaveRequest());

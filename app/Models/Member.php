@@ -20,12 +20,14 @@ class Member extends BaseModel
     protected $table = 'members'; 
     protected $primaryKey = 'id';
     // public $timestamps = false;
+
+    public static $status = [1=>'Applied',2=>'Under Review',3=>'Approved'];
     protected $guarded = ['id'];
     protected $fillable = ['gender_id','dob_ad','dob_bs','nrn_number','first_name','middle_name','last_name','photo_path',
                         'is_other_country','country_id','province_id','district_id','current_organization','past_organization',
                         'doctorate_degree','masters_degree','bachelors_degree','awards','expertise','affiliation',
                         'mailing_address','phone','email','link_to_google_scholar','channel_wsfn','channel_wiw','channel_foreign',
-                    'membership_type','international_publication','national_publication'];
+                    'membership_type','international_publication','national_publication','status'];
     // protected $hidden = [];
     // protected $dates = [];
 
