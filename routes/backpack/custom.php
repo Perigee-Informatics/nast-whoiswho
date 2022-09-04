@@ -21,6 +21,9 @@ Route::group([
     Route::get('list-members', [DashboardController::class,'tabularIndex']);
     Route::post('list-members', [DashboardController::class,'getMembersList']);
     Route::get('member/{member_id}/view-detailed-info', [DashboardController::class,'viewDetailedInfo']);
+    Route::get('member/{member_id}/send-email-view', [DashboardController::class,'sendEmailView']);
+
+    Route::post('member/{member_id}/send-email', [DashboardController::class,'sendEmail']);
 
     Route::crud('apply-for-membership','Admin\MemberCrudController');
     Route::post('apply-for-membership/store','Admin\MemberCrudController@store');

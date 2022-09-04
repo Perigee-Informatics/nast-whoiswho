@@ -394,4 +394,19 @@ class DashboardController extends Controller
     {
         return (new MemberCrudController())->printProfile($id,true);
     }
+
+    public function sendEmailView($id)
+    {
+        $data['member_id'] = $id;
+
+        return view('public.partial.send-mail-dialog',compact('data'));
+    }
+
+    public function sendEmail(Request $request,$id)
+    {
+        $data = $request->all();
+        $member_email = Member::find($id)->email;
+
+        dd($data,$member_email);
+    }
 }
