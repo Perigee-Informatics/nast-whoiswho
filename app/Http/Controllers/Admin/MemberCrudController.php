@@ -394,6 +394,8 @@ class MemberCrudController extends BaseCrudController
                     'id'=>'date_bs',
                     'relatedId'=>'dob_ad',
                     'maxlength' =>10,
+                    'required'=>'required'
+
                 ],
                 'wrapper' => [
                     'class' => 'form-group col-md-3',
@@ -405,6 +407,7 @@ class MemberCrudController extends BaseCrudController
                 'label' => trans('common.date_ad'),
                 'attributes'=>[
                     'id'=>'dob_ad',
+                    'required'=>'required'
                 ],
                 'wrapper' => [
                     'class' => 'form-group col-md-3',
@@ -624,15 +627,30 @@ class MemberCrudController extends BaseCrudController
                         'name'    => 'organization',
                         'type'    => 'text',
                         'label'   => trans('Organization'),
-                        'wrapper' => ['class' => 'form-group col-md-5'],
+                        'wrapper' => ['class' => 'form-group col-md-8'],
                         'required' => true
                     ],
                     [
                         'name'    => 'address',
                         'type'    => 'text',
                         'label'   => trans('Address'),
-                        'wrapper' => ['class' => 'form-group col-md-3'],
+                        'wrapper' => ['class' => 'form-group col-md-4'],
                         'required' => true
+                    ],
+                    [
+                        'name'    => 'from',
+                        'type'    => 'text',
+                        'label'   => trans('From'),
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                        'required' => true
+                    ],
+                    [
+                        'name'    => 'to',
+                        'type'    => 'text',
+                        'label'   => trans('To'),
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                        'required' => true,
+                        'default'=>'Present'
                     ],
                 ],
                 'min_rows' => 1,
@@ -655,14 +673,28 @@ class MemberCrudController extends BaseCrudController
                         'name'    => 'organization',
                         'type'    => 'text',
                         'label'   => trans('Organization'),
-                        'wrapper' => ['class' => 'form-group col-md-5'],
+                        'wrapper' => ['class' => 'form-group col-md-8'],
                         'required' => true
                     ],
                     [
                         'name'    => 'address',
                         'type'    => 'text',
                         'label'   => trans('Address'),
-                        'wrapper' => ['class' => 'form-group col-md-3'],
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                        'required' => true
+                    ],
+                    [
+                        'name'    => 'from',
+                        'type'    => 'text',
+                        'label'   => trans('From'),
+                        'wrapper' => ['class' => 'form-group col-md-4'],
+                        'required' => true
+                    ],
+                    [
+                        'name'    => 'to',
+                        'type'    => 'text',
+                        'label'   => trans('To'),
+                        'wrapper' => ['class' => 'form-group col-md-4'],
                         'required' => true
                     ],
                 ],
@@ -892,6 +924,7 @@ class MemberCrudController extends BaseCrudController
                 'wrapper'=>[
                     'class'=>'col-md-6'
                 ],
+                'default'=>0
             ],
             [
                 'name'=>'international_publication',
@@ -900,6 +933,8 @@ class MemberCrudController extends BaseCrudController
                 'wrapper'=>[
                     'class'=>'col-md-6'
                 ],
+                'default'=>0
+                
             ],
             [
                 'name' => 'mailing_address',
