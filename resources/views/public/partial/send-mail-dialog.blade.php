@@ -40,13 +40,13 @@
                         </div>
                         <div class="form-group">
                             <label>Message <small>*</small></label>
-                            <textarea name="description" class="form-control" rows="7"
+                            <textarea name="message" class="form-control" rows="7"
                                 placeholder="enter your message" required></textarea>
                         </div>
                         <div class="form-group">
-                            <button type="submit"
+                            <a type="submit" id="submit-btn"
                                 class="btn btn-success text-white btn-theme-colored btn-flat float-right la la-send"
-                                data-loading-text="please wait..."> Send</button>
+                                data-loading-text="please wait..."> Send</a>
                         </div>
                     </form>
                 </div>
@@ -145,3 +145,22 @@
 
  
 </style>
+
+<script>
+    $('#submit-btn').on('click',function(){
+        let data = $('form').serializeArray();
+        let form_action = $('form').attr('action');
+
+        $.post(form_action,data,function(response){
+            if(response.status == true){
+                setTimeout(() => {
+                    alert('Email successfully sent !!')
+                    window.location.href='/public/list-members';
+                }, 500);
+            }else{
+                alert(response.msg + ' !!')
+            }
+        })
+            
+    })
+</script>

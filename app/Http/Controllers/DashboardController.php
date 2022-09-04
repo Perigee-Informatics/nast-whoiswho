@@ -11,6 +11,7 @@ use App\Models\MstFedProvince;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Controllers\Admin\MemberCrudController;
@@ -406,7 +407,22 @@ class DashboardController extends Controller
     {
         $data = $request->all();
         $member_email = Member::find($id)->email;
+        $status = true;
+        $msg= '';
 
-        dd($data,$member_email);
+        Mail::send('public.sendMail.send-mail',compact('data'), function($message)use($data,$member_email) {
+            $message->to($member_email)
+            ->from(env('MAIL_USERNAME'))
+            ->subject('NAST -(WHO is WHO) -- '.$data['subject']);
+        });
+
+        if(Mail::failures() ) {
+            $status=false;
+            $msg = "Some error occured. Please contact administrator !! <br />";
+         
+         } 
+
+        return response()->json(['status'=>$status,'msg'=>$msg]);
+
     }
 }
