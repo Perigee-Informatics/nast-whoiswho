@@ -1,6 +1,6 @@
 <div class="row about-section pt-2">
     <div class="col-md-12 inner-width">
-        <div class="page-header"> Send your query to expert.</div>
+        <div class="page-header"> Send message to the scientist.</div>
         <div class="border"></div>
         <div class="about-section-row">
             <div class="about-section-col">
@@ -153,10 +153,8 @@
 
         $.post(form_action,data,function(response){
             if(response.status == true){
-                setTimeout(() => {
-                    alert('Email successfully sent !!')
-                    window.location.href='/public/list-members';
-                }, 500);
+                alert('Email successfully sent !!')
+                window.location.href='/public/list-members';
             }else{
                 alert(response.msg + ' !!')
             }

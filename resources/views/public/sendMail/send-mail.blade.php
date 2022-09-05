@@ -1,14 +1,15 @@
 <p>
-    <b>Dear sir/mam,</b><br/><br/>
+    <b>Dear {{ $member_fullname}},</b><br/><br/>
 
-    &nbsp; &nbsp; This is me, <b>{{ $data['reporting_person']}} </b><br>
+    &nbsp; &nbsp; Some one wants to be connected with you through our portal WHO is WHO -NAST.<br/>
+    &nbsp; &nbsp; Kindly find below the details .<br>
     <br/>
-    {{ $data['message']}}
+    {{ $content['message']}}
     <br/>
 </p>
 <br/>
 <br/>
 <b>Regards,</b><br/>
-{{ $data['reporting_person']}}<br/>
-{{ $data['mobile_num']}}<br/>
-{{ $data['email']}}<br/>
+{{ $content['reporting_person']}}<br/>
+{{ $content['mobile_num']}}<br/>
+{{ $content['email']}}<br/>

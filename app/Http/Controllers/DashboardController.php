@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Member;
 use App\Models\MstGender;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\MstFedDistrict;
 use App\Models\MstFedProvince;
@@ -405,15 +406,23 @@ class DashboardController extends Controller
 
     public function sendEmail(Request $request,$id)
     {
-        $data = $request->all();
-        $member_email = Member::find($id)->email;
+        $content = $request->all();
+        
+        $member = Member::find($id);
+        $member_email = $member->email;
+        $member_fullname = $member->first_name.' '.$member->middle_name.' '.$member->last_name;
+
+        if(Str::contains($member_email,';')){
+            $explode = explode(';',$member_email);
+            $member_email= $explode[0];
+        }
         $status = true;
         $msg= '';
 
-        Mail::send('public.sendMail.send-mail',compact('data'), function($message)use($data,$member_email) {
+        Mail::send('public.sendMail.send-mail',compact('content','member_fullname'), function($message)use($content,$member_email) {
             $message->to($member_email)
             ->from(env('MAIL_USERNAME'))
-            ->subject('NAST -(WHO is WHO) -- '.$data['subject']);
+            ->subject('NAST -(WHO is WHO) -- '.$content['subject']);
         });
 
         if(Mail::failures() ) {
