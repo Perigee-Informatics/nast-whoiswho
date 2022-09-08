@@ -13,6 +13,7 @@ use App\Models\MstFedDistrict;
 use App\Models\MstFedProvince;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Base\BaseCrudController;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\MemberRequest;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -1119,5 +1120,13 @@ class MemberCrudController extends BaseCrudController
 
         // $html = view('profile.individual_profile', compact('data','public_view'))->render();
         // PdfPrint::printPortrait($html,"Who_is_who_Profile.pdf"); 
+    }
+
+
+    public function emailDetails()
+    {
+        $datas = DB::table('email_details')->get();
+
+        return view('admin.email_details',compact('datas'));
     }
 }

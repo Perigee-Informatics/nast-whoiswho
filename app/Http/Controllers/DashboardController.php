@@ -407,6 +407,17 @@ class DashboardController extends Controller
     public function sendEmail(Request $request,$id)
     {
         $content = $request->all();
+
+        $data = [
+            'reporting_person'=>$content['reporting_person'],
+            'mobile_num'=>$content['mobile_num'],
+            'email'=>$content['email'],
+            'subject'=>$content['subject'],
+            'message'=>$content['message'],
+            'sent_to_member_id'=>$id,
+        ];
+
+        DB::table('email_details')->insert($data);
         
         $member = Member::find($id);
         $member_email = $member->email;

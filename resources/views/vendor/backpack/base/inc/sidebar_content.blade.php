@@ -17,6 +17,9 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('member') }}'><i class='nav-icon la la-users'></i> Members</a></li>
 <hr class="hr-line m-2">
 
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('email_details') }}'><i class='nav-icon la la-envelope'></i> Mails</a></li>
+<hr class="hr-line m-2">
+
 <li class="nav-item nav-dropdown">
 	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-gears"></i>{{ trans('menu.primary') }}</a>
 	<ul class="nav-dropdown-items" style="overflow-x:hidden">
