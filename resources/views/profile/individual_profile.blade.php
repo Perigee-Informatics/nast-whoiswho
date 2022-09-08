@@ -193,9 +193,11 @@
                                         <span class="subject-head">Phone/Cell Number : </span><span class="subject-data">{{$member['basic']->phone}}</span>
                                     </div>
                                 @endif
-                                {{-- <div>
-                                <span class="subject-head"> E-mail : </span><span class="subject-data">{{$member['basic']->email}}</span>
-                                </div> --}}
+                                @if(!$public_view)
+                                    <div>
+                                    <span class="subject-head"> E-mail : </span><span class="subject-data">{{$member['basic']->email}}</span>
+                                    </div>
+                                @endif
                                 <div>
                                 <span class="subject-head"> Link to Google Scholar : </span><span class="subject-data">{{$member['basic']->link_to_google_scholar}}</span>
                                 </div>
