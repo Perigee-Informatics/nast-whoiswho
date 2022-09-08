@@ -12,11 +12,11 @@
     }
 </style>
 
-<li class="nav-item"><a class="nav-link" href="/"><i class="la la-dashboard nav-icon"></i> Graphical</a></li>
+<li class="nav-item"><a class="nav-link" href="/"><i class="la la-dashboard nav-icon"></i> Dashboard</a></li>
 
 <hr class="hr-line m-2">
 
-<li class='nav-item'><a class='nav-link' href='/public/list-members'><i class='nav-icon la la-table'></i> Tabular</a></li>
+<li class='nav-item'><a class='nav-link' href='/public/list-members'><i class='nav-icon la la-table'></i> Advanced Search</a></li>
 
 <hr class="hr-line m-2">
 
