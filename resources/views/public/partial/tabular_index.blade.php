@@ -204,6 +204,11 @@
         }
         if(document.getElementsByClassName('times-show').length == 0){
             getMembersData();
+            localStorage.removeItem('province_id');
+            localStorage.removeItem('district_id');
+            localStorage.removeItem('gender_id');
+            localStorage.removeItem('type');
+            localStorage.removeItem('age_group');
         }else{
             setTimeout(() => {
                 getMembersData();
