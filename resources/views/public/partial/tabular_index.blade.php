@@ -171,29 +171,35 @@
         if(province_id)
         {
             $('#province_id option[value="'+province_id+'"').attr('selected','selected');
-            $('#province_id').trigger('change');
+
+            setTimeout(() => {
+                $('#province_id').trigger('change');
+            }, 200);
+            
         }
         
         if(district_id)
         {   
             setTimeout(() => {
                 $('#district_id option[value="'+district_id+'"').attr('selected','selected');
-            }, 600);
+                $('#district_id').trigger('change');
+
+            }, 800);
         }
         if(gender_id)
         {
-            setTimeout(() => {
+            // setTimeout(() => {
                 $('#gender_id option[value="'+gender_id+'"').attr('selected','selected');
-            }, 1000);
+            // }, 1200);
         }
         
         if(age_group)
         {
             if(age_group == "Below 30") age_group='Below-30';
             if(age_group == "60 & Above") age_group='60-Above';
-            setTimeout(() => {
+            // setTimeout(() => {
                 $('#age_group option[value="'+age_group+'"').attr('selected','selected');
-            }, 1000);
+            // }, 1700);
 
         }
         if(document.getElementsByClassName('times-show').length == 0){
@@ -206,7 +212,7 @@
                 localStorage.removeItem('gender_id');
                 localStorage.removeItem('type');
                 localStorage.removeItem('age_group');
-            }, 2500);
+            }, 2000);
         }
 
 
