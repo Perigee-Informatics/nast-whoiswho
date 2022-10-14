@@ -274,11 +274,11 @@
             $(itm).addClass('filter-active');
         });
 
-        var href= '/public/list-members';
+        var href= '/general/list-members';
 
         if(query_string)
         {
-            href = '/public/list-members?page='+query_string;
+            href = '/general/list-members?page='+query_string;
         }
        
 

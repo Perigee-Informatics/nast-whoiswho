@@ -38,19 +38,19 @@
                     <td class="report-data">{{$channel}}</td>
                     <td class="report-data">{{$m_type}}</td>
                     <td class="report-data">{{$basic->countryEntity ? $basic->countryEntity->name_en : 'Nepal'}}</td>
-                    <td class="report-data">{{$basic->provinceEntity->name_en}}</td>
-                    <td class="report-data">{{$basic->districtEntity->name_en}}</td>
+                    <td class="report-data">{{isset($basic->province_id) ? $basic->provinceEntity->name_en : ''}}</td>
+                    <td class="report-data">{{isset($basic->district_id) ? $basic->districtEntity->name_en : ''}}</td>
                     {{-- <td class="report-data">{{$basic->mailing_address}}</td> --}}
                     {{-- <td class="report-data">{{$basic->email}}</td> --}}
                     <td class="report-data">{{$basic->link_to_google_scholar}}</td>
                     <td class="report-data text-center">
-                        <a class="fancybox btn btn-warning p-1 mr-2" data-type="ajax" data-src="{{'/public/member/'.$key.'/send-email-view'}} " title='Send Mail to Expert'>
+                        <a class="fancybox btn btn-warning p-1 mr-2" data-type="ajax" data-src="{{'/general/member/'.$key.'/send-email-view'}} " title='Send Mail to Expert'>
                             <i class="la la-envelope text-black font-weight-bold"></i>
                         </a>
-                        <a class="fancybox btn btn-success p-1 mr-2" data-type="ajax" data-src="{{'/public/member/'.$key.'/view-detailed-info'}} " title='View Detail'>
+                        <a class="fancybox btn btn-success p-1 mr-2" data-type="ajax" data-src="{{'/general/member/'.$key.'/view-detailed-info'}} " title='View Detail'>
                             <i class="la la-eye text-white font-weight-bold"></i>
                         </a>
-	                    <a target="_blank" href="{{ url('/public/member/'.$key.'/print-profile') }}" class="btn btn-primary print-btn p-1" data-style="zoom-in">
+	                    <a target="_blank" href="{{ url('/general/member/'.$key.'/print-profile') }}" class="btn btn-primary print-btn p-1" data-style="zoom-in">
                             <i class="la la-print font-weight-bold"></i></a>
                     </td>
                 </tr>

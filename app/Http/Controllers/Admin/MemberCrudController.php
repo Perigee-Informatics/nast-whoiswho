@@ -41,7 +41,7 @@ class MemberCrudController extends BaseCrudController
             $this->crud->print_profile_btn = true;
         }
 
-        if(Str::contains(url()->current(),'public')){
+        if(Str::contains(url()->current(),'general')){
             $this->crud->denyAccess('update');
             $this->crud->operation(['create','update'], function () {
                 $this->crud->loadDefaultOperationSettingsFromConfig();

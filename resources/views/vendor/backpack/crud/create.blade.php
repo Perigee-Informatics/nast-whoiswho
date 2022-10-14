@@ -33,7 +33,7 @@
 		@include('crud::inc.grouped_errors')
 
 		  <form method="post"
-		  		action="{{ backpack_user() ? url($crud->route): '/public/apply-for-membership/store' }}"
+		  		action="{{ backpack_user() ? url($crud->route): '/general/apply-for-membership/store' }}"
 				@if ($crud->hasUploadFields('create'))
 				enctype="multipart/form-data"
 				@endif

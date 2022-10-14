@@ -16,11 +16,11 @@
 
 <hr class="hr-line m-2">
 
-<li class='nav-item'><a class='nav-link' href='/public/list-members'><i class='nav-icon la la-table'></i> Advanced Search</a></li>
+<li class='nav-item'><a class='nav-link' href='/general/list-members'><i class='nav-icon la la-table'></i> Advanced Search</a></li>
 
 <hr class="hr-line m-2">
 
-<li class='nav-item'><a class='nav-link' href='/public/apply-for-membership/create'><i class='nav-icon la la-user'></i> Apply Membership</a></li>
+<li class='nav-item'><a class='nav-link' href='/general/apply-for-membership/create'><i class='nav-icon la la-user'></i> Apply Membership</a></li>
 
 <hr class="hr-line m-2">
 

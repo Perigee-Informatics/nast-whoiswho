@@ -33,7 +33,7 @@
         </div> --}}
 
         {{-- <div class="col p-0 border rounded p-2" id="body-content"></div> --}}
-        @if(Str::contains(url()->current(),'public/list-members'))
+        @if(Str::contains(url()->current(),'general/list-members'))
             @include('public.partial.tabular_index')
         @else
             @include('public.partial.graphical')
@@ -122,7 +122,7 @@
                     }
                 }
 
-                window.location.href= '/public/list-members';
+                window.location.href= '/general/list-members';
 
             }
 

@@ -12,7 +12,7 @@
     {{-- <div id="mySidenav" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       <a href="/"><i class="la la-sitemap"></i>  Graphical</a>
-      <a href="/public/list-members"><i class="la la-table"></i>  Tabular</a>
+      <a href="/general/list-members"><i class="la la-table"></i>  Tabular</a>
     </div> --}}
     <main class="main pt-4 pl-3">
 

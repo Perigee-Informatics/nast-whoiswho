@@ -11,7 +11,7 @@ use App\Http\Controllers\Admin\MemberCrudController;
 // Routes you generate using Backpack\Generators will be placed here.
 
 Route::group([
-    'prefix'     => 'public',
+    'prefix'     => 'general',
     'middleware' => ['XSS'],
     'namespace'  => 'App\Http\Controllers',
 ], function () { // custom admin routes

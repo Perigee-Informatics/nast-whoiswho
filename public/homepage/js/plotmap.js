@@ -179,7 +179,7 @@ function showMembersData(level,areaId,clicked=false){
                 }
                 lat = member.lat;
                 long = member.long;
-                member_url = '/public/member/' + member_id + '/print-profile';
+                member_url = '/general/member/' + member_id + '/print-profile';
 
                 var display_icon = L.icon({ iconUrl: icon, iconSize: [25, 25] });
 

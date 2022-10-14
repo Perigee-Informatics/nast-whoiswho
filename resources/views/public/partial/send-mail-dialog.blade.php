@@ -5,7 +5,7 @@
         <div class="about-section-row">
             <div class="about-section-col">
                 <div class="about-form pl-4 pr-4">
-                    <form id="query_form" name="query_form" class="query_form" action="{{'/public/member/'.$data['member_id'].'/send-email'}}" method="POST">
+                    <form id="query_form" name="query_form" class="query_form" action="{{'/general/member/'.$data['member_id'].'/send-email'}}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-md-7">
@@ -154,7 +154,7 @@
         $.post(form_action,data,function(response){
             if(response.status == true){
                 alert('Email successfully sent !!')
-                window.location.href='/public/list-members';
+                window.location.href='/general/list-members';
             }else{
                 alert(response.msg + ' !!')
             }
