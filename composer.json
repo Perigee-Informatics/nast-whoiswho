@@ -20,8 +20,7 @@
         "imliam/laravel-blade-helper": "^1.4",
         "intervention/image": "^2.7",
         "laravel/framework": "^8.12",
-        "laravel/tinker": "^2.5",
-        "maatwebsite/excel": "^3.1"
+        "laravel/tinker": "^2.5"
     },
     "require-dev": {
         "backpack/generators": "^3.1",
