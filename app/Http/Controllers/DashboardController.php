@@ -35,12 +35,21 @@ class DashboardController extends Controller
         $data['districts'] = MstFedDistrict::orderBy('id')->get();
         $data['genders'] = MstGender::orderBy('id')->get();
 
-        $sql ="with expertise_data as (
-            select expertise->>'name' as expertise_name,channel_wiw,status
-            from(
-                    select channel_wiw,json_array_elements(expertise)::json as expertise,status from members)a
+        $sql="
+            WITH expertise_data AS (
+                SELECT
+                    channel_wiw,
+                    CASE
+                        WHEN e.expertise IS NOT NULL THEN e.expertise->>'name'
+                        ELSE NULL
+                    END AS expertise_name,
+                    status
+                FROM members m
+                LEFT JOIN LATERAL json_array_elements(m.expertise) e(expertise) ON true
             )
-            select ed.* from expertise_data ed where expertise_name is not null and channel_wiw = true and status=3";
+            SELECT *
+            FROM expertise_data
+            WHERE expertise_name IS NOT NULL AND channel_wiw = true AND status = 3";
 
         $results = DB::select($sql);
 
@@ -303,15 +312,29 @@ class DashboardController extends Controller
             $expertise = implode("','%",$request->expertise);
 
             // dd($expertise);
-            $sql ="with expertise_data as (
-                select id,expertise->>'name' as expertise_name,channel_wiw
-                from( select id,channel_wiw,json_array_elements(expertise)::json as expertise from members)a)
-                select ed.* from expertise_data ed where expertise_name is not null and channel_wiw = true
-                and expertise_name iLike  ANY(ARRAY['%$expertise'])";
+            $sql = "
+            WITH expertise_data AS (
+                SELECT
+                    id,
+                    CASE
+                        WHEN json_typeof(expertise) = 'array' THEN
+                            (SELECT value->>'name' FROM json_array_elements(expertise) AS value LIMIT 1)
+                        ELSE
+                            expertise->>'name'
+                    END AS expertise_name,
+                    channel_wiw
+                FROM members
+            )
+            SELECT ed.*
+            FROM expertise_data ed
+            WHERE expertise_name IS NOT NULL
+                AND channel_wiw = true
+                AND expertise_name ILIKE ANY(ARRAY['%$expertise%'])
+        ";
 
-            $results = collect(DB::select($sql));
-            $mem_ids = $results->pluck('id')->toArray();
-
+        
+        $results = collect(DB::select($sql));
+        $mem_ids = $results->pluck('id')->toArray();
             $mem_ids_uq = array_unique($mem_ids);
 
             $members = $members->whereIn('id',$mem_ids_uq);
