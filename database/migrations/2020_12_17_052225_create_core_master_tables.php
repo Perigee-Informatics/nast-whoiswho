@@ -198,7 +198,7 @@ class CreateCoreMasterTables extends Migration
             $table->smallIncrements('id');
             $table->string('code',20);
             $table->smallInteger('level');
-            $table->jsonb('coordinates'); 
+            $table->json('coordinates'); 
             $table->timestamps();
 
             $table->unique(['code'],'uq_mst_fed_coordinates_type_code');
